@@ -261,7 +261,7 @@ export default function WizardPage() {
                     setTotalBudget(tmpl.budget);
                     setProjectTitle(tmpl.label);
                   }}
-                  className="rounded-full border border-white/10 bg-[#25272B] px-3.5 py-1.5 text-xs text-zinc-300 hover:border-[#DAF99C]/50 hover:text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
+                  className="rounded-none border border-white/10 bg-[#25272B] px-3.5 py-1.5 text-xs text-zinc-300 hover:border-[#DAF99C]/50 hover:text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
                 >
                   {tmpl.label} (${tmpl.budget})
                 </button>
@@ -279,7 +279,7 @@ export default function WizardPage() {
               value={brief}
               onChange={(e) => setBrief(e.target.value)}
               placeholder="Paste raw project brief, client emails, or feature requests..."
-              className="w-full rounded-xl border border-white/10 bg-[#161719] p-4 text-sm text-white placeholder-zinc-500 focus:border-[#DAF99C] focus:outline-none focus:ring-1 focus:ring-[#DAF99C]"
+              className="w-full rounded-none border border-white/10 bg-[#161719] p-4 text-sm text-white placeholder-zinc-500 focus:border-[#DAF99C] focus:outline-none focus:ring-1 focus:ring-[#DAF99C]"
             />
           </div>
 
@@ -295,7 +295,7 @@ export default function WizardPage() {
                   step="10"
                   value={totalBudget}
                   onChange={(e) => setTotalBudget(Number(e.target.value))}
-                  className="w-full rounded-lg border border-white/10 bg-[#161719] pl-7 pr-3 py-2 text-sm text-white focus:border-[#DAF99C] focus:outline-none"
+                  className="w-full rounded-none border border-white/10 bg-[#161719] pl-7 pr-3 py-2 text-sm text-white focus:border-[#DAF99C] focus:outline-none"
                 />
               </div>
             </div>
@@ -306,7 +306,7 @@ export default function WizardPage() {
                 type="email"
                 value={clientEmail}
                 onChange={(e) => setClientEmail(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-[#161719] px-3 py-2 text-sm text-white focus:border-[#DAF99C] focus:outline-none"
+                className="w-full rounded-none border border-white/10 bg-[#161719] px-3 py-2 text-sm text-white focus:border-[#DAF99C] focus:outline-none"
               />
             </div>
 
@@ -316,7 +316,7 @@ export default function WizardPage() {
                 type="email"
                 value={freelancerEmail}
                 onChange={(e) => setFreelancerEmail(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-[#161719] px-3 py-2 text-sm text-white focus:border-[#DAF99C] focus:outline-none"
+                className="w-full rounded-none border border-white/10 bg-[#161719] px-3 py-2 text-sm text-white focus:border-[#DAF99C] focus:outline-none"
               />
             </div>
           </div>
@@ -327,7 +327,7 @@ export default function WizardPage() {
               type="button"
               disabled={isGenerating}
               onClick={handleGeneratePlan}
-              className="lime-button inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold active:scale-[0.98] disabled:opacity-50"
+              className="lime-button inline-flex items-center gap-2 rounded-none px-6 py-2.5 text-sm font-semibold active:scale-[0.98] disabled:opacity-50"
             >
               <Sparkles className="h-4 w-4 text-[#0E1012]" />
               {isGenerating ? "Decomposing Brief with Gemini..." : "Deconstruct Brief with Agent 1"}
@@ -449,7 +449,7 @@ export default function WizardPage() {
                     {m.criteria.map((c, cIdx) => (
                       <div
                         key={c.id}
-                        className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-[#161719] p-2.5 text-xs"
+                        className="flex items-center justify-between gap-2 rounded-none border border-white/10 bg-[#161719] p-2.5 text-xs"
                       >
                         <span className="text-zinc-200 flex-1">{c.text}</span>
 
@@ -457,7 +457,7 @@ export default function WizardPage() {
                           <button
                             type="button"
                             onClick={() => handleToggleCriterionAutomated(mIdx, cIdx)}
-                            className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold transition-all ${
+                            className={`rounded-none px-2.5 py-0.5 text-[10px] font-semibold transition-all ${
                               c.isAutomated
                                 ? "bg-[#DAF99C] text-[#0E1012]"
                                 : "bg-[#FBBF24] text-[#0E1012]"
@@ -493,7 +493,7 @@ export default function WizardPage() {
               type="button"
               disabled={isSubmitting || !isBudgetBalanced}
               onClick={handleCreateContract}
-              className="lime-button w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold active:scale-[0.98] disabled:opacity-50 shadow-xl shadow-[#DAF99C]/25"
+              className="lime-button w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-none px-7 py-3.5 text-sm font-semibold active:scale-[0.98] disabled:opacity-50 shadow-xl shadow-[#DAF99C]/25"
             >
               {isSubmitting ? "Creating Contract..." : "Proceed to Escrow Cockpit"}
               <ArrowRight className="h-4 w-4 text-[#0E1012]" />

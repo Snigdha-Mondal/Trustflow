@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@800;900&family=Syne:wght@700;800;900&family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -121,14 +123,14 @@ p {
   -webkit-text-fill-color: transparent;
 }
 
-/* Architectural Charcoal Luxury Cards & Surfaces */
+/* Architectural Charcoal Luxury Cards & Surfaces (Crisp Rectangular Geometry) */
 .luxury-card {
   background: rgba(28, 29, 32, 0.85);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
+  border-radius: 0px;
   transition: all 350ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -144,13 +146,13 @@ p {
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
+  border-radius: 0px;
 }
 
 .luxury-well {
   background: #25272B;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
+  border-radius: 0px;
 }
 
 .glass-pill {
@@ -174,24 +176,71 @@ p {
   z-index: 0;
 }
 
-/* Signature High-Contrast Acid Lime Button */
+/* Signature High-Contrast Acid Lime Button (Sharp Architectural Rectangle) */
 .lime-button {
   background-color: #DAF99C;
   color: #0E1012;
-  font-weight: 600;
-  transition: all 300ms cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 4px 14px rgba(218, 249, 156, 0.25);
+  font-weight: 700;
+  border-radius: 0px !important;
+  transition: all 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 4px 14px rgba(218, 249, 156, 0.2);
 }
 
 .lime-button:hover {
   background-color: #CCF580;
-  box-shadow: 0 6px 20px rgba(218, 249, 156, 0.4);
+  box-shadow: 0 6px 20px rgba(218, 249, 156, 0.35);
   transform: translateY(-1px);
 }
 
 .lime-button:active {
   background-color: #BFE86A;
   transform: scale(0.98);
+}
+
+/* Secondary Rectangular Architectural Button */
+.rect-button-secondary {
+  background-color: #1C1D20;
+  color: #F8F9FA;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-weight: 700;
+  border-radius: 0px !important;
+  transition: all 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rect-button-secondary:hover {
+  background-color: #25272B;
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.rect-button-secondary:active {
+  transform: scale(0.98);
+}
+
+/* Hero Display Title (Razorpay Inspo Style with Unbounded/Syne Display Font) */
+.hero-display-title {
+  font-family: 'Unbounded', 'Syne', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: clamp(3.5rem, 13.5vw, 11rem);
+  line-height: 0.88;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+/* Floating Ticket Stamp (Razorpay Inspo Perforated Paper Vibe) */
+.ticket-stamp {
+  background-color: rgba(28, 29, 32, 0.95);
+  border: 1.5px dashed rgba(255, 255, 255, 0.22);
+  box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6);
+  border-radius: 0px !important;
+  transition: all 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ticket-stamp:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(218, 249, 156, 0.5);
+  box-shadow: 0 16px 36px -4px rgba(218, 249, 156, 0.15);
 }
 
 /* Keyframe Animations */

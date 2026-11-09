@@ -72,12 +72,18 @@ The palette draws direct inspiration from high-end architectural editorial space
 
 ---
 
-### 2.2 Typography Hierarchy & Scale Snapping
-All typography strictly enforces the Geist family with semantic scale steps:
-- **Primary Display & Interface Font:** `Geist` or `Geist Sans`, system fallback `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto`.
-- **Monospace Font:** `Geist Mono` exclusively for financial amounts, PayPal transaction hashes, timestamps, and DOM selectors.
-- **Strict Prohibition:** NEVER use italic styling anywhere. NEVER use font weights above 700 (no 800/900/Black).
+### 2.2 Typography Hierarchy & Hero Poster Layout
+- **Hero Display Typography:** Geometric Ultra-Heavy Display Typography (`Unbounded` / `Syne`, fallback `Geist`, `Arial Black`, system-ui) at `clamp(3.8rem, 14vw, 11rem)` with `line-height: 0.88`, `font-weight: 900`, uppercase, and tight `-0.045em` letter tracking, spanning across the viewport like Razorpay's editorial campaign poster.
+- **Hero Lockup:** The massive title **"TRUSTFLOW"** dominates the top of the viewport, with a right-aligned `by PayPal & Gemini AI` lockup directly below it, framed by tilted perforated ticket stamp cards (`rotate-[-5deg]` to `rotate-[6deg]`) that break the symmetry and present real user pain points.
+- **Primary Interface Font:** `Geist` or `Geist Sans`, system fallback `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto`.
+- **Monospace Font:** `Geist Mono` or `JetBrains Mono` exclusively for financial amounts, PayPal transaction hashes, timestamps, and DOM selectors.
 - **Balanced Text Wrapping:** Headings use `text-wrap: balance`; paragraphs use `text-wrap: pretty`. Zero orphaned words.
+
+### 2.3 Strict Rectangular Button Geometry (0px Border Radius)
+- **Zero Border-Radius Mandate:** All buttons, inputs, tabs, and interactive triggers are STRICT RECTANGLES with `border-radius: 0px` (`rounded-none`). No capsules, no rounded squares, no pills.
+- **Primary Button (`.lime-button`):** `#DAF99C` (Acid Lime) background, `#0E1012` bold dark text, sharp 90° corners, hover brightness `#CCF580`, scale on press `active:scale-[0.98]`.
+- **Secondary Button (`.rect-button-secondary`):** `#1C1D20` charcoal background, 1px solid `rgba(255, 255, 255, 0.2)` border, sharp 90° corners, `#F8F9FA` text.
+- **Perforated Ticket Cards (`.ticket-stamp`):** `#1E2024` surface, 1.5px dashed border `rgba(255, 255, 255, 0.22)`, sharp 90° rectangular geometry, tilted angles.
 
 | Style Token | Scale Step | Size / Line-Height | Weight | Tracking | Usage |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -108,14 +114,12 @@ Spacing strictly adheres to 8-point and 4-point design tokens:
 
 ---
 
-### 2.4 Corner Radius & The Nested Geometry Formula
-Every child element nested inside a padded container must obey the nested radius formula:
-$$\text{inner radius} = \text{outer radius} - \text{internal padding}$$
-*(Applies when result $> 2px$)*
-
-- **Outer Bento Card:** `rounded-2xl` (16px) with `p-4` (16px padding) $\rightarrow$ Inner status pill: `rounded-lg` (8px).
-- **Navigation Dock:** `rounded-full` (9999px) $\rightarrow$ Inner navigation pill: `rounded-full`.
-- **Tranche Container:** `rounded-xl` (12px) with `p-2` (8px padding) $\rightarrow$ Inner button: `rounded-md` (6px).
+### 2.4 Corner Radius & Rectangular Button Geometry
+- **Buttons are strictly sharp rectangles:** Action buttons, CTAs, and filter triggers use `rounded-none` or `rounded-[2px]`. Pill and capsule buttons are strictly prohibited.
+- **Card Containers:** Use `rounded-2xl` (16px) or `rounded-xl` (12px).
+- **Nested Geometry Rule:** When a shape sits inside another shape and the gap between them is less than 32px:
+  $$\text{inner radius} = \text{outer radius} - \text{internal padding}$$
+  *(Applies when result $> 2px$)*
 
 ---
 

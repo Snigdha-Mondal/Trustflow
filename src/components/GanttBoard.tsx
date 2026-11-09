@@ -147,11 +147,11 @@ export default function GanttBoard({
           <button
             type="button"
             onClick={() => setIsPlaying(!isPlaying)}
-            className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#25272B] hover:bg-[#2E3036] px-3.5 py-1.5 text-xs text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-sm"
+            className="inline-flex items-center gap-1.5 rounded-none border border-white/10 bg-[#25272B] hover:bg-[#2E3036] px-3.5 py-1.5 text-xs text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-sm"
           >
             {isPlaying ? (
               <>
-                <span className="h-2 w-2 rounded-sm bg-[#DAF99C] animate-pulse" />
+                <span className="h-2 w-2 rounded-none bg-[#DAF99C] animate-pulse" />
                 <span className="font-mono text-[#DAF99C] font-semibold">Pause Simulation</span>
               </>
             ) : (
@@ -167,7 +167,7 @@ export default function GanttBoard({
             <button
               type="button"
               onClick={() => setShowRescheduleModal(true)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#DAF99C]/30 bg-[#DAF99C]/10 hover:bg-[#DAF99C]/20 px-3.5 py-1.5 text-xs text-[#DAF99C] font-medium transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
+              className="inline-flex items-center gap-1.5 rounded-none border border-[#DAF99C]/30 bg-[#DAF99C]/10 hover:bg-[#DAF99C]/20 px-3.5 py-1.5 text-xs text-[#DAF99C] font-medium transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
               title="Bryntum Agent-Driven Rescheduler (Shifts downstream deadlines upon revision)"
             >
               <RefreshCw className="h-3.5 w-3.5 text-[#DAF99C]" />
@@ -497,7 +497,7 @@ export default function GanttBoard({
                   type="text"
                   value={rescheduleReason}
                   onChange={(e) => setRescheduleReason(e.target.value)}
-                  className="w-full rounded-lg border border-white/10 bg-black/60 p-2 text-xs text-white focus:border-[#DAF99C] focus:outline-none"
+                  className="w-full rounded-none border border-white/10 bg-black/60 p-2 text-xs text-white focus:border-[#DAF99C] focus:outline-none"
                 />
               </div>
             </div>
@@ -506,7 +506,7 @@ export default function GanttBoard({
               <button
                 type="button"
                 onClick={() => setShowRescheduleModal(false)}
-                className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:text-white"
+                className="rounded-none px-3 py-1.5 text-xs text-zinc-400 hover:text-white"
               >
                 Cancel
               </button>
@@ -514,7 +514,7 @@ export default function GanttBoard({
                 type="button"
                 disabled={isRescheduling}
                 onClick={handleTriggerReschedule}
-                className="lime-button inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] disabled:opacity-50"
+                className="lime-button inline-flex items-center gap-1.5 rounded-none px-4 py-2 text-xs font-semibold transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] disabled:opacity-50"
               >
                 <RefreshCw className={`h-3.5 w-3.5 ${isRescheduling ? "animate-spin" : ""}`} />
                 {isRescheduling ? "Recalculating..." : "Apply Reschedule"}

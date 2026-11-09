@@ -154,32 +154,32 @@ export default function LandingPage() {
       {/* Top Ambient Luster */}
       <div className="ambient-glow-top" />
 
-      {/* Floating Capsule Dock Navigation */}
-      <header className="fixed top-5 inset-x-0 z-50 max-w-4xl mx-auto px-4">
-        <nav className="flex items-center justify-between rounded-full border border-white/10 bg-[#1C1D20]/90 backdrop-blur-2xl px-5 py-2.5 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.85)]">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#DAF99C] text-[#0E1012] font-bold text-sm shadow-md shadow-[#DAF99C]/20 group-hover:scale-105 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+      {/* Top Architectural Navigation Bar (Full Width, Razorpay Inspo Style) */}
+      <header className="fixed top-0 inset-x-0 z-50 border-b border-white/10 bg-[#141517]/95 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 group">
+            <span className="flex h-7 w-7 items-center justify-center bg-[#DAF99C] text-[#0E1012] font-black text-sm tracking-tighter">
               T
             </span>
-            <div className="flex items-center gap-1.5">
-              <span className="font-semibold text-base tracking-tight text-white">Trustflow</span>
-              <span className="text-[10px] font-mono uppercase bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 px-2 py-0.5 rounded-full font-semibold">
-                Escrow
-              </span>
-            </div>
+            <span className="font-extrabold text-lg tracking-tight text-white uppercase">
+              Trustflow
+            </span>
+            <span className="hidden sm:inline-block text-[10px] font-mono uppercase bg-[#25272B] text-zinc-300 border border-white/10 px-2 py-0.5 font-semibold">
+              ESCROW
+            </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 text-xs font-medium text-zinc-300">
+          <nav className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-zinc-300">
             <a href="#how-it-works" className="hover:text-[#DAF99C] transition-colors">How It Works</a>
             <a href="#inspection" className="hover:text-[#DAF99C] transition-colors">Inspection</a>
             <a href="#timeline" className="hover:text-[#DAF99C] transition-colors">Gantt Board</a>
             <a href="#faq" className="hover:text-[#DAF99C] transition-colors">FAQ</a>
-          </div>
+          </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <Link
               href="/demo"
-              className="hidden sm:inline-flex items-center gap-1 text-xs text-zinc-300 hover:text-white px-2.5 py-1.5 transition-colors"
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-300 hover:text-white transition-colors"
             >
               <span>Live Demo</span>
               <ExternalLink className="h-3 w-3 text-[#DAF99C]" />
@@ -187,71 +187,118 @@ export default function LandingPage() {
 
             <Link
               href="/wizard"
-              className="lime-button rounded-full px-4 py-2 text-xs font-semibold active:scale-[0.98]"
+              className="lime-button px-4 py-2 text-xs font-bold uppercase tracking-wider active:scale-[0.98]"
             >
               Create Contract
             </Link>
           </div>
-        </nav>
+        </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative z-10 pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center space-y-8">
-        {/* Floating Pill Badge */}
-        <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-[#1C1D20]/80 backdrop-blur-md px-4 py-1.5 text-xs text-zinc-300 shadow-inner">
-          <span className="flex h-2 w-2 rounded-full bg-[#DAF99C] animate-pulse" />
-          <span className="font-medium text-zinc-200">Autonomous Freelance Escrow</span>
-          <span className="text-zinc-600">&bull;</span>
-          <span className="text-[#DAF99C] font-mono font-semibold">PayPal Orders &amp; Payouts</span>
+      {/* Hero Section (Razorpay "Fix My Itch" Inspired Poster Layout) */}
+      <section className="relative z-10 pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+        {/* Scattered Background Problem & Guarantee Ticket Stamps (Razorpay Inspo Vibe) */}
+        <div className="pointer-events-none select-none absolute inset-0 z-0 overflow-hidden">
+          {/* Stamp 1: Top Left */}
+          <div className="ticket-stamp hidden md:block absolute top-12 left-2 rotate-[-5deg] p-3 max-w-[220px] text-zinc-300">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-[#DAF99C] font-bold">CLIENT GHOSTING?</div>
+            <div className="text-xs font-semibold mt-0.5 text-white">72-Hour "Silence Means Yes" auto-release.</div>
+          </div>
+
+          {/* Stamp 2: Top Right */}
+          <div className="ticket-stamp hidden md:block absolute top-10 right-4 rotate-[4deg] p-3 max-w-[230px] text-zinc-300">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-[#DAF99C] font-bold">20% TAKE RATE?</div>
+            <div className="text-xs font-semibold mt-0.5 text-white">Zero platform cut. Keep 100% of your earnings.</div>
+          </div>
+
+          {/* Stamp 3: Middle Left */}
+          <div className="ticket-stamp hidden lg:block absolute top-48 -left-4 rotate-[6deg] p-3.5 max-w-[240px] text-zinc-300">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-white font-bold flex items-center gap-1.5">
+              <CreditCard className="h-3 w-3 text-[#DAF99C]" />
+              PAYPAL UPFRONT ESCROW
+            </div>
+            <div className="text-xs font-mono font-bold text-[#DAF99C] mt-1">$900.00 LOCKED IN CUSTODY</div>
+          </div>
+
+          {/* Stamp 4: Middle Right */}
+          <div className="ticket-stamp hidden lg:block absolute top-44 -right-4 rotate-[-6deg] p-3.5 max-w-[240px] text-zinc-300">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-white font-bold flex items-center gap-1.5">
+              <Bot className="h-3 w-3 text-[#DAF99C]" />
+              AGENT 2 INSPECTION
+            </div>
+            <div className="text-xs font-semibold text-zinc-200 mt-1">HTTP 200 &amp; DOM verified before payouts trigger.</div>
+          </div>
+
+          {/* Stamp 5: Bottom Center-Right */}
+          <div className="ticket-stamp hidden xl:block absolute bottom-10 right-16 rotate-[3deg] p-3 max-w-[240px] text-zinc-300">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-[#DAF99C] font-bold">BRYNTUM TIMELINE</div>
+            <div className="text-xs font-semibold text-white">Automatic rescheduling prevents penalty delays.</div>
+          </div>
         </div>
 
-        {/* Hero Headline (Capped at 680px with Meaningful Line Breaks) */}
-        <h1 className="heading-1 hero-gradient-text max-w-[680px] mx-auto">
-          Freelance milestone escrow without payment anxiety or ghosting
-        </h1>
+        {/* Hero Content Container (Expansive Poster Layout across Screen) */}
+        <div className="relative z-10 space-y-6 pt-4 max-w-6xl mx-auto">
+          {/* Kicker / Subtitle Above Title */}
+          <div className="flex items-center justify-center gap-2 text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-[#DAF99C] font-bold">
+            <span>Autonomous Freelance Escrow Protocol</span>
+          </div>
 
-        {/* Subheadline */}
-        <p className="body-1 text-zinc-300 max-w-[640px] mx-auto">
-          Lock client budget into PayPal escrow upfront. Decompose the brief into objective tranches with AI. When deliverables pass automated inspection, get paid instantly.
-        </p>
+          {/* Massive Display Title: TRUSTFLOW (Full Screen Impact like "FIX MY ITCH") */}
+          <div className="w-full text-center">
+            <h1 className="hero-display-title">
+              TRUSTFLOW
+            </h1>
+            {/* "by PayPal & Gemini AI" lockup aligned to right (mirroring "by Razorpay") */}
+            <div className="flex justify-end pr-2 sm:pr-8 md:pr-12 -mt-1 sm:-mt-2 md:-mt-4">
+              <span className="text-xs sm:text-sm md:text-base font-mono text-zinc-400 tracking-normal">
+                by <span className="font-extrabold text-white">PayPal</span> &amp; <span className="text-[#DAF99C] font-extrabold">Gemini AI</span>
+              </span>
+            </div>
+          </div>
 
-        {/* Dual CTA Cluster */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-          <Link
-            href="/wizard"
-            className="lime-button w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-base font-semibold shadow-xl shadow-[#DAF99C]/20 active:scale-[0.98]"
-          >
-            Create Escrow Contract
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          {/* Subheadline */}
+          <p className="body-1 text-zinc-300 max-w-2xl mx-auto text-center pt-2 leading-relaxed">
+            Lock client budget into PayPal escrow upfront. Decompose the brief into objective tranches with AI. When deliverables pass automated inspection, get paid instantly.
+          </p>
 
-          <Link
-            href="/demo"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-[#1C1D20]/80 hover:bg-[#25272B] backdrop-blur-md px-7 py-3.5 text-base font-medium text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
-          >
-            <span>Explore Live Demo Cockpit</span>
-            <ExternalLink className="h-4 w-4 text-[#DAF99C]" />
-          </Link>
+          {/* Action Button Pair (Strictly Rectangular, Razorpay Style) */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <Link
+              href="/wizard"
+              className="lime-button w-full sm:w-auto px-8 py-4 text-sm sm:text-base font-bold uppercase tracking-wider inline-flex items-center justify-center gap-2 active:scale-[0.98] rounded-none"
+            >
+              <span>Create Escrow Contract</span>
+              <ArrowRight className="h-4 w-4 text-[#0E1012]" />
+            </Link>
+
+            <Link
+              href="/demo"
+              className="rect-button-secondary w-full sm:w-auto px-8 py-4 text-sm sm:text-base font-bold uppercase tracking-wider inline-flex items-center justify-center gap-2 active:scale-[0.98] rounded-none"
+            >
+              <span>Explore Live Demo Cockpit</span>
+              <ExternalLink className="h-4 w-4 text-[#DAF99C]" />
+            </Link>
+          </div>
+
+          {/* Three Feature Signals Bar */}
+          <div className="pt-8 border-t border-white/10 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-mono text-zinc-400 uppercase tracking-wider">
+            <span className="flex items-center gap-2 text-zinc-300">
+              <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
+              100% Upfront PayPal Escrow
+            </span>
+            <span className="flex items-center gap-2 text-zinc-300">
+              <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
+              72-Hour "Silence Means Yes"
+            </span>
+            <span className="flex items-center gap-2 text-zinc-300">
+              <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
+              Bryntum Gantt Dependencies
+            </span>
+          </div>
         </div>
 
-        {/* Social Proof & Security Strip */}
-        <div className="pt-6 border-t border-white/5 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-mono text-zinc-400 uppercase tracking-wider">
-          <span className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
-            100% Upfront PayPal Escrow
-          </span>
-          <span className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
-            72-Hour "Silence Means Yes"
-          </span>
-          <span className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
-            Bryntum Gantt Dependencies
-          </span>
-        </div>
-
-        {/* Cinematic Live Escrow Simulation Terminal */}
-        <div className="pt-6 max-w-4xl mx-auto">
+        {/* Live Escrow Simulation Terminal Preview */}
+        <div className="relative z-10 pt-12 max-w-4xl mx-auto">
           <div className="luxury-card p-6 md:p-8 text-left space-y-6">
             {/* Top Bar with Contract ID and Step Switcher */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 gap-3">
@@ -264,14 +311,14 @@ export default function LandingPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <div className="inline-flex items-center gap-1.5 rounded-lg border border-[#DAF99C]/30 bg-[#DAF99C]/10 px-3 py-1.5 text-xs font-mono text-[#DAF99C] font-semibold shadow-sm">
+                <div className="inline-flex items-center gap-1.5 rounded-none border border-[#DAF99C]/30 bg-[#DAF99C]/10 px-3 py-1.5 text-xs font-mono text-[#DAF99C] font-semibold">
                   <CreditCard className="h-3.5 w-3.5" />
                   <span>$900.00 USD Locked in PayPal</span>
                 </div>
               </div>
             </div>
 
-            {/* Interactive Step Switcher (Demonstrating the 4 Engines) */}
+            {/* Interactive Step Switcher */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs text-zinc-400">
                 <span className="font-semibold text-zinc-300">Click a phase to test Trustflow autonomous logic:</span>
@@ -281,7 +328,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setSimStep(1)}
-                  className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
+                  className={`p-2.5 rounded-none border text-left transition-all duration-200 active:scale-[0.98] ${
                     simStep === 1
                       ? "border-[#DAF99C] bg-[#DAF99C]/10 text-white shadow-md shadow-[#DAF99C]/10"
                       : "border-white/5 bg-[#25272B]/60 text-zinc-400 hover:border-white/10"
@@ -295,7 +342,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setSimStep(2)}
-                  className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
+                  className={`p-2.5 rounded-none border text-left transition-all duration-200 active:scale-[0.98] ${
                     simStep === 2
                       ? "border-[#DAF99C] bg-[#DAF99C]/10 text-white shadow-md shadow-[#DAF99C]/10"
                       : "border-white/5 bg-[#25272B]/60 text-zinc-400 hover:border-white/10"
@@ -309,7 +356,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setSimStep(3)}
-                  className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
+                  className={`p-2.5 rounded-none border text-left transition-all duration-200 active:scale-[0.98] ${
                     simStep === 3
                       ? "border-[#FBBF24] bg-[#FBBF24]/10 text-white shadow-md shadow-[#FBBF24]/10"
                       : "border-white/5 bg-[#25272B]/60 text-zinc-400 hover:border-white/10"
@@ -323,7 +370,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setSimStep(4)}
-                  className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
+                  className={`p-2.5 rounded-none border text-left transition-all duration-200 active:scale-[0.98] ${
                     simStep === 4
                       ? "border-[#DAF99C] bg-[#DAF99C]/10 text-white shadow-md shadow-[#DAF99C]/10"
                       : "border-white/5 bg-[#25272B]/60 text-zinc-400 hover:border-white/10"
@@ -339,10 +386,10 @@ export default function LandingPage() {
             {/* Tranche Preview Blocks */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {/* Tranche 1 */}
-              <div className="rounded-xl border border-[#DAF99C]/30 bg-[#DAF99C]/[0.08] p-3.5 space-y-1.5">
+              <div className="rounded-none border border-[#DAF99C]/30 bg-[#DAF99C]/[0.08] p-3.5 space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-white">M1: Wireframes &amp; Scaffold</span>
-                  <span className="text-[10px] font-mono uppercase bg-[#DAF99C] text-[#0E1012] px-2 py-0.5 rounded-md font-bold">
+                  <span className="text-[10px] font-mono uppercase bg-[#DAF99C] text-[#0E1012] px-2 py-0.5 font-bold">
                     PAID
                   </span>
                 </div>
@@ -351,7 +398,7 @@ export default function LandingPage() {
               </div>
 
               {/* Tranche 2 */}
-              <div className={`rounded-xl border p-3.5 space-y-1.5 transition-all duration-300 ${
+              <div className={`rounded-none border p-3.5 space-y-1.5 transition-all duration-300 ${
                 simStep === 2
                   ? "border-[#DAF99C]/70 bg-[#25272B] shadow-lg shadow-[#DAF99C]/10"
                   : simStep === 3
@@ -362,7 +409,7 @@ export default function LandingPage() {
               }`}>
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-white">M2: Frontend Implementation</span>
-                  <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-md font-bold ${
+                  <span className={`text-[10px] font-mono uppercase px-2 py-0.5 font-bold ${
                     simStep === 4
                       ? "bg-[#DAF99C] text-[#0E1012]"
                       : simStep === 3
@@ -383,14 +430,14 @@ export default function LandingPage() {
               </div>
 
               {/* Tranche 3 */}
-              <div className={`rounded-xl border p-3.5 space-y-1.5 ${
+              <div className={`rounded-none border p-3.5 space-y-1.5 ${
                 simStep === 4
                   ? "border-white/20 bg-white/[0.04]"
                   : "border-white/5 bg-[#25272B]/40 opacity-65"
               }`}>
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-zinc-400">M3: Production Handover</span>
-                  <span className="text-[10px] font-mono uppercase bg-[#141517] text-zinc-400 px-2 py-0.5 rounded-md flex items-center gap-1 border border-white/5">
+                  <span className="text-[10px] font-mono uppercase bg-[#141517] text-zinc-400 px-2 py-0.5 flex items-center gap-1 border border-white/5">
                     {simStep === 4 ? "UNLOCKED ⚡" : <><Lock className="h-2.5 w-2.5" /> LOCKED</>}
                   </span>
                 </div>
@@ -402,7 +449,7 @@ export default function LandingPage() {
             </div>
 
             {/* Live Terminal Tracer Snippet */}
-            <div className="rounded-xl border border-white/10 bg-[#121315] p-4 font-mono text-xs space-y-1.5 text-zinc-300">
+            <div className="rounded-none border border-white/10 bg-[#121315] p-4 font-mono text-xs space-y-1.5 text-zinc-300">
               <div className="flex items-center justify-between text-zinc-400 text-[11px] pb-1.5 border-b border-white/5">
                 <div className="flex items-center gap-2">
                   <Terminal className="h-3.5 w-3.5 text-[#DAF99C]" />
@@ -495,7 +542,7 @@ export default function LandingPage() {
           {/* Engine 1: Upfront Escrow */}
           <div className="luxury-card p-7 space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 font-mono font-bold text-base">
+              <div className="flex h-12 w-12 items-center justify-center bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 font-mono font-bold text-base">
                 01
               </div>
               <h3 className="title-1 text-white">PayPal Upfront Custody</h3>
@@ -512,7 +559,7 @@ export default function LandingPage() {
           {/* Engine 2: AI Deliverable Inspector */}
           <div className="luxury-card p-7 space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 font-mono font-bold text-base">
+              <div className="flex h-12 w-12 items-center justify-center bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 font-mono font-bold text-base">
                 02
               </div>
               <h3 className="title-1 text-white">Autonomous Inspection</h3>
@@ -529,7 +576,7 @@ export default function LandingPage() {
           {/* Engine 3: 72-Hour Auto-Release */}
           <div className="luxury-card p-7 space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FBBF24]/10 text-[#FBBF24] border border-[#FBBF24]/20 font-mono font-bold text-base">
+              <div className="flex h-12 w-12 items-center justify-center bg-[#FBBF24]/10 text-[#FBBF24] border border-[#FBBF24]/20 font-mono font-bold text-base">
                 03
               </div>
               <h3 className="title-1 text-white">Silence Means Yes</h3>
@@ -548,7 +595,7 @@ export default function LandingPage() {
       {/* Section: Inspection Deep Dive (Anchor #inspection) */}
       <section id="inspection" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5 max-w-5xl mx-auto space-y-12">
         <div className="text-center space-y-3 max-w-[680px] mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#DAF99C]/20 bg-[#DAF99C]/10 px-3.5 py-1 text-xs font-mono text-[#DAF99C] font-semibold">
+          <div className="inline-flex items-center gap-2 rounded-none border border-[#DAF99C]/20 bg-[#DAF99C]/10 px-3.5 py-1 text-xs font-mono text-[#DAF99C] font-semibold">
             <Bot className="h-3.5 w-3.5" />
             Agent 2 &bull; Multimodal Deliverable Inspector
           </div>
@@ -563,7 +610,7 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="luxury-card p-7 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20">
+              <div className="flex h-10 w-10 items-center justify-center bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20">
                 <Globe className="h-5 w-5" />
               </div>
               <div>
@@ -574,7 +621,7 @@ export default function LandingPage() {
             <p className="body-2 text-zinc-300">
               When a deliverable URL is submitted, the crawler inspects HTTP response status (200 OK), checks the responsive viewport meta tag, verifies form inputs, and inspects routes before invoking the AI.
             </p>
-            <div className="rounded-xl border border-white/10 bg-[#121315] p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
+            <div className="rounded-none border border-white/10 bg-[#121315] p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
               <div className="text-[#DAF99C]">&#10003; GET https://staging.preview.app &rarr; 200 OK (142ms)</div>
               <div className="text-[#DAF99C]">&#10003; meta[name=&quot;viewport&quot;] responsive scale verified</div>
               <div className="text-[#DAF99C]">&#10003; form input[type=&quot;email&quot;] lead capture present</div>
@@ -583,7 +630,7 @@ export default function LandingPage() {
 
           <div className="luxury-card p-7 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white border border-white/20">
+              <div className="flex h-10 w-10 items-center justify-center bg-white/10 text-white border border-white/20">
                 <ShieldCheck className="h-5 w-5 text-[#DAF99C]" />
               </div>
               <div>
@@ -594,7 +641,7 @@ export default function LandingPage() {
             <p className="body-2 text-zinc-300">
               AI can <strong>never</strong> unilaterally reject work. If criteria contain subjective aesthetics, the deliverable routes to client review with a 72-hour countdown timer. If the client is silent, funds auto-release.
             </p>
-            <div className="rounded-xl border border-white/10 bg-[#121315] p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
+            <div className="rounded-none border border-white/10 bg-[#121315] p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
               <div className="text-[#FBBF24]">&#9203; In-Review: 72h countdown started for M2</div>
               <div className="text-zinc-300">&bull; Client approves &rarr; Instant PayPal Payout</div>
               <div className="text-zinc-300">&bull; Client silent &rarr; Auto-releases on timeout</div>
@@ -606,7 +653,7 @@ export default function LandingPage() {
       {/* Section: Bryntum Gantt Timeline Board Showcase (Anchor #timeline) */}
       <section id="timeline" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5 max-w-5xl mx-auto space-y-8">
         <div className="text-center space-y-3 max-w-[680px] mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#DAF99C]/20 bg-[#DAF99C]/10 px-3.5 py-1 text-xs font-mono text-[#DAF99C] font-semibold">
+          <div className="inline-flex items-center gap-2 rounded-none border border-[#DAF99C]/20 bg-[#DAF99C]/10 px-3.5 py-1 text-xs font-mono text-[#DAF99C] font-semibold">
             <Layers className="h-3.5 w-3.5" />
             Bryntum Sponsor Track &bull; Challenge Prompts #1 &amp; #6
           </div>
@@ -626,10 +673,10 @@ export default function LandingPage() {
           onReschedule={handleLandingReschedule}
         />
 
-        <div className="text-center pt-2">
+        <div className="text-center pt-4">
           <Link
             href="/demo"
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#1C1D20]/80 hover:bg-[#25272B] px-6 py-3 text-xs font-semibold text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-md"
+            className="rect-button-secondary inline-flex items-center gap-2 px-6 py-3.5 text-xs font-bold uppercase tracking-wider active:scale-[0.98]"
           >
             <span>Open Full Interactive Cockpit Demo</span>
             <ExternalLink className="h-3.5 w-3.5 text-[#DAF99C]" />
@@ -690,25 +737,25 @@ export default function LandingPage() {
           <p className="body-1 text-zinc-300">
             Protect your time with locked upfront escrow, automated AI verification, and guaranteed PayPal payouts.
           </p>
-          <div className="pt-2">
+          <div className="pt-4">
             <Link
               href="/wizard"
-              className="lime-button inline-flex items-center gap-2 rounded-full px-8 py-4 text-base font-semibold shadow-xl shadow-[#DAF99C]/25 active:scale-[0.98]"
+              className="lime-button inline-flex items-center gap-2 px-8 py-4 text-base font-bold uppercase tracking-wider active:scale-[0.98]"
             >
-              Create Escrow Contract
-              <ArrowRight className="h-4 w-4" />
+              <span>Create Escrow Contract</span>
+              <ArrowRight className="h-4 w-4 text-[#0E1012]" />
             </Link>
           </div>
         </div>
       </section>
 
       {/* High-Class Footer */}
-      <footer className="border-t border-white/5 py-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-400 gap-4">
+      <footer className="border-t border-white/10 py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-400 gap-4">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-white">Trustflow</span>
+          <span className="font-extrabold text-white uppercase">Trustflow</span>
           <span>&copy; 2026. Built for PayPal AI Hackathon &amp; Bryntum Sponsor Track.</span>
         </div>
-        <div className="flex items-center gap-5 text-zinc-400">
+        <div className="flex items-center gap-6 text-zinc-400 font-medium">
           <Link href="/wizard" className="hover:text-white transition-colors">Scope Wizard</Link>
           <a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a>
           <a href="#inspection" className="hover:text-white transition-colors">Inspection</a>
