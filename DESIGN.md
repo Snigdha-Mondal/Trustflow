@@ -1,7 +1,7 @@
-# DESIGN.md — Trustflow High-Class Design System & Kinetic Architecture
-*(Integrated with `elayadesign/ai-design-skills`, `landing-page-design`, and `design-taste-frontend`)*
+# DESIGN.md — Trustflow Architectural Charcoal & Acid Lime Design System
+*(Adapted from `elayadesign/ai-design-skills`, `landing-page-design`, and `design-taste-frontend` with the Bohne & Söhne Charcoal & Lime Aesthetic)*
 
-This document governs all visual styling, typography, component hierarchies, layout structures, kinetic motion physics, and conversion copywriting for Trustflow. It defines the high-class, luxury FinTech aesthetic that eliminates generic AI template tropes through layered obsidian surfaces, tactile micro-interactions, weighted spring physics, and rigorous typography.
+This document governs all visual styling, typography, component hierarchies, layout structures, kinetic motion physics, and conversion copywriting for Trustflow. It defines the high-end architectural editorial aesthetic that discards generic AI black-and-blue clichés in favor of **deep matte charcoal**, **vibrant acid lime / pistachio chartreuse**, **crisp architectural white**, and **warm stone gray**.
 
 ---
 
@@ -31,46 +31,44 @@ This document governs all visual styling, typography, component hierarchies, lay
 
 ---
 
-## 2. Visual System & Design Tokens (Part B)
+## 2. Visual System & Color Architecture (Part B)
 
-### 2.1 The Obsidian Luxury Canvas & Color Tokens
-To avoid flat, lifeless generic black palettes, Trustflow employs a multi-layered obsidian and slate depth hierarchy with luminous micro-accents:
+### 2.1 The Architectural Charcoal & Acid Lime Palette
+The palette draws direct inspiration from high-end architectural editorial spaces (charcoal masonry, warm stone, and electrifying acid lime accents):
 
 ```
-[ Canvas Layer 0: Deep Obsidian #030712 ]
+[ Canvas Layer 0: Deep Matte Charcoal #141517 ]
        │
-       ├── [ Ambient Radial Glow: rgba(0, 112, 186, 0.08) / rgba(56, 189, 248, 0.05) ]
+       ├── [ Subtle Ambient Luster: rgba(218, 249, 156, 0.05) / rgba(255, 255, 255, 0.02) ]
        │
-       ├── [ Surface Layer 1 (Cards & Bento Grid): #0B0F19 / rgba(15, 23, 42, 0.65) + backdrop-blur-xl ]
-       │       └── Border: rgba(255, 255, 255, 0.08) (Hover: rgba(56, 189, 248, 0.25))
+       ├── [ Surface Layer 1 (Cards & Bento Grid): #1C1D20 / rgba(28, 29, 32, 0.85) + backdrop-blur-xl ]
+       │       └── Border: rgba(255, 255, 255, 0.08) (Hover: rgba(218, 249, 156, 0.35))
        │
-       ├── [ Surface Layer 2 (Inner Modals & Tranche Rows): #111827 / rgba(17, 24, 39, 0.8) ]
+       ├── [ Surface Layer 2 (Elevated Wells & Tranche Rows): #25272B ]
        │       └── Border: rgba(255, 255, 255, 0.06)
        │
-       └── [ Surface Layer 3 (Badges & Code Wells): #050811 with Geist Mono ]
+       └── [ Signature Accent: Acid Lime #DAF99C / #D2F86E ]
+               └── High-contrast dark text #0E1012 on lime buttons & active status pills
 ```
 
-#### Approved Palette Hex Values:
-- **Base Canvas:** `#030712` (Rich Obsidian Slate)
-- **Surface 1 (Card background):** `#0B0F19` with `backdrop-blur-xl`
-- **Surface 2 (Elevated wells & inputs):** `#111827`
-- **Surface 3 (Hover & active highlights):** `#1E293B`
-- **Primary Brand (PayPal Electric Blue):** `#0070BA` (Hover: `#005EA6`, Active: `#004C87`)
-- **Accent Light (Cyan Luster):** `#38BDF8` (Used for highlights, focus rings, and milestone progress)
-- **Verification Emerald (Pass / Funded):** `#10B981` (Surface: `#064E3B`/30, Text: `#34D399`)
-- **Inspection Amber (Review / 72h Timer):** `#F59E0B` (Surface: `#78350F`/30, Text: `#FBBF24`)
-- **Neutral Text Primary:** `#F8FAFC` (Pure High-Contrast White)
-- **Neutral Text Secondary:** `#94A3B8` (Refined Slate Muted)
-- **Neutral Text Tertiary:** `#64748B` (Subtle Captions & Metadata)
-- **Border Default:** `rgba(255, 255, 255, 0.08)` (1px solid border around all 4 sides)
-- **Border Active/Hover:** `rgba(56, 189, 248, 0.3)`
+#### Approved Hex Token Values:
+- **Base Canvas:** `#141517` (Deep Architectural Matte Charcoal)
+- **Surface 1 (Card containers):** `#1C1D20` with `backdrop-blur-xl`
+- **Surface 2 (Elevated wells, inputs & active rows):** `#25272B`
+- **Surface 3 (Hover states & dark pills):** `#2E3036`
+- **Primary Accent (Acid Lime / Chartreuse):** `#DAF99C` (Hover: `#CCF580`, Pressed: `#BFE86A`)
+- **Accent Dark (Text on Acid Lime):** `#0E1012` (Ultra-high contrast dark graphite)
+- **Secondary Accent (Architectural Off-White):** `#FFFFFF` / `#F8F9FA`
+- **Secondary Neutral (Warm Stone Gray):** `#D6D7D8` (Used for metadata, section subheads, and secondary panels)
+- **Muted Slate:** `#8A8E94` (Tertiary labels, timestamps, border dividers)
+- **Inspection Amber (72h Timer / In Review):** `#FBBF24` (Surface: `rgba(251, 191, 36, 0.12)`)
+- **Border Subtle:** `rgba(255, 255, 255, 0.08)` (1px solid border around all 4 sides)
+- **Border Active/Hover:** `rgba(218, 249, 156, 0.4)`
 
-#### Background Rules:
-- **No Heavy Background Gradients:** All structural card surfaces are flat obsidian tones.
-- **Allowed Gradients:**
-  1. Hero headline text: `bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent`.
-  2. Ambient spotlight glows: CSS `radial-gradient(ellipse at 50% 0%, rgba(0, 112, 186, 0.15), transparent 70%)` behind the hero and timeline sections.
-  3. Specular button highlight: 1px top highlight `shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]`.
+#### Background & Contrast Rules:
+1. **No Cold Neon Blue:** Blue has been eliminated in favor of Acid Lime (`#DAF99C`) and Architectural White.
+2. **Flat Solid Surfaces:** Card and page surfaces are matte solid charcoal tones.
+3. **Contrast Requirement:** Acid lime buttons use dark charcoal text (`text-[#0E1012]`) delivering a massive 12.8:1 contrast ratio that exceeds AAA accessibility requirements.
 
 ---
 
@@ -83,13 +81,13 @@ All typography strictly enforces the Geist family with semantic scale steps:
 
 | Style Token | Scale Step | Size / Line-Height | Weight | Tracking | Usage |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Heading 1** | `text-5xl md:text-6xl` | 48px/60px (1.1) | Semibold | `-0.03em` | Hero main proposition |
-| **Heading 2** | `text-3xl md:text-4xl` | 36px/40px (1.1) | Semibold | `-0.025em`| Major section headings |
-| **Heading 3** | `text-2xl md:text-3xl` | 24px/32px (1.2) | Semibold | `-0.02em` | B11 Tagline & Feature titles |
-| **Title 1** | `text-xl` | 20px / 28px | Medium | `-0.01em` | Card headers, milestone titles |
+| **Heading 1** | `text-5xl md:text-6xl` | 48px/60px (1.1) | Semibold | `-0.035em` | Hero main proposition |
+| **Heading 2** | `text-3xl md:text-4xl` | 36px/40px (1.15) | Semibold | `-0.03em`| Major section headings |
+| **Heading 3** | `text-2xl md:text-3xl` | 24px/32px (1.25) | Semibold | `-0.02em` | B11 Tagline & Feature titles |
+| **Title 1** | `text-xl` | 20px / 28px | Medium | `-0.015em` | Card headers, milestone titles |
 | **Title 2** | `text-lg` | 18px / 28px | Medium | `-0.01em` | Modal titles, sub-card headers |
-| **Body 1** | `text-base` | 16px / 24px | Regular | `normal` | Primary explanatory body copy |
-| **Body 2** | `text-sm` | 14px / 20px | Regular | `normal` | Secondary descriptions & table rows |
+| **Body 1** | `text-base` | 16px / 26px | Regular | `normal` | Primary explanatory body copy |
+| **Body 2** | `text-sm` | 14px / 22px | Regular | `normal` | Secondary descriptions & table rows |
 | **Button-md** | `text-base` | 16px / 24px | Semibold | `-0.01em` | Primary & secondary buttons |
 | **Button-sm** | `text-sm` | 14px / 20px | Medium | `normal` | Dock action buttons & filters |
 | **Caption 1** | `text-xs` | 12px / 16px | Medium | `0.05em` | Uppercase category pills & status |
@@ -124,7 +122,7 @@ $$\text{inner radius} = \text{outer radius} - \text{internal padding}$$
 ### 2.5 Borders & Surface Rules
 1. **Four-Sided Borders Only:** Never apply a single-sided border (`border-b`, `border-l`) to a card container. Borders must encircle all four sides (`border border-white/10`).
 2. **Dividers:** Internal dividers use full-width horizontal rules (`h-[1px] bg-white/[0.08]`).
-3. **No Drop Shadows on Pitch Black:** Standard black shadows are invisible on dark themes. Instead, use ambient glow borders (`ring-1 ring-sky-500/20`) and luminous surface highlights.
+3. **No Heavy Shadows on Dark:** Standard drop shadows are invisible on matte charcoal. Instead, use micro-shimmer borders (`ring-1 ring-[#DAF99C]/25`) and tactile surface highlights.
 
 ---
 
@@ -142,23 +140,23 @@ Motion must feel weighted, premium, and physical. Generic browser defaults (`eas
 #### Signature Micro-Interactions:
 1. **Floating Capsule Dock Navigation:**
    - Floats 20px off top edge, centered.
-   - Frosted glass finish (`bg-[#030712]/75 backdrop-blur-xl border border-white/10 shadow-2xl`).
-   - Dynamic active pill indicator sliding smoothly beneath the active section.
+   - Architectural charcoal finish (`bg-[#1C1D20]/85 backdrop-blur-2xl border border-white/10`).
+   - Acid Lime brand monogram with subtle glow.
 2. **Hero Live Escrow Simulator:**
    - Interactive live preview demonstrating PayPal funds locking upfront, tranche breakdown, and instant disbursement.
-   - Pulsing beacon dot (`animate-pulse ring-4 ring-emerald-500/20`).
+   - Pulsing Acid Lime beacon dot (`animate-pulse ring-4 ring-[#DAF99C]/25 bg-[#DAF99C]`).
 3. **Bryntum Gantt Board with Kinetic Dependency Connectors:**
-   - SVG dependency curves that illuminate when hovering related milestones.
+   - SVG dependency curves that illuminate in Acid Lime when hovering related milestones.
    - Live interactive scrubber allowing the user to drag the timeline forward and watch milestone status update in real-time.
    - Integrated Bryntum AI Prompt Rescheduler modal with simulated automatic timeline adjustment.
 4. **B11 Mandatory Tagline Reveal Section:**
    - High-impact two-line statement:
      *"No ghosting. No scope creep. Just verified deliverables and automatic PayPal payouts."*
-   - Words transition sequentially from muted `opacity-30` to radiant `opacity-100 text-white` as the section scrolls into the viewport.
+   - Words transition sequentially from muted `opacity-25` to radiant `opacity-100 text-white` (with key guarantee words highlighted in `#DAF99C`) as the section scrolls into the viewport.
 5. **Interactive FAQ Accordion:**
    - Smooth expand/collapse using the base deceleration curve.
    - Micro-rotate 180° indicator on chevron.
-   - Subtle luminous border glow on active open question.
+   - Subtle Acid Lime border glow on active open question.
 
 ---
 
@@ -166,9 +164,9 @@ Motion must feel weighted, premium, and physical. Generic browser defaults (`eas
 Every interactive element must support the full 7-state lifecycle:
 
 1. **Default:** Crisp contrast ratio ($\ge 4.5:1$), legible typography, defined 4-sided border.
-2. **Hover:** Subtle upward translate (`-translate-y-0.5`), surface brightening (`bg-white/[0.05]`), and border glow (`border-sky-500/30`).
+2. **Hover:** Subtle upward translate (`-translate-y-0.5`), surface brightening (`bg-white/[0.04]`), and border glow (`border-[#DAF99C]/40`).
 3. **Active/Pressed:** Tactile mechanical depression (`active:scale-[0.98] active:translate-y-0`).
-4. **Focus-Visible:** Accessible high-contrast focus ring (`focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none`).
+4. **Focus-Visible:** Accessible high-contrast focus ring (`focus-visible:ring-2 focus-visible:ring-[#DAF99C] focus-visible:outline-none`).
 5. **Loading:** Shimmering skeleton placeholders mirroring actual layout geometry (never raw circular spinners).
 6. **Empty State:** Illustrated structured container with explicit onboarding action (never blank void).
 7. **Error State:** Specific inline error callouts with immediate remediation steps (never generic browser alerts).
@@ -179,12 +177,12 @@ Every interactive element must support the full 7-state lifecycle:
 
 The landing page and cockpit follow a strict narrative conversion sequence:
 
-1. **Floating Glass Dock Navigation:** Brand glyph, anchor links (How it Works, Inspection, Gantt Board, FAQ), Live Status Pill, Primary Action ("Create Contract").
+1. **Floating Glass Dock Navigation:** Brand glyph in Acid Lime, anchor links (How it Works, Inspection, Gantt Board, FAQ), Live Status Pill, Primary Action ("Create Contract" in Acid Lime).
 2. **Hero Section:**
    - Category Badge: "Autonomous Freelance Escrow — Powered by PayPal & Gemini AI"
-   - Headline: Max width 680px, gradient text, meaningful line breaks.
-   - Subheadline: Max width 680px, outcome-driven value proposition.
-   - Dual Action CTAs: Primary ("Create Escrow Contract") + Secondary ("Explore Live Demo").
+   - Headline: Max width 680px, architectural white with subtle metallic gradient, meaningful line breaks.
+   - Subheadline: Max width 640px, outcome-driven value proposition.
+   - Dual Action CTAs: Primary ("Create Escrow Contract" in Acid Lime `#DAF99C` with `#0E1012` text) + Secondary ("Explore Live Demo" in charcoal glass).
    - Live Interactive Escrow Simulation Terminal.
 3. **B11 Tagline Reveal Moment:** Word-by-word kinetic scroll reveal across two high-impact sentences.
 4. **Bento Grid Architecture (The Three Engines):**

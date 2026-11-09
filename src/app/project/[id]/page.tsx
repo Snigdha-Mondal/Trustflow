@@ -315,7 +315,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
     .reduce((sum, m) => sum + m.amount, 0);
 
   return (
-    <div className="min-h-screen bg-[#030712] text-zinc-100 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#141517] text-zinc-100 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Navigation & Status Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-4">
@@ -332,13 +332,13 @@ export default function ProjectCockpitPage({ params }: PageProps) {
           </div>
 
           {/* Role Simulation Switcher */}
-          <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#0B0F19] p-1 text-xs font-medium shadow-sm">
+          <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#1C1D20] p-1 text-xs font-medium shadow-sm">
             <button
               type="button"
               onClick={() => setActiveRole("ALL")}
               className={`rounded-full px-3.5 py-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                 activeRole === "ALL"
-                  ? "bg-blue-600 text-white font-semibold shadow-md shadow-blue-600/30"
+                  ? "bg-[#DAF99C] text-[#0E1012] font-semibold shadow-md shadow-[#DAF99C]/20"
                   : "text-zinc-400 hover:text-white"
               }`}
             >
@@ -349,7 +349,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
               onClick={() => setActiveRole("CLIENT")}
               className={`rounded-full px-3.5 py-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                 activeRole === "CLIENT"
-                  ? "bg-emerald-950/80 text-emerald-300 font-semibold border border-emerald-500/30"
+                  ? "bg-white text-[#0E1012] font-semibold border border-white/20"
                   : "text-zinc-400 hover:text-white"
               }`}
             >
@@ -360,7 +360,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
               onClick={() => setActiveRole("FREELANCER")}
               className={`rounded-full px-3.5 py-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                 activeRole === "FREELANCER"
-                  ? "bg-blue-950/80 text-cyan-300 font-semibold border border-blue-500/30"
+                  ? "bg-[#DAF99C] text-[#0E1012] font-semibold border border-[#DAF99C]/30"
                   : "text-zinc-400 hover:text-white"
               }`}
             >
@@ -371,28 +371,28 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
         {/* Role Helper Banner */}
         {activeRole === "CLIENT" && (
-          <div className="rounded-xl border border-emerald-900/60 bg-emerald-950/20 p-4 text-xs text-emerald-300 flex items-center justify-between gap-3">
+          <div className="rounded-xl border border-white/10 bg-[#1C1D20] p-4 text-xs text-zinc-200 flex items-center justify-between gap-3 shadow-sm">
             <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+              <User className="h-4 w-4 text-[#DAF99C] flex-shrink-0" />
               <span>
                 <strong>Viewing as Client ({contract.clientEmail}):</strong> You fund escrow upfront into PayPal. Review deliverable preview links, approve payouts, or request revisions.
               </span>
             </div>
-            <span className="font-mono text-[10px] uppercase text-emerald-400 bg-emerald-900/40 px-2 py-0.5 rounded">
+            <span className="font-mono text-[10px] uppercase text-[#0E1012] bg-[#DAF99C] font-semibold px-2 py-0.5 rounded">
               Buyer Role
             </span>
           </div>
         )}
 
         {activeRole === "FREELANCER" && (
-          <div className="rounded-xl border border-blue-900/60 bg-blue-950/20 p-4 text-xs text-blue-300 flex items-center justify-between gap-3">
+          <div className="rounded-xl border border-[#DAF99C]/30 bg-[#DAF99C]/[0.08] p-4 text-xs text-zinc-200 flex items-center justify-between gap-3 shadow-sm">
             <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-blue-400 flex-shrink-0" />
+              <User className="h-4 w-4 text-[#DAF99C] flex-shrink-0" />
               <span>
                 <strong>Viewing as Freelancer ({contract.freelancerEmail}):</strong> Complete active milestones, submit live staging URLs for Agent 2 AI inspection, and receive direct PayPal payouts.
               </span>
             </div>
-            <span className="font-mono text-[10px] uppercase text-blue-400 bg-blue-900/40 px-2 py-0.5 rounded">
+            <span className="font-mono text-[10px] uppercase text-[#0E1012] bg-[#DAF99C] font-semibold px-2 py-0.5 rounded">
               Provider Role
             </span>
           </div>
@@ -448,13 +448,13 @@ export default function ProjectCockpitPage({ params }: PageProps) {
             </div>
 
             {/* Financial Status Box */}
-            <div className="flex flex-col items-end justify-center rounded-xl border border-zinc-800 bg-zinc-900/80 p-5 min-w-[240px] space-y-2">
+            <div className="flex flex-col items-end justify-center rounded-xl border border-white/10 bg-[#25272B] p-5 min-w-[240px] space-y-2">
               <span className="text-xs uppercase tracking-wider text-zinc-400 font-medium">Total Project Escrow</span>
               <div className="text-3xl font-mono font-bold text-white">
                 ${contract.totalBudget.toFixed(2)} <span className="text-sm font-sans text-zinc-400">{contract.currency}</span>
               </div>
               <div className="text-xs text-zinc-400 font-mono">
-                Disbursed to Freelancer: <span className="text-emerald-400 font-bold">${paidTotal.toFixed(2)}</span>
+                Disbursed to Freelancer: <span className="text-[#DAF99C] font-bold">${paidTotal.toFixed(2)}</span>
               </div>
 
               {contract.status === "DRAFT" ? (
@@ -462,13 +462,13 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                   type="button"
                   disabled={isFunding}
                   onClick={handleFundEscrow}
-                  className="w-full mt-3 inline-flex items-center justify-center gap-2 rounded-lg bg-[#0070BA] hover:bg-[#005EA6] px-4 py-2.5 text-xs font-semibold text-white transition-decelerate active:scale-95 shadow-lg shadow-blue-900/20"
+                  className="lime-button w-full mt-3 inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-semibold active:scale-[0.98] shadow-lg shadow-[#DAF99C]/20"
                 >
-                  <CreditCard className="h-4 w-4" />
+                  <CreditCard className="h-4 w-4 text-[#0E1012]" />
                   {isFunding ? "Authorizing PayPal..." : `Fund $${contract.totalBudget.toFixed(2)} via PayPal`}
                 </button>
               ) : (
-                <div className="mt-2 w-full flex items-center justify-center gap-1.5 text-[11px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 rounded-md py-1 px-2">
+                <div className="mt-2 w-full flex items-center justify-center gap-1.5 text-[11px] font-mono text-[#0E1012] bg-[#DAF99C] font-semibold rounded-md py-1 px-2">
                   <CheckCircle2 className="h-3.5 w-3.5" />
                   <span>Escrow Locked in PayPal</span>
                 </div>
@@ -489,9 +489,9 @@ export default function ProjectCockpitPage({ params }: PageProps) {
         {/* Milestone Detail & Deliverable Inspection Section */}
         {selectedMilestone && (
           <div className="luxury-card p-6 md:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-800 pb-4 gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-4">
               <div className="flex items-center gap-3">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600/20 text-blue-400 text-sm font-bold">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#DAF99C] text-[#0E1012] text-sm font-bold">
                   M{selectedMilestone.order}
                 </span>
                 <div>
@@ -502,20 +502,20 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
               <div className="flex items-center gap-3">
                 <div className="text-right">
-                  <div className="text-lg font-mono font-bold text-emerald-400">
+                  <div className="text-lg font-mono font-bold text-[#DAF99C]">
                     ${selectedMilestone.amount.toFixed(2)}
                   </div>
                   <div className="text-xs text-zinc-500 font-mono">{selectedMilestone.durationDays} days duration</div>
                 </div>
 
-                <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${
+                <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${
                   selectedMilestone.status === "PAID"
-                    ? "bg-emerald-950 text-emerald-400 border border-emerald-800"
+                    ? "bg-[#DAF99C] text-[#0E1012]"
                     : selectedMilestone.status === "ACTIVE"
-                    ? "bg-blue-950 text-blue-400 border border-blue-800 animate-pulse"
+                    ? "bg-white text-[#0E1012]"
                     : selectedMilestone.status === "IN_REVIEW"
-                    ? "bg-amber-950 text-amber-400 border border-amber-800"
-                    : "bg-zinc-900 text-zinc-400 border border-zinc-800"
+                    ? "bg-[#FBBF24] text-[#0E1012]"
+                    : "bg-[#25272B] text-zinc-400 border border-white/10"
                 }`}>
                   {selectedMilestone.status}
                 </span>
@@ -532,13 +532,13 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                 {selectedMilestone.criteria.map((c) => (
                   <div
                     key={c.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-zinc-800/80 bg-zinc-900/60 p-3.5 text-xs"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-white/10 bg-[#161719] p-3.5 text-xs"
                   >
                     <div className="flex items-center gap-2.5">
                       {c.passed === true ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                        <CheckCircle2 className="h-4 w-4 text-[#DAF99C] flex-shrink-0" />
                       ) : selectedMilestone.status === "PAID" ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                        <CheckCircle2 className="h-4 w-4 text-[#DAF99C] flex-shrink-0" />
                       ) : (
                         <div className="h-4 w-4 rounded-full border border-zinc-600 flex-shrink-0" />
                       )}
@@ -546,10 +546,10 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                     </div>
 
                     <div className="flex items-center gap-2 self-start sm:self-auto">
-                      <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ${
+                      <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
                         c.isAutomated
-                          ? "bg-emerald-950/80 text-emerald-400 border border-emerald-800/40"
-                          : "bg-amber-950/80 text-amber-400 border border-amber-800/40"
+                          ? "bg-[#DAF99C] text-[#0E1012]"
+                          : "bg-[#FBBF24] text-[#0E1012]"
                       }`}>
                         {c.isAutomated ? "Automated Inspection" : "Subjective (72h Silence-Means-Yes)"}
                       </span>
@@ -561,13 +561,13 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
             {/* Action Zone: Deliverable Submission & Inspection (Freelancer View / All) */}
             {selectedMilestone.status === "ACTIVE" && (activeRole === "ALL" || activeRole === "FREELANCER") && (
-              <div className="rounded-xl border border-blue-900/60 bg-blue-950/20 p-5 space-y-4">
+              <div className="rounded-xl border border-[#DAF99C]/30 bg-[#DAF99C]/[0.05] p-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-blue-300">
-                    <Sparkles className="h-4 w-4 text-blue-400" />
+                  <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                    <Sparkles className="h-4 w-4 text-[#DAF99C]" />
                     <span>Submit Deliverable for Autonomous AI Inspection</span>
                   </div>
-                  <span className="text-xs font-mono text-zinc-400">Agent 2: Inspector Ready</span>
+                  <span className="text-xs font-mono text-[#DAF99C] font-semibold">Agent 2: Inspector Ready</span>
                 </div>
 
                 <div className="space-y-3">
@@ -580,7 +580,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                       value={submittedUrl}
                       onChange={(e) => setSubmittedUrl(e.target.value)}
                       placeholder="https://your-preview-staging.vercel.app"
-                      className="w-full rounded-lg border border-zinc-800 bg-zinc-900 p-2.5 text-xs text-white focus:border-blue-500 focus:outline-none font-mono"
+                      className="w-full rounded-lg border border-white/10 bg-[#161719] p-2.5 text-xs text-white focus:border-[#DAF99C] focus:outline-none font-mono"
                     />
                   </div>
 
@@ -592,7 +592,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                       rows={2}
                       value={submissionNotes}
                       onChange={(e) => setSubmissionNotes(e.target.value)}
-                      className="w-full rounded-lg border border-zinc-800 bg-zinc-900 p-2.5 text-xs text-white focus:border-blue-500 focus:outline-none"
+                      className="w-full rounded-lg border border-white/10 bg-[#161719] p-2.5 text-xs text-white focus:border-[#DAF99C] focus:outline-none"
                     />
                   </div>
 
@@ -600,9 +600,9 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                     type="button"
                     disabled={isInspecting}
                     onClick={() => handleInspectDeliverable(selectedMilestone.id)}
-                    className="inline-flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-500 px-5 py-2.5 text-xs font-semibold text-white transition-decelerate active:scale-95 disabled:opacity-50"
+                    className="lime-button inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-xs font-semibold active:scale-[0.98] disabled:opacity-50"
                   >
-                    <Bot className="h-4 w-4" />
+                    <Bot className="h-4 w-4 text-[#0E1012]" />
                     {isInspecting ? "Auditing Code & Live Preview..." : "Run Inspection & Trigger Payout"}
                   </button>
                 </div>
@@ -611,13 +611,13 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
             {/* 72-Hour "Silence Means Yes" Zone */}
             {selectedMilestone.status === "IN_REVIEW" && (
-              <div className="rounded-xl border border-amber-900/60 bg-amber-950/20 p-5 space-y-4">
+              <div className="rounded-xl border border-[#FBBF24]/40 bg-[#FBBF24]/10 p-5 space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-amber-300">
-                    <Clock className="h-4 w-4 text-amber-400" />
+                  <div className="flex items-center gap-2 text-sm font-semibold text-[#FBBF24]">
+                    <Clock className="h-4 w-4 text-[#FBBF24]" />
                     <span>In Review: 72-Hour "Silence Means Yes" Auto-Release Active</span>
                   </div>
-                  <span className="text-xs font-mono text-amber-400">
+                  <span className="text-xs font-mono text-[#FBBF24] font-semibold">
                     Auto-releases on timeout
                   </span>
                 </div>
@@ -634,18 +634,18 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                         type="button"
                         disabled={isProcessingAction}
                         onClick={() => handleReleasePayout(selectedMilestone.id, false)}
-                        className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 px-4 py-2 text-xs font-semibold text-white transition-quick active:scale-95 disabled:opacity-50"
+                        className="lime-button inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold active:scale-[0.98] disabled:opacity-50"
                       >
-                        <CheckCircle2 className="h-4 w-4" />
+                        <CheckCircle2 className="h-4 w-4 text-[#0E1012]" />
                         {isProcessingAction ? "Processing..." : `Client Sign-Off: Release $${selectedMilestone.amount.toFixed(2)}`}
                       </button>
 
                       <button
                         type="button"
                         onClick={() => setShowRevisionModal(true)}
-                        className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 px-4 py-2 text-xs font-semibold text-zinc-200 transition-quick active:scale-95"
+                        className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-[#25272B] hover:bg-[#2E3036] px-4 py-2 text-xs font-semibold text-zinc-200 transition-all duration-300 active:scale-[0.98]"
                       >
-                        <MessageSquare className="h-4 w-4 text-blue-400" />
+                        <MessageSquare className="h-4 w-4 text-[#DAF99C]" />
                         Request Revision (Agent Rescheduler)
                       </button>
                     </>
@@ -657,9 +657,9 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                       type="button"
                       disabled={isProcessingAction}
                       onClick={() => handleReleasePayout(selectedMilestone.id, true)}
-                      className="inline-flex items-center gap-2 rounded-lg border border-amber-800 bg-amber-950/60 hover:bg-amber-900/60 px-4 py-2 text-xs font-semibold text-amber-300 transition-quick active:scale-95 disabled:opacity-50"
+                      className="inline-flex items-center gap-2 rounded-lg border border-[#FBBF24]/50 bg-[#FBBF24]/10 hover:bg-[#FBBF24]/20 px-4 py-2 text-xs font-semibold text-[#FBBF24] transition-all duration-300 active:scale-[0.98] disabled:opacity-50"
                     >
-                      <Zap className="h-4 w-4 text-amber-400" />
+                      <Zap className="h-4 w-4 text-[#FBBF24]" />
                       Simulate 72h Timeout Expiration
                     </button>
                   )}
@@ -669,13 +669,13 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
             {/* Paid Confirmation Receipt */}
             {selectedMilestone.status === "PAID" && (
-              <div className="rounded-xl border border-emerald-900/60 bg-emerald-950/20 p-5 space-y-2">
-                <div className="flex items-center gap-2 text-sm font-semibold text-emerald-400">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+              <div className="rounded-xl border border-[#DAF99C]/30 bg-[#DAF99C]/[0.08] p-5 space-y-2">
+                <div className="flex items-center gap-2 text-sm font-semibold text-[#DAF99C]">
+                  <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
                   <span>Milestone Disbursed via PayPal Payouts API</span>
                 </div>
-                <div className="text-xs font-mono text-zinc-400">
-                  Transaction Batch ID: <span className="text-zinc-200">{selectedMilestone.payoutBatchId || "BATCH_SIM_78912"}</span>
+                <div className="text-xs font-mono text-zinc-300">
+                  Transaction Batch ID: <span className="text-white font-semibold">{selectedMilestone.payoutBatchId || "BATCH_SIM_78912"}</span>
                 </div>
                 <p className="text-xs text-zinc-400">
                   Funds released directly to freelancer account ({contract.freelancerEmail}). Next tranche unlocked on Gantt timeline.
@@ -685,13 +685,13 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
             {/* Inspection Dossier Display */}
             {inspectionResult && (
-              <div className="rounded-xl border border-zinc-800 bg-zinc-950/80 p-5 space-y-4">
-                <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+              <div className="rounded-xl border border-white/10 bg-[#161719] p-5 space-y-4">
+                <div className="flex items-center justify-between border-b border-white/10 pb-2">
                   <span className="text-xs font-semibold text-white flex items-center gap-1.5">
-                    <FileCheck className="h-4 w-4 text-emerald-400" />
+                    <FileCheck className="h-4 w-4 text-[#DAF99C]" />
                     Deliverable Verification Dossier
                   </span>
-                  <span className="text-xs font-mono text-zinc-400">
+                  <span className="text-xs font-mono text-[#DAF99C] font-semibold">
                     Confidence: {(inspectionResult.inspectionResult.confidence * 100).toFixed(1)}%
                   </span>
                 </div>
@@ -700,10 +700,10 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
                 <div className="space-y-2">
                   {inspectionResult.inspectionResult.criteriaAudits.map((a: any) => (
-                    <div key={a.id} className="rounded-lg border border-zinc-800/80 bg-zinc-900/80 p-3 text-xs space-y-1">
+                    <div key={a.id} className="rounded-lg border border-white/10 bg-[#25272B] p-3 text-xs space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="font-medium text-white">{a.text}</span>
-                        <span className={a.passed ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>
+                        <span className={a.passed ? "text-[#DAF99C] font-bold" : "text-[#FBBF24] font-bold"}>
                           {a.passed ? "VERIFIED" : "PENDING REVIEW"}
                         </span>
                       </div>
@@ -719,10 +719,10 @@ export default function ProjectCockpitPage({ params }: PageProps) {
         {/* Client Revision Modal */}
         {showRevisionModal && selectedMilestone && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-            <div className="luxury-card max-w-lg w-full p-6 space-y-4 border-white/10 bg-[#0B0F19] shadow-2xl">
-              <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+            <div className="luxury-card max-w-lg w-full p-6 space-y-4 border-white/10 bg-[#1C1D20] shadow-2xl">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                  <MessageSquare className="h-4 w-4 text-blue-400" />
+                  <MessageSquare className="h-4 w-4 text-[#DAF99C]" />
                   <span>Request Deliverable Revision</span>
                 </div>
                 <button
@@ -747,7 +747,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                     rows={3}
                     value={revisionFeedback}
                     onChange={(e) => setRevisionFeedback(e.target.value)}
-                    className="w-full rounded-lg border border-zinc-800 bg-zinc-900 p-2.5 text-xs text-white focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded-lg border border-white/10 bg-black/60 p-2.5 text-xs text-white focus:border-[#DAF99C] focus:outline-none"
                   />
                 </div>
 
@@ -762,16 +762,16 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                       max="7"
                       value={revisionDays}
                       onChange={(e) => setRevisionDays(Number(e.target.value))}
-                      className="flex-1"
+                      className="flex-1 accent-[#DAF99C]"
                     />
-                    <span className="text-sm font-mono font-bold text-blue-400 w-12 text-right">
+                    <span className="text-sm font-mono font-bold text-[#DAF99C] w-12 text-right">
                       +{revisionDays}d
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
                 <button
                   type="button"
                   onClick={() => setShowRevisionModal(false)}
@@ -783,7 +783,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                   type="button"
                   disabled={isSubmittingRevision}
                   onClick={() => handleSubmitRevision(selectedMilestone.id)}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 px-4 py-2 text-xs font-semibold text-white transition-quick active:scale-95 disabled:opacity-50"
+                  className="lime-button inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold active:scale-[0.98] disabled:opacity-50"
                 >
                   <RefreshCw className={`h-3.5 w-3.5 ${isSubmittingRevision ? "animate-spin" : ""}`} />
                   {isSubmittingRevision ? "Rescheduling..." : "Submit & Reschedule Gantt"}

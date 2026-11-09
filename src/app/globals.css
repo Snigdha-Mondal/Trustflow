@@ -3,18 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --background: #030712;
-  --foreground: #F8FAFC;
-  --surface-primary: #0B0F19;
-  --surface-secondary: #111827;
-  --surface-tertiary: #1E293B;
+  --background: #141517;
+  --foreground: #F8F9FA;
+  --surface-primary: #1C1D20;
+  --surface-secondary: #25272B;
+  --surface-tertiary: #2E3036;
+  --accent-lime: #DAF99C;
+  --accent-lime-hover: #CCF580;
+  --accent-lime-active: #BFE86A;
+  --accent-lime-dark: #0E1012;
+  --accent-stone: #D6D7D8;
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(56, 189, 248, 0.3);
-  --paypal-blue: #0070BA;
-  --paypal-blue-hover: #005EA6;
-  --paypal-cyan: #38BDF8;
-  --escrow-emerald: #10B981;
-  --inspection-amber: #F59E0B;
+  --border-hover: rgba(218, 249, 156, 0.4);
+  --inspection-amber: #FBBF24;
   --decelerate-curve: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -30,8 +31,8 @@ html {
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: #030712;
-  color: #F8FAFC;
+  background-color: #141517;
+  color: #F8F9FA;
   font-family: -apple-system, BlinkMacSystemFont, "Geist", "Manrope", "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -40,7 +41,7 @@ body {
 /* Typography Refinement: Balance & Pretty */
 h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
 }
 
 p {
@@ -90,7 +91,7 @@ p {
   font-size: 1rem;
   line-height: 1.625rem;
   font-weight: 400;
-  color: #CBD5E1;
+  color: #D6D7D8;
   text-wrap: pretty;
 }
 
@@ -98,7 +99,7 @@ p {
   font-size: 0.875rem;
   line-height: 1.375rem;
   font-weight: 400;
-  color: #94A3B8;
+  color: #9EA2A8;
   text-wrap: pretty;
 }
 
@@ -107,60 +108,59 @@ p {
   letter-spacing: -0.01em;
 }
 
-/* Metallic & Shimmer Gradient Text */
+/* Crisp Architectural Text */
 .hero-gradient-text {
-  background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 45%, #94A3B8 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F7 60%, #D1D5DB 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.luxury-gradient-text {
-  background: linear-gradient(135deg, #FFFFFF 0%, #38BDF8 50%, #10B981 100%);
+.lime-gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 0%, #DAF99C 70%, #CCF580 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Glassmorphism Luxury Cards & Surfaces */
+/* Architectural Charcoal Luxury Cards & Surfaces */
 .luxury-card {
-  background: rgba(11, 15, 25, 0.72);
+  background: rgba(28, 29, 32, 0.85);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   border-radius: 20px;
-  transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 350ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .luxury-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(56, 189, 248, 0.3);
-  box-shadow: 0 25px 50px -12px rgba(0, 112, 186, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(218, 249, 156, 0.35);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(218, 249, 156, 0.2);
 }
 
 .luxury-card-static {
-  background: rgba(11, 15, 25, 0.72);
+  background: rgba(28, 29, 32, 0.85);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   border-radius: 20px;
 }
 
 .luxury-well {
-  background: rgba(17, 24, 39, 0.6);
+  background: #25272B;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
 }
 
 .glass-pill {
-  background: rgba(17, 24, 39, 0.7);
+  background: rgba(37, 39, 43, 0.8);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Ambient Radial Spotlights */
+/* Ambient Radial Luster */
 .ambient-glow-top {
   position: absolute;
   top: -180px;
@@ -168,20 +168,30 @@ p {
   transform: translateX(-50%);
   width: 900px;
   height: 550px;
-  background: radial-gradient(ellipse at center, rgba(0, 112, 186, 0.2) 0%, rgba(56, 189, 248, 0.08) 35%, transparent 70%);
-  pointer-events: none;
-  filter: blur(90px);
-  z-index: 0;
-}
-
-.ambient-glow-center {
-  position: absolute;
-  width: 800px;
-  height: 500px;
-  background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.1) 0%, rgba(0, 112, 186, 0.08) 50%, transparent 75%);
+  background: radial-gradient(ellipse at center, rgba(218, 249, 156, 0.08) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 70%);
   pointer-events: none;
   filter: blur(100px);
   z-index: 0;
+}
+
+/* Signature High-Contrast Acid Lime Button */
+.lime-button {
+  background-color: #DAF99C;
+  color: #0E1012;
+  font-weight: 600;
+  transition: all 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 4px 14px rgba(218, 249, 156, 0.25);
+}
+
+.lime-button:hover {
+  background-color: #CCF580;
+  box-shadow: 0 6px 20px rgba(218, 249, 156, 0.4);
+  transform: translateY(-1px);
+}
+
+.lime-button:active {
+  background-color: #BFE86A;
+  transform: scale(0.98);
 }
 
 /* Keyframe Animations */
@@ -210,7 +220,7 @@ p {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.25) 50%,
     transparent 100%
   );
   transform: translateX(-100%);
@@ -264,7 +274,7 @@ p {
 }
 
 ::-webkit-scrollbar-track {
-  background: #030712;
+  background: #141517;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -273,5 +283,5 @@ p {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(218, 249, 156, 0.4);
 }

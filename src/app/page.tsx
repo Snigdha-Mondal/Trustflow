@@ -63,10 +63,8 @@ const INITIAL_DEMO_MILESTONES: GanttMilestone[] = [
 ];
 
 export default function LandingPage() {
-  const [openFaq, setOpenFaq] = useState<number | null>(0); // Open first by default for quick objection handling
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [landingMilestones, setLandingMilestones] = useState<GanttMilestone[]>(INITIAL_DEMO_MILESTONES);
-
-  // Interactive Live Escrow Simulator Step in Hero
   const [simStep, setSimStep] = useState<1 | 2 | 3 | 4>(2);
 
   // Tagline reveal animation state (B11 in DESIGN.md)
@@ -74,10 +72,18 @@ export default function LandingPage() {
   const [activeWordsCount, setActiveWordsCount] = useState(0);
 
   const taglineWords = [
-    "No", "ghosting.",
-    "No", "scope", "creep.",
-    "Just", "verified", "deliverables",
-    "and", "automatic", "PayPal", "payouts."
+    { text: "No", isAccent: false },
+    { text: "ghosting.", isAccent: false },
+    { text: "No", isAccent: false },
+    { text: "scope", isAccent: false },
+    { text: "creep.", isAccent: false },
+    { text: "Just", isAccent: false },
+    { text: "verified", isAccent: true },
+    { text: "deliverables", isAccent: true },
+    { text: "and", isAccent: false },
+    { text: "automatic", isAccent: true },
+    { text: "PayPal", isAccent: true },
+    { text: "payouts.", isAccent: true }
   ];
 
   useEffect(() => {
@@ -144,44 +150,44 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#030712] text-zinc-100 flex flex-col overflow-hidden selection:bg-blue-600 selection:text-white">
-      {/* Top Ambient Radial Spotlight */}
+    <div className="relative min-h-screen bg-[#141517] text-[#F8F9FA] flex flex-col overflow-hidden selection:bg-[#DAF99C] selection:text-[#0E1012]">
+      {/* Top Ambient Luster */}
       <div className="ambient-glow-top" />
 
       {/* Floating Capsule Dock Navigation */}
       <header className="fixed top-5 inset-x-0 z-50 max-w-4xl mx-auto px-4">
-        <nav className="flex items-center justify-between rounded-full border border-white/10 bg-[#0B0F19]/80 backdrop-blur-2xl px-5 py-2.5 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.85)]">
+        <nav className="flex items-center justify-between rounded-full border border-white/10 bg-[#1C1D20]/90 backdrop-blur-2xl px-5 py-2.5 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.85)]">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white font-bold text-sm shadow-md shadow-blue-500/30 group-hover:scale-105 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#DAF99C] text-[#0E1012] font-bold text-sm shadow-md shadow-[#DAF99C]/20 group-hover:scale-105 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
               T
             </span>
             <div className="flex items-center gap-1.5">
               <span className="font-semibold text-base tracking-tight text-white">Trustflow</span>
-              <span className="text-[10px] font-mono uppercase bg-blue-500/10 text-cyan-400 border border-blue-500/20 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] font-mono uppercase bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 px-2 py-0.5 rounded-full font-semibold">
                 Escrow
               </span>
             </div>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 text-xs font-medium text-zinc-400">
-            <a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a>
-            <a href="#inspection" className="hover:text-white transition-colors">Inspection</a>
-            <a href="#timeline" className="hover:text-white transition-colors">Gantt Board</a>
-            <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
+          <div className="hidden md:flex items-center gap-6 text-xs font-medium text-zinc-300">
+            <a href="#how-it-works" className="hover:text-[#DAF99C] transition-colors">How It Works</a>
+            <a href="#inspection" className="hover:text-[#DAF99C] transition-colors">Inspection</a>
+            <a href="#timeline" className="hover:text-[#DAF99C] transition-colors">Gantt Board</a>
+            <a href="#faq" className="hover:text-[#DAF99C] transition-colors">FAQ</a>
           </div>
 
           <div className="flex items-center gap-3">
             <Link
               href="/demo"
-              className="hidden sm:inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-white px-2.5 py-1.5 transition-colors"
+              className="hidden sm:inline-flex items-center gap-1 text-xs text-zinc-300 hover:text-white px-2.5 py-1.5 transition-colors"
             >
               <span>Live Demo</span>
-              <ExternalLink className="h-3 w-3 text-cyan-400" />
+              <ExternalLink className="h-3 w-3 text-[#DAF99C]" />
             </Link>
 
             <Link
               href="/wizard"
-              className="shimmer-button rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-blue-600/30 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
+              className="lime-button rounded-full px-4 py-2 text-xs font-semibold active:scale-[0.98]"
             >
               Create Contract
             </Link>
@@ -192,11 +198,11 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative z-10 pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center space-y-8">
         {/* Floating Pill Badge */}
-        <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md px-4 py-1.5 text-xs text-zinc-300 shadow-inner">
-          <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+        <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-[#1C1D20]/80 backdrop-blur-md px-4 py-1.5 text-xs text-zinc-300 shadow-inner">
+          <span className="flex h-2 w-2 rounded-full bg-[#DAF99C] animate-pulse" />
           <span className="font-medium text-zinc-200">Autonomous Freelance Escrow</span>
           <span className="text-zinc-600">&bull;</span>
-          <span className="text-cyan-400 font-mono font-medium">PayPal Orders &amp; Payouts</span>
+          <span className="text-[#DAF99C] font-mono font-semibold">PayPal Orders &amp; Payouts</span>
         </div>
 
         {/* Hero Headline (Capped at 680px with Meaningful Line Breaks) */}
@@ -205,7 +211,7 @@ export default function LandingPage() {
         </h1>
 
         {/* Subheadline */}
-        <p className="body-1 text-zinc-400 max-w-[640px] mx-auto">
+        <p className="body-1 text-zinc-300 max-w-[640px] mx-auto">
           Lock client budget into PayPal escrow upfront. Decompose the brief into objective tranches with AI. When deliverables pass automated inspection, get paid instantly.
         </p>
 
@@ -213,7 +219,7 @@ export default function LandingPage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
           <Link
             href="/wizard"
-            className="shimmer-button w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 px-7 py-3.5 text-base font-semibold text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-xl shadow-blue-900/30"
+            className="lime-button w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-base font-semibold shadow-xl shadow-[#DAF99C]/20 active:scale-[0.98]"
           >
             Create Escrow Contract
             <ArrowRight className="h-4 w-4" />
@@ -221,25 +227,25 @@ export default function LandingPage() {
 
           <Link
             href="/demo"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] backdrop-blur-md px-7 py-3.5 text-base font-medium text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-[#1C1D20]/80 hover:bg-[#25272B] backdrop-blur-md px-7 py-3.5 text-base font-medium text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
           >
             <span>Explore Live Demo Cockpit</span>
-            <ExternalLink className="h-4 w-4 text-cyan-400" />
+            <ExternalLink className="h-4 w-4 text-[#DAF99C]" />
           </Link>
         </div>
 
         {/* Social Proof & Security Strip */}
         <div className="pt-6 border-t border-white/5 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-mono text-zinc-400 uppercase tracking-wider">
           <span className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+            <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
             100% Upfront PayPal Escrow
           </span>
           <span className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+            <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
             72-Hour "Silence Means Yes"
           </span>
           <span className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+            <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
             Bryntum Gantt Dependencies
           </span>
         </div>
@@ -250,7 +256,7 @@ export default function LandingPage() {
             {/* Top Bar with Contract ID and Step Switcher */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 gap-3">
               <div className="flex items-center gap-3">
-                <span className="flex h-3 w-3 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="flex h-3 w-3 rounded-full bg-[#DAF99C] animate-pulse" />
                 <div>
                   <span className="text-xs font-mono text-zinc-400 uppercase">Live Escrow Protocol &bull; Contract #demo-contract-2026</span>
                   <h3 className="text-lg font-semibold text-white">Full-Stack SaaS Platform &amp; Mobile Lead Engine</h3>
@@ -258,7 +264,7 @@ export default function LandingPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <div className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-mono text-emerald-300 font-semibold shadow-sm">
+                <div className="inline-flex items-center gap-1.5 rounded-lg border border-[#DAF99C]/30 bg-[#DAF99C]/10 px-3 py-1.5 text-xs font-mono text-[#DAF99C] font-semibold shadow-sm">
                   <CreditCard className="h-3.5 w-3.5" />
                   <span>$900.00 USD Locked in PayPal</span>
                 </div>
@@ -269,7 +275,7 @@ export default function LandingPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs text-zinc-400">
                 <span className="font-semibold text-zinc-300">Click a phase to test Trustflow autonomous logic:</span>
-                <span className="font-mono text-cyan-400">Step {simStep} of 4</span>
+                <span className="font-mono text-[#DAF99C] font-semibold">Step {simStep} of 4</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <button
@@ -277,13 +283,13 @@ export default function LandingPage() {
                   onClick={() => setSimStep(1)}
                   className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
                     simStep === 1
-                      ? "border-emerald-500/60 bg-emerald-500/10 text-white shadow-md shadow-emerald-500/10"
-                      : "border-white/5 bg-white/[0.02] text-zinc-400 hover:border-white/10"
+                      ? "border-[#DAF99C] bg-[#DAF99C]/10 text-white shadow-md shadow-[#DAF99C]/10"
+                      : "border-white/5 bg-[#25272B]/60 text-zinc-400 hover:border-white/10"
                   }`}
                 >
-                  <div className="text-[10px] font-mono uppercase text-emerald-400 font-bold">Phase 1</div>
+                  <div className="text-[10px] font-mono uppercase text-[#DAF99C] font-bold">Phase 1</div>
                   <div className="text-xs font-semibold mt-0.5">Upfront Funding</div>
-                  <div className="text-[10px] text-zinc-500 font-mono">PayPal Orders API</div>
+                  <div className="text-[10px] text-zinc-400 font-mono">PayPal Orders API</div>
                 </button>
 
                 <button
@@ -291,13 +297,13 @@ export default function LandingPage() {
                   onClick={() => setSimStep(2)}
                   className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
                     simStep === 2
-                      ? "border-blue-500/60 bg-blue-500/10 text-white shadow-md shadow-blue-500/10"
-                      : "border-white/5 bg-white/[0.02] text-zinc-400 hover:border-white/10"
+                      ? "border-[#DAF99C] bg-[#DAF99C]/10 text-white shadow-md shadow-[#DAF99C]/10"
+                      : "border-white/5 bg-[#25272B]/60 text-zinc-400 hover:border-white/10"
                   }`}
                 >
-                  <div className="text-[10px] font-mono uppercase text-blue-400 font-bold">Phase 2</div>
+                  <div className="text-[10px] font-mono uppercase text-[#DAF99C] font-bold">Phase 2</div>
                   <div className="text-xs font-semibold mt-0.5">Deliverable Audit</div>
-                  <div className="text-[10px] text-zinc-500 font-mono">Agent 2 + Cheerio</div>
+                  <div className="text-[10px] text-zinc-400 font-mono">Agent 2 + Cheerio</div>
                 </button>
 
                 <button
@@ -305,13 +311,13 @@ export default function LandingPage() {
                   onClick={() => setSimStep(3)}
                   className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
                     simStep === 3
-                      ? "border-amber-500/60 bg-amber-500/10 text-white shadow-md shadow-amber-500/10"
-                      : "border-white/5 bg-white/[0.02] text-zinc-400 hover:border-white/10"
+                      ? "border-[#FBBF24] bg-[#FBBF24]/10 text-white shadow-md shadow-[#FBBF24]/10"
+                      : "border-white/5 bg-[#25272B]/60 text-zinc-400 hover:border-white/10"
                   }`}
                 >
-                  <div className="text-[10px] font-mono uppercase text-amber-400 font-bold">Phase 3</div>
+                  <div className="text-[10px] font-mono uppercase text-[#FBBF24] font-bold">Phase 3</div>
                   <div className="text-xs font-semibold mt-0.5">72h Auto-Release</div>
-                  <div className="text-[10px] text-zinc-500 font-mono">Anti-Ghosting Guard</div>
+                  <div className="text-[10px] text-zinc-400 font-mono">Anti-Ghosting Guard</div>
                 </button>
 
                 <button
@@ -319,13 +325,13 @@ export default function LandingPage() {
                   onClick={() => setSimStep(4)}
                   className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
                     simStep === 4
-                      ? "border-emerald-500/60 bg-emerald-500/10 text-white shadow-md shadow-emerald-500/10"
-                      : "border-white/5 bg-white/[0.02] text-zinc-400 hover:border-white/10"
+                      ? "border-[#DAF99C] bg-[#DAF99C]/10 text-white shadow-md shadow-[#DAF99C]/10"
+                      : "border-white/5 bg-[#25272B]/60 text-zinc-400 hover:border-white/10"
                   }`}
                 >
-                  <div className="text-[10px] font-mono uppercase text-emerald-400 font-bold">Phase 4</div>
+                  <div className="text-[10px] font-mono uppercase text-[#DAF99C] font-bold">Phase 4</div>
                   <div className="text-xs font-semibold mt-0.5">Instant Payout</div>
-                  <div className="text-[10px] text-zinc-500 font-mono">PayPal Payouts API</div>
+                  <div className="text-[10px] text-zinc-400 font-mono">PayPal Payouts API</div>
                 </button>
               </div>
             </div>
@@ -333,41 +339,41 @@ export default function LandingPage() {
             {/* Tranche Preview Blocks */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {/* Tranche 1 */}
-              <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/[0.05] p-3.5 space-y-1.5">
+              <div className="rounded-xl border border-[#DAF99C]/30 bg-[#DAF99C]/[0.08] p-3.5 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-emerald-300">M1: Wireframes &amp; Scaffold</span>
-                  <span className="text-[10px] font-mono uppercase bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-md font-bold">
+                  <span className="text-xs font-semibold text-white">M1: Wireframes &amp; Scaffold</span>
+                  <span className="text-[10px] font-mono uppercase bg-[#DAF99C] text-[#0E1012] px-2 py-0.5 rounded-md font-bold">
                     PAID
                   </span>
                 </div>
-                <div className="text-lg font-mono font-bold text-white">$300.00</div>
-                <p className="text-[11px] text-zinc-400">Disbursed via PayPal Payouts batch #78912</p>
+                <div className="text-lg font-mono font-bold text-[#DAF99C]">$300.00</div>
+                <p className="text-[11px] text-zinc-300">Disbursed via PayPal Payouts batch #78912</p>
               </div>
 
               {/* Tranche 2 */}
               <div className={`rounded-xl border p-3.5 space-y-1.5 transition-all duration-300 ${
                 simStep === 2
-                  ? "border-blue-500/50 bg-blue-500/10 shadow-lg shadow-blue-500/10"
+                  ? "border-[#DAF99C]/70 bg-[#25272B] shadow-lg shadow-[#DAF99C]/10"
                   : simStep === 3
-                  ? "border-amber-500/50 bg-amber-500/10"
+                  ? "border-[#FBBF24]/70 bg-[#FBBF24]/10"
                   : simStep === 4
-                  ? "border-emerald-500/50 bg-emerald-500/10"
-                  : "border-blue-500/30 bg-blue-500/[0.05]"
+                  ? "border-[#DAF99C]/70 bg-[#DAF99C]/10"
+                  : "border-white/10 bg-[#25272B]/60"
               }`}>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-blue-300">M2: Frontend Implementation</span>
+                  <span className="text-xs font-semibold text-white">M2: Frontend Implementation</span>
                   <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-md font-bold ${
                     simStep === 4
-                      ? "bg-emerald-500/20 text-emerald-400"
+                      ? "bg-[#DAF99C] text-[#0E1012]"
                       : simStep === 3
-                      ? "bg-amber-500/20 text-amber-400"
-                      : "bg-blue-500/20 text-blue-400"
+                      ? "bg-[#FBBF24] text-[#0E1012]"
+                      : "bg-white text-[#0E1012]"
                   }`}>
                     {simStep === 4 ? "PAID" : simStep === 3 ? "IN REVIEW" : "ACTIVE ⚡"}
                   </span>
                 </div>
                 <div className="text-lg font-mono font-bold text-white">$300.00</div>
-                <p className="text-[11px] text-zinc-400">
+                <p className="text-[11px] text-zinc-300">
                   {simStep === 4
                     ? "Payout executed to freelancer PayPal email"
                     : simStep === 3
@@ -379,62 +385,62 @@ export default function LandingPage() {
               {/* Tranche 3 */}
               <div className={`rounded-xl border p-3.5 space-y-1.5 ${
                 simStep === 4
-                  ? "border-blue-500/40 bg-blue-500/10"
-                  : "border-white/5 bg-white/[0.02] opacity-65"
+                  ? "border-white/20 bg-white/[0.04]"
+                  : "border-white/5 bg-[#25272B]/40 opacity-65"
               }`}>
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-zinc-400">M3: Production Handover</span>
-                  <span className="text-[10px] font-mono uppercase bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-md flex items-center gap-1">
+                  <span className="text-[10px] font-mono uppercase bg-[#141517] text-zinc-400 px-2 py-0.5 rounded-md flex items-center gap-1 border border-white/5">
                     {simStep === 4 ? "UNLOCKED ⚡" : <><Lock className="h-2.5 w-2.5" /> LOCKED</>}
                   </span>
                 </div>
                 <div className="text-lg font-mono font-bold text-zinc-300">$300.00</div>
-                <p className="text-[11px] text-zinc-500">
+                <p className="text-[11px] text-zinc-400">
                   {simStep === 4 ? "Now active for deliverable submission" : "Unlocks upon M2 completion"}
                 </p>
               </div>
             </div>
 
             {/* Live Terminal Tracer Snippet */}
-            <div className="rounded-xl border border-white/10 bg-black/70 p-4 font-mono text-xs space-y-1.5 text-zinc-300">
-              <div className="flex items-center justify-between text-zinc-500 text-[11px] pb-1.5 border-b border-white/5">
+            <div className="rounded-xl border border-white/10 bg-[#121315] p-4 font-mono text-xs space-y-1.5 text-zinc-300">
+              <div className="flex items-center justify-between text-zinc-400 text-[11px] pb-1.5 border-b border-white/5">
                 <div className="flex items-center gap-2">
-                  <Terminal className="h-3.5 w-3.5 text-cyan-400" />
-                  <span className="text-zinc-400">Trustflow Autonomous Execution Tracer</span>
+                  <Terminal className="h-3.5 w-3.5 text-[#DAF99C]" />
+                  <span className="text-zinc-300">Trustflow Autonomous Execution Tracer</span>
                 </div>
-                <span className="text-emerald-400 font-semibold">● LIVE SANDBOX</span>
+                <span className="text-[#DAF99C] font-semibold">● LIVE SANDBOX</span>
               </div>
 
               {simStep === 1 && (
                 <div className="space-y-1">
                   <div className="text-zinc-400">&gt; POST /v2/checkout/orders &rarr; intent: CAPTURE</div>
-                  <div className="text-emerald-400">&gt; Status: COMPLETED &bull; Order ID: 4T891238479210</div>
-                  <div className="text-cyan-400">&gt; Escrow Vault: $900.00 USD secured in platform custody</div>
+                  <div className="text-[#DAF99C]">&gt; Status: COMPLETED &bull; Order ID: 4T891238479210</div>
+                  <div className="text-white">&gt; Escrow Vault: $900.00 USD secured in platform custody</div>
                 </div>
               )}
 
               {simStep === 2 && (
                 <div className="space-y-1">
-                  <div className="text-emerald-400">&gt; GET https://preview-sample.vercel.app &rarr; 200 OK (142ms)</div>
-                  <div className="text-emerald-400">&gt; DOM audit: meta[name=&quot;viewport&quot;] responsive tags verified</div>
-                  <div className="text-emerald-400">&gt; DOM audit: form input[type=&quot;email&quot;] lead capture detected</div>
-                  <div className="text-cyan-400">&gt; Gemini Agent 2 confidence: 96.5% &bull; Objective criteria validated</div>
+                  <div className="text-[#DAF99C]">&gt; GET https://preview-sample.vercel.app &rarr; 200 OK (142ms)</div>
+                  <div className="text-[#DAF99C]">&gt; DOM audit: meta[name=&quot;viewport&quot;] responsive tags verified</div>
+                  <div className="text-[#DAF99C]">&gt; DOM audit: form input[type=&quot;email&quot;] lead capture detected</div>
+                  <div className="text-white">&gt; Gemini Agent 2 confidence: 96.5% &bull; Objective criteria validated</div>
                 </div>
               )}
 
               {simStep === 3 && (
                 <div className="space-y-1">
-                  <div className="text-amber-400">&gt; Invariant: Subjective design review flagged for human client</div>
-                  <div className="text-amber-400">&gt; Timer initiated: 72:00:00 remaining on contract #demo-contract-2026</div>
-                  <div className="text-zinc-400">&gt; Guaranteed safety rule: Inaction triggers autonomous disbursement</div>
+                  <div className="text-[#FBBF24]">&gt; Invariant: Subjective design review flagged for human client</div>
+                  <div className="text-[#FBBF24]">&gt; Timer initiated: 72:00:00 remaining on contract #demo-contract-2026</div>
+                  <div className="text-zinc-300">&gt; Guaranteed safety rule: Inaction triggers autonomous disbursement</div>
                 </div>
               )}
 
               {simStep === 4 && (
                 <div className="space-y-1">
-                  <div className="text-emerald-400">&gt; POST /v1/payments/payouts &rarr; batch_id: PAYOUTS_BATCH_78912</div>
-                  <div className="text-emerald-400">&gt; Disbursed $300.00 USD to freelancer@trustflow.dev</div>
-                  <div className="text-cyan-400">&gt; Bryntum Gantt Board: Milestone 2 set to PAID &bull; Milestone 3 UNLOCKED</div>
+                  <div className="text-[#DAF99C]">&gt; POST /v1/payments/payouts &rarr; batch_id: PAYOUTS_BATCH_78912</div>
+                  <div className="text-[#DAF99C]">&gt; Disbursed $300.00 USD to freelancer@trustflow.dev</div>
+                  <div className="text-white">&gt; Bryntum Gantt Board: Milestone 2 set to PAID &bull; Milestone 3 UNLOCKED</div>
                 </div>
               )}
             </div>
@@ -445,24 +451,28 @@ export default function LandingPage() {
       {/* Mandatory Tagline Reveal Section (B11 in DESIGN.md) */}
       <section
         ref={taglineRef}
-        className="relative py-28 px-4 sm:px-6 lg:px-8 border-y border-white/5 bg-[#050811] text-center"
+        className="relative py-28 px-4 sm:px-6 lg:px-8 border-y border-white/5 bg-[#18191C] text-center"
       >
         <div className="max-w-[680px] mx-auto space-y-5">
-          <p className="text-xs uppercase tracking-widest font-mono text-cyan-400 font-semibold flex items-center justify-center gap-2">
-            <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
+          <p className="text-xs uppercase tracking-widest font-mono text-[#DAF99C] font-semibold flex items-center justify-center gap-2">
+            <Sparkles className="h-3.5 w-3.5 text-[#DAF99C]" />
             The Trustflow Guarantee
           </p>
           <h2 className="heading-2 leading-snug tracking-tight">
-            {taglineWords.map((word, idx) => {
+            {taglineWords.map((wordObj, idx) => {
               const isActive = idx < activeWordsCount;
               return (
                 <span
                   key={idx}
                   className={`inline-block mr-2.5 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                    isActive ? "opacity-100 text-white" : "opacity-25 text-zinc-600"
+                    isActive
+                      ? wordObj.isAccent
+                        ? "opacity-100 text-[#DAF99C] font-semibold"
+                        : "opacity-100 text-white"
+                      : "opacity-25 text-zinc-600"
                   }`}
                 >
-                  {word}
+                  {wordObj.text}
                 </span>
               );
             })}
@@ -476,7 +486,7 @@ export default function LandingPage() {
           <h2 className="heading-2 text-white">
             How Trustflow eliminates freelance payment failure
           </h2>
-          <p className="body-1 text-zinc-400">
+          <p className="body-1 text-zinc-300">
             Three interconnected engines replace arbitrary marketplace bureaucracy with deterministic code.
           </p>
         </div>
@@ -485,15 +495,15 @@ export default function LandingPage() {
           {/* Engine 1: Upfront Escrow */}
           <div className="luxury-card p-7 space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/10 text-cyan-400 border border-blue-500/20 font-mono font-bold text-base">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 font-mono font-bold text-base">
                 01
               </div>
               <h3 className="title-1 text-white">PayPal Upfront Custody</h3>
-              <p className="body-2 text-zinc-400">
+              <p className="body-2 text-zinc-300">
                 Clients authorize 100% of the project budget upfront into PayPal escrow using the Orders API with intent CAPTURE. Freelancers build knowing every dollar is already locked in custody.
               </p>
             </div>
-            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-cyan-400 flex items-center gap-1.5">
+            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-[#DAF99C] flex items-center gap-1.5 font-semibold">
               <CreditCard className="h-3.5 w-3.5" />
               <span>Orders API (v2) intent: CAPTURE</span>
             </div>
@@ -502,15 +512,15 @@ export default function LandingPage() {
           {/* Engine 2: AI Deliverable Inspector */}
           <div className="luxury-card p-7 space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-bold text-base">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 font-mono font-bold text-base">
                 02
               </div>
               <h3 className="title-1 text-white">Autonomous Inspection</h3>
-              <p className="body-2 text-zinc-400">
+              <p className="body-2 text-zinc-300">
                 When code or staging links are submitted, Cheerio crawls live HTTP status, viewport meta tags, and form fields, while Gemini AI audits objective criteria. Passing work triggers payouts instantly.
               </p>
             </div>
-            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
+            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-[#DAF99C] flex items-center gap-1.5 font-semibold">
               <Bot className="h-3.5 w-3.5" />
               <span>Deterministic DOM &bull; Node Fetch</span>
             </div>
@@ -519,15 +529,15 @@ export default function LandingPage() {
           {/* Engine 3: 72-Hour Auto-Release */}
           <div className="luxury-card p-7 space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20 font-mono font-bold text-base">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FBBF24]/10 text-[#FBBF24] border border-[#FBBF24]/20 font-mono font-bold text-base">
                 03
               </div>
               <h3 className="title-1 text-white">Silence Means Yes</h3>
-              <p className="body-2 text-zinc-400">
+              <p className="body-2 text-zinc-300">
                 If deliverables require subjective design sign-off, a 72-hour countdown starts. If the client goes silent or delays review, milestone funds automatically disburse to the freelancer's PayPal account.
               </p>
             </div>
-            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-amber-400 flex items-center gap-1.5">
+            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-[#FBBF24] flex items-center gap-1.5 font-semibold">
               <Clock className="h-3.5 w-3.5" />
               <span>Guaranteed Anti-Ghosting Clock</span>
             </div>
@@ -538,14 +548,14 @@ export default function LandingPage() {
       {/* Section: Inspection Deep Dive (Anchor #inspection) */}
       <section id="inspection" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5 max-w-5xl mx-auto space-y-12">
         <div className="text-center space-y-3 max-w-[680px] mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3.5 py-1 text-xs font-mono text-cyan-400">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#DAF99C]/20 bg-[#DAF99C]/10 px-3.5 py-1 text-xs font-mono text-[#DAF99C] font-semibold">
             <Bot className="h-3.5 w-3.5" />
             Agent 2 &bull; Multimodal Deliverable Inspector
           </div>
           <h2 className="heading-2 text-white">
             Objective deliverable verification without human bias
           </h2>
-          <p className="body-1 text-zinc-400">
+          <p className="body-1 text-zinc-300">
             AI reasons and audits, but deterministic code validates URLs and triggers payouts.
           </p>
         </div>
@@ -553,7 +563,7 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="luxury-card p-7 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20">
                 <Globe className="h-5 w-5" />
               </div>
               <div>
@@ -564,17 +574,17 @@ export default function LandingPage() {
             <p className="body-2 text-zinc-300">
               When a deliverable URL is submitted, the crawler inspects HTTP response status (200 OK), checks the responsive viewport meta tag, verifies form inputs, and inspects routes before invoking the AI.
             </p>
-            <div className="rounded-xl border border-white/10 bg-black/60 p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
-              <div className="text-emerald-400">&#10003; GET https://staging.preview.app &rarr; 200 OK (142ms)</div>
-              <div className="text-emerald-400">&#10003; meta[name=&quot;viewport&quot;] responsive scale verified</div>
-              <div className="text-emerald-400">&#10003; form input[type=&quot;email&quot;] lead capture present</div>
+            <div className="rounded-xl border border-white/10 bg-[#121315] p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
+              <div className="text-[#DAF99C]">&#10003; GET https://staging.preview.app &rarr; 200 OK (142ms)</div>
+              <div className="text-[#DAF99C]">&#10003; meta[name=&quot;viewport&quot;] responsive scale verified</div>
+              <div className="text-[#DAF99C]">&#10003; form input[type=&quot;email&quot;] lead capture present</div>
             </div>
           </div>
 
           <div className="luxury-card p-7 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 text-cyan-400 border border-blue-500/20">
-                <ShieldCheck className="h-5 w-5" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white border border-white/20">
+                <ShieldCheck className="h-5 w-5 text-[#DAF99C]" />
               </div>
               <div>
                 <h3 className="title-1 text-white">The 72h Silence-Means-Yes Safety Guard</h3>
@@ -584,10 +594,10 @@ export default function LandingPage() {
             <p className="body-2 text-zinc-300">
               AI can <strong>never</strong> unilaterally reject work. If criteria contain subjective aesthetics, the deliverable routes to client review with a 72-hour countdown timer. If the client is silent, funds auto-release.
             </p>
-            <div className="rounded-xl border border-white/10 bg-black/60 p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
-              <div className="text-amber-400">&#9203; In-Review: 72h countdown started for M2</div>
-              <div className="text-zinc-400">&bull; Client approves &rarr; Instant PayPal Payout</div>
-              <div className="text-zinc-400">&bull; Client silent &rarr; Auto-releases on timeout</div>
+            <div className="rounded-xl border border-white/10 bg-[#121315] p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
+              <div className="text-[#FBBF24]">&#9203; In-Review: 72h countdown started for M2</div>
+              <div className="text-zinc-300">&bull; Client approves &rarr; Instant PayPal Payout</div>
+              <div className="text-zinc-300">&bull; Client silent &rarr; Auto-releases on timeout</div>
             </div>
           </div>
         </div>
@@ -596,14 +606,14 @@ export default function LandingPage() {
       {/* Section: Bryntum Gantt Timeline Board Showcase (Anchor #timeline) */}
       <section id="timeline" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5 max-w-5xl mx-auto space-y-8">
         <div className="text-center space-y-3 max-w-[680px] mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1 text-xs font-mono text-emerald-400">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#DAF99C]/20 bg-[#DAF99C]/10 px-3.5 py-1 text-xs font-mono text-[#DAF99C] font-semibold">
             <Layers className="h-3.5 w-3.5" />
             Bryntum Sponsor Track &bull; Challenge Prompts #1 &amp; #6
           </div>
           <h2 className="heading-2 text-white">
             Interactive Bryntum Gantt Timeline Board
           </h2>
-          <p className="body-1 text-zinc-400">
+          <p className="body-1 text-zinc-300">
             Sequential payment tranche dependency locks and automated agent-driven rescheduling. Test the live board below:
           </p>
         </div>
@@ -619,10 +629,10 @@ export default function LandingPage() {
         <div className="text-center pt-2">
           <Link
             href="/demo"
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] px-6 py-3 text-xs font-semibold text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-md"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#1C1D20]/80 hover:bg-[#25272B] px-6 py-3 text-xs font-semibold text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-md"
           >
             <span>Open Full Interactive Cockpit Demo</span>
-            <ExternalLink className="h-3.5 w-3.5 text-cyan-400" />
+            <ExternalLink className="h-3.5 w-3.5 text-[#DAF99C]" />
           </Link>
         </div>
       </section>
@@ -633,7 +643,7 @@ export default function LandingPage() {
           <h2 className="heading-2 text-white">
             Frequently asked questions
           </h2>
-          <p className="body-1 text-zinc-400">
+          <p className="body-1 text-zinc-300">
             Everything you need to know about Trustflow escrow and autonomous payout releases.
           </p>
         </div>
@@ -645,18 +655,18 @@ export default function LandingPage() {
               <div
                 key={idx}
                 className={`luxury-card overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                  isOpen ? "border-sky-500/40 bg-[#0F172A]/80 shadow-lg shadow-sky-500/10" : "border-white/10"
+                  isOpen ? "border-[#DAF99C]/40 bg-[#25272B] shadow-lg shadow-[#DAF99C]/5" : "border-white/10"
                 }`}
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full flex items-center justify-between p-5 text-left text-sm md:text-base font-semibold text-white hover:text-cyan-400 transition-colors"
+                  className="w-full flex items-center justify-between p-5 text-left text-sm md:text-base font-semibold text-white hover:text-[#DAF99C] transition-colors"
                 >
                   <span className="pr-4">{faq.q}</span>
                   <ChevronDown
                     className={`h-4 w-4 text-zinc-400 flex-shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                      isOpen ? "rotate-180 text-cyan-400" : ""
+                      isOpen ? "rotate-180 text-[#DAF99C]" : ""
                     }`}
                   />
                 </button>
@@ -672,18 +682,18 @@ export default function LandingPage() {
       </section>
 
       {/* Final Risk-Reversal CTA Section */}
-      <section className="py-28 px-4 sm:px-6 lg:px-8 border-t border-white/5 bg-[#030712] text-center space-y-6">
+      <section className="py-28 px-4 sm:px-6 lg:px-8 border-t border-white/5 bg-[#141517] text-center space-y-6">
         <div className="max-w-[680px] mx-auto space-y-4">
           <h2 className="heading-2 hero-gradient-text">
             Start your next freelance contract with zero payment anxiety
           </h2>
-          <p className="body-1 text-zinc-400">
+          <p className="body-1 text-zinc-300">
             Protect your time with locked upfront escrow, automated AI verification, and guaranteed PayPal payouts.
           </p>
           <div className="pt-2">
             <Link
               href="/wizard"
-              className="shimmer-button inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 px-8 py-4 text-base font-semibold text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-xl shadow-blue-900/40"
+              className="lime-button inline-flex items-center gap-2 rounded-full px-8 py-4 text-base font-semibold shadow-xl shadow-[#DAF99C]/25 active:scale-[0.98]"
             >
               Create Escrow Contract
               <ArrowRight className="h-4 w-4" />
@@ -693,9 +703,9 @@ export default function LandingPage() {
       </section>
 
       {/* High-Class Footer */}
-      <footer className="border-t border-white/5 py-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-4">
+      <footer className="border-t border-white/5 py-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-400 gap-4">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-zinc-300">Trustflow</span>
+          <span className="font-semibold text-white">Trustflow</span>
           <span>&copy; 2026. Built for PayPal AI Hackathon &amp; Bryntum Sponsor Track.</span>
         </div>
         <div className="flex items-center gap-5 text-zinc-400">

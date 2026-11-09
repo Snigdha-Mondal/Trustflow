@@ -116,23 +116,23 @@ export default function GanttBoard({
   }
 
   return (
-    <div className="luxury-card-static p-6 md:p-8 space-y-7 border border-white/10 bg-[#0B0F19]/90 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
-      {/* Ambient background glow inside the board */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 filter blur-[80px] pointer-events-none rounded-full" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/10 filter blur-[80px] pointer-events-none rounded-full" />
+    <div className="luxury-card-static p-6 md:p-8 space-y-7 border border-white/10 bg-[#1C1D20]/90 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
+      {/* Subtle Ambient Glow inside the board */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#DAF99C]/5 filter blur-[90px] pointer-events-none rounded-full" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/[0.03] filter blur-[90px] pointer-events-none rounded-full" />
 
       {/* Header & Controls */}
       <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between pb-5 border-b border-white/10 gap-4">
         <div>
           <div className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 mb-1.5">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-emerald-400 font-semibold uppercase tracking-wider">Bryntum Gantt Engine</span>
+            <span className="flex h-2 w-2 rounded-full bg-[#DAF99C] animate-pulse" />
+            <span className="text-[#DAF99C] font-semibold uppercase tracking-wider">Bryntum Gantt Engine</span>
             <span className="text-zinc-600">&bull;</span>
             <span className="text-zinc-400">Dependency Locks &amp; Dynamic Rescheduling</span>
           </div>
           <h3 className="text-xl md:text-2xl font-semibold text-white tracking-tight flex items-center gap-3">
             Interactive Milestone Timeline Board
-            <span className="text-xs font-mono font-normal uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full">
+            <span className="text-xs font-mono font-semibold uppercase bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 px-2.5 py-0.5 rounded-full">
               Live Interactive
             </span>
           </h3>
@@ -147,16 +147,16 @@ export default function GanttBoard({
           <button
             type="button"
             onClick={() => setIsPlaying(!isPlaying)}
-            className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] px-3.5 py-1.5 text-xs text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-sm"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#25272B] hover:bg-[#2E3036] px-3.5 py-1.5 text-xs text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-sm"
           >
             {isPlaying ? (
               <>
-                <span className="h-2 w-2 rounded-sm bg-amber-400 animate-pulse" />
-                <span className="font-mono text-amber-300">Pause Simulation</span>
+                <span className="h-2 w-2 rounded-sm bg-[#DAF99C] animate-pulse" />
+                <span className="font-mono text-[#DAF99C] font-semibold">Pause Simulation</span>
               </>
             ) : (
               <>
-                <Play className="h-3 w-3 text-emerald-400 fill-emerald-400" />
+                <Play className="h-3 w-3 text-[#DAF99C] fill-[#DAF99C]" />
                 <span>Simulate Timeline Flow</span>
               </>
             )}
@@ -167,10 +167,10 @@ export default function GanttBoard({
             <button
               type="button"
               onClick={() => setShowRescheduleModal(true)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 px-3.5 py-1.5 text-xs text-blue-300 font-medium transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-sm shadow-blue-500/10"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#DAF99C]/30 bg-[#DAF99C]/10 hover:bg-[#DAF99C]/20 px-3.5 py-1.5 text-xs text-[#DAF99C] font-medium transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
               title="Bryntum Agent-Driven Rescheduler (Shifts downstream deadlines upon revision)"
             >
-              <RefreshCw className="h-3.5 w-3.5 text-blue-400" />
+              <RefreshCw className="h-3.5 w-3.5 text-[#DAF99C]" />
               <span>Agent Rescheduler (Bryntum #6)</span>
             </button>
           )}
@@ -179,31 +179,31 @@ export default function GanttBoard({
 
       {/* Tranche Cashflow Breakdown Matrix */}
       <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5 flex flex-col justify-between">
+        <div className="rounded-xl border border-white/10 bg-[#25272B]/60 p-3.5 flex flex-col justify-between">
           <div className="text-[10px] uppercase font-mono text-zinc-400 font-semibold tracking-wider">Total Project Budget</div>
           <div className="text-xl font-mono font-bold text-white mt-1">${totalBudget.toFixed(2)}</div>
           <div className="text-[10px] text-zinc-500 mt-0.5">100% Upfront PayPal Escrow</div>
         </div>
 
-        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/[0.05] p-3.5 flex flex-col justify-between shadow-sm">
+        <div className="rounded-xl border border-[#DAF99C]/30 bg-[#DAF99C]/[0.08] p-3.5 flex flex-col justify-between shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase font-mono text-emerald-400 font-semibold tracking-wider">Disbursed (PAID)</span>
-            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+            <span className="text-[10px] uppercase font-mono text-[#DAF99C] font-semibold tracking-wider">Disbursed (PAID)</span>
+            <CheckCircle2 className="h-3.5 w-3.5 text-[#DAF99C]" />
           </div>
-          <div className="text-xl font-mono font-bold text-white mt-1">${paidAmount.toFixed(2)}</div>
-          <div className="text-[10px] text-emerald-400/80 mt-0.5">Disbursed via Payouts API</div>
+          <div className="text-xl font-mono font-bold text-[#DAF99C] mt-1">${paidAmount.toFixed(2)}</div>
+          <div className="text-[10px] text-zinc-300 mt-0.5">Disbursed via Payouts API</div>
         </div>
 
-        <div className="rounded-xl border border-blue-500/30 bg-blue-500/[0.05] p-3.5 flex flex-col justify-between shadow-sm">
+        <div className="rounded-xl border border-white/20 bg-white/[0.04] p-3.5 flex flex-col justify-between shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] uppercase font-mono text-blue-400 font-semibold tracking-wider">Active Escrow</span>
-            <Sparkles className="h-3.5 w-3.5 text-blue-400" />
+            <span className="text-[10px] uppercase font-mono text-white font-semibold tracking-wider">Active Escrow</span>
+            <Sparkles className="h-3.5 w-3.5 text-[#DAF99C]" />
           </div>
           <div className="text-xl font-mono font-bold text-white mt-1">${(activeAmount + inReviewAmount).toFixed(2)}</div>
-          <div className="text-[10px] text-blue-300/80 mt-0.5">Deliverable under inspection</div>
+          <div className="text-[10px] text-zinc-400 mt-0.5">Deliverable under inspection</div>
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5 flex flex-col justify-between">
+        <div className="rounded-xl border border-white/10 bg-[#25272B]/60 p-3.5 flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase font-mono text-zinc-400 font-semibold tracking-wider">Locked Tranches</span>
             <Lock className="h-3.5 w-3.5 text-zinc-400" />
@@ -214,18 +214,18 @@ export default function GanttBoard({
       </div>
 
       {/* Interactive Day Scrubber Bar */}
-      <div className="relative z-10 rounded-xl border border-white/10 bg-[#070A11] p-3.5 space-y-2">
+      <div className="relative z-10 rounded-xl border border-white/10 bg-[#161719] p-3.5 space-y-2">
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
-            <Sliders className="h-3.5 w-3.5 text-cyan-400" />
+            <Sliders className="h-3.5 w-3.5 text-[#DAF99C]" />
             <span className="font-semibold text-white">Timeline Scrubber:</span>
-            <span className="font-mono text-cyan-400 font-bold">Day {currentDay} of {totalDays}</span>
+            <span className="font-mono text-[#DAF99C] font-bold">Day {currentDay} of {totalDays}</span>
           </div>
           <div className="text-[11px] font-mono text-zinc-400">
             {currentDay <= 3 ? (
-              <span className="text-emerald-400 font-semibold">Tranche 1 completed &bull; Payout executed</span>
+              <span className="text-[#DAF99C] font-semibold">Tranche 1 completed &bull; Payout executed</span>
             ) : currentDay <= 7 ? (
-              <span className="text-blue-400 font-semibold">Tranche 2 in progress &bull; Live preview audited</span>
+              <span className="text-white font-semibold">Tranche 2 in progress &bull; Live preview audited</span>
             ) : (
               <span className="text-zinc-400">Tranche 3 scheduled &bull; Production transfer</span>
             )}
@@ -239,7 +239,7 @@ export default function GanttBoard({
             max={totalDays}
             value={currentDay}
             onChange={(e) => setCurrentDay(Number(e.target.value))}
-            className="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+            className="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#DAF99C]"
           />
         </div>
 
@@ -263,7 +263,7 @@ export default function GanttBoard({
                 <span
                   key={d}
                   className={`transition-colors ${
-                    d === currentDay ? "text-cyan-400 font-bold" : "text-zinc-500"
+                    d === currentDay ? "text-[#DAF99C] font-bold" : "text-zinc-500"
                   }`}
                 >
                   D{d}
@@ -278,8 +278,6 @@ export default function GanttBoard({
               const isSelected = selectedId === m.id;
               const widthPct = Math.max(16, (m.durationDays / totalDays) * 100);
               const leftOffsetPct = (m.startDay / totalDays) * 100;
-              const isPastCurrentDay = currentDay >= m.endDay;
-              const isCurrentlyActiveInScrubber = currentDay >= m.startDay && currentDay <= m.endDay;
 
               return (
                 <div key={m.id} className="space-y-1">
@@ -290,35 +288,35 @@ export default function GanttBoard({
                     }}
                     className={`grid grid-cols-12 items-center gap-3 rounded-xl border p-3.5 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer select-none ${
                       isSelected
-                        ? "border-sky-500/70 bg-[#111827] shadow-lg shadow-sky-500/10"
-                        : "border-white/10 bg-[#0B0F19]/80 hover:border-white/20 hover:bg-[#111827]/60"
+                        ? "border-[#DAF99C]/60 bg-[#25272B] shadow-lg shadow-[#DAF99C]/5"
+                        : "border-white/10 bg-[#1F2023] hover:border-white/20 hover:bg-[#25272B]/60"
                     }`}
                   >
                     {/* Left Column: Tranche Info */}
                     <div className="col-span-4 space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="flex h-5 w-5 items-center justify-center rounded-md bg-white/10 text-[10px] font-mono font-bold text-zinc-300">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#2E3036] text-[10px] font-mono font-bold text-zinc-300">
                           M{m.order}
                         </span>
                         <span className="text-sm font-semibold text-white truncate">{m.title}</span>
                       </div>
 
                       <div className="flex items-center gap-2 text-xs">
-                        <span className="font-mono font-bold text-emerald-400">
+                        <span className="font-mono font-bold text-[#DAF99C]">
                           ${m.amount.toFixed(2)}
                         </span>
                         <span className="text-zinc-600">&bull;</span>
                         <span className="text-zinc-400 font-mono">{m.durationDays} days</span>
                         <span className="text-zinc-600">&bull;</span>
                         <span
-                          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-mono font-medium ${
+                          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-mono font-semibold ${
                             m.status === "PAID"
-                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
+                              ? "bg-[#DAF99C] text-[#0E1012]"
                               : m.status === "ACTIVE"
-                              ? "bg-blue-500/10 text-blue-400 border border-blue-500/30"
+                              ? "bg-white text-[#0E1012]"
                               : m.status === "IN_REVIEW"
-                              ? "bg-amber-500/10 text-amber-400 border border-amber-500/30"
-                              : "bg-zinc-800 text-zinc-400 border border-zinc-700"
+                              ? "bg-[#FBBF24] text-[#0E1012]"
+                              : "bg-[#25272B] text-zinc-400 border border-zinc-700"
                           }`}
                         >
                           {m.status === "PAID" && <Check className="h-3 w-3" />}
@@ -342,7 +340,7 @@ export default function GanttBoard({
                       {/* Scrubber Position Indicator Line */}
                       <div
                         style={{ left: `${(currentDay / totalDays) * 100}%` }}
-                        className="absolute top-0 bottom-0 w-0.5 bg-cyan-400 shadow-[0_0_8px_#38BDF8] z-20 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                        className="absolute top-0 bottom-0 w-0.5 bg-[#DAF99C] shadow-[0_0_10px_#DAF99C] z-20 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
                       />
 
                       {/* Timeline Milestone Block */}
@@ -351,17 +349,17 @@ export default function GanttBoard({
                           marginLeft: `${Math.min(84, leftOffsetPct)}%`,
                           width: `${Math.min(100 - leftOffsetPct, widthPct)}%`,
                         }}
-                        className={`relative h-8 rounded-md px-3 flex items-center justify-between text-xs font-medium transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-md ${
+                        className={`relative h-8 rounded-md px-3 flex items-center justify-between text-xs font-semibold transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-md ${
                           m.status === "PAID"
-                            ? "bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-emerald-900/30"
+                            ? "bg-[#DAF99C] text-[#0E1012]"
                             : m.status === "ACTIVE"
-                            ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-blue-900/40 border border-blue-400/30"
+                            ? "bg-white text-[#0E1012] border border-[#DAF99C]/50"
                             : m.status === "IN_REVIEW"
-                            ? "bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-amber-900/30"
-                            : "bg-zinc-800 text-zinc-400 border border-zinc-700"
+                            ? "bg-[#FBBF24] text-[#0E1012]"
+                            : "bg-[#25272B] text-zinc-400 border border-zinc-700"
                         }`}
                       >
-                        <span className="truncate text-[11px] font-semibold">
+                        <span className="truncate text-[11px] font-bold">
                           {m.status === "PAID"
                             ? "Paid via PayPal"
                             : m.status === "ACTIVE"
@@ -374,9 +372,9 @@ export default function GanttBoard({
                         {m.status === "LOCKED" ? (
                           <Lock className="h-3 w-3 flex-shrink-0 text-zinc-400 ml-1" />
                         ) : m.status === "PAID" ? (
-                          <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0 text-white ml-1" />
+                          <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0 text-[#0E1012] ml-1" />
                         ) : (
-                          <ArrowRight className="h-3 w-3 flex-shrink-0 text-white ml-1" />
+                          <ArrowRight className="h-3 w-3 flex-shrink-0 text-[#0E1012] ml-1" />
                         )}
                       </div>
                     </div>
@@ -385,7 +383,7 @@ export default function GanttBoard({
                   {/* Animated Dependency Connector Chain */}
                   {index < milestonePlacements.length - 1 && (
                     <div className="flex items-center gap-2 pl-6 py-0.5 text-[11px] font-mono text-zinc-500">
-                      <svg className="w-5 h-4 text-cyan-400" viewBox="0 0 20 16" fill="none">
+                      <svg className="w-5 h-4 text-[#DAF99C]" viewBox="0 0 20 16" fill="none">
                         <path
                           d="M4 0 V10 H16 M12 6 L16 10 L12 14"
                           stroke="currentColor"
@@ -395,7 +393,7 @@ export default function GanttBoard({
                       </svg>
                       <span className="text-zinc-400 flex items-center gap-1.5">
                         <Lock className="h-3 w-3 text-zinc-500" />
-                        Tranche dependency lock: <strong className="text-zinc-300">M{index + 2}</strong> unlocks only upon <strong className="text-zinc-300">M{index + 1}</strong> verification
+                        Tranche dependency lock: <strong className="text-white">M{index + 2}</strong> unlocks only upon <strong className="text-white">M{index + 1}</strong> verification
                       </span>
                     </div>
                   )}
@@ -408,19 +406,19 @@ export default function GanttBoard({
 
       {/* Selected Tranche Detail Card */}
       {selectedMilestone && (
-        <div className="relative z-10 rounded-xl border border-white/10 bg-[#070A11] p-4 space-y-3">
+        <div className="relative z-10 rounded-xl border border-white/10 bg-[#161719] p-4 space-y-3">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-white/5 gap-2">
             <div className="flex items-center gap-2.5">
-              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-500/20 text-xs font-mono font-bold text-blue-400 border border-blue-500/30">
+              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[#DAF99C] text-xs font-mono font-bold text-[#0E1012]">
                 M{selectedMilestone.order}
               </span>
               <span className="text-sm font-semibold text-white">{selectedMilestone.title}</span>
             </div>
 
             <div className="flex items-center gap-3 text-xs font-mono">
-              <span className="text-emerald-400 font-bold">${selectedMilestone.amount.toFixed(2)} USD</span>
+              <span className="text-[#DAF99C] font-bold">${selectedMilestone.amount.toFixed(2)} USD</span>
               {selectedMilestone.payoutBatchId && (
-                <span className="text-[11px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 px-2 py-0.5 rounded-md">
                   PayPal Batch: {selectedMilestone.payoutBatchId}
                 </span>
               )}
@@ -436,12 +434,12 @@ export default function GanttBoard({
               Inspection Verification Criteria:
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-              <div className="flex items-center gap-2 rounded-lg border border-white/5 bg-white/[0.02] p-2 text-zinc-300">
-                <Check className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
+              <div className="flex items-center gap-2 rounded-lg border border-white/5 bg-[#25272B]/60 p-2 text-zinc-200">
+                <Check className="h-3.5 w-3.5 text-[#DAF99C] flex-shrink-0" />
                 <span>HTTP 200 Live Preview URL Crawl</span>
               </div>
-              <div className="flex items-center gap-2 rounded-lg border border-white/5 bg-white/[0.02] p-2 text-zinc-300">
-                <Check className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
+              <div className="flex items-center gap-2 rounded-lg border border-white/5 bg-[#25272B]/60 p-2 text-zinc-200">
+                <Check className="h-3.5 w-3.5 text-[#DAF99C] flex-shrink-0" />
                 <span>Responsive Viewport &amp; Form Element Audit</span>
               </div>
             </div>
@@ -452,10 +450,10 @@ export default function GanttBoard({
       {/* Reschedule Modal (Bryntum Challenge Prompt #6) */}
       {showRescheduleModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-          <div className="luxury-card max-w-md w-full p-6 space-y-4 border-zinc-700 bg-[#0B0F19] shadow-2xl">
+          <div className="luxury-card max-w-md w-full p-6 space-y-4 border-white/10 bg-[#1C1D20] shadow-2xl">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                <RefreshCw className="h-4 w-4 text-blue-400" />
+                <RefreshCw className="h-4 w-4 text-[#DAF99C]" />
                 <span>Agent-Driven Rescheduler (Bryntum #6)</span>
               </div>
               <button
@@ -483,9 +481,9 @@ export default function GanttBoard({
                     max="7"
                     value={rescheduleDays}
                     onChange={(e) => setRescheduleDays(Number(e.target.value))}
-                    className="flex-1 accent-blue-500"
+                    className="flex-1 accent-[#DAF99C]"
                   />
-                  <span className="text-sm font-mono font-bold text-blue-400 w-12 text-right">
+                  <span className="text-sm font-mono font-bold text-[#DAF99C] w-12 text-right">
                     +{rescheduleDays}d
                   </span>
                 </div>
@@ -499,7 +497,7 @@ export default function GanttBoard({
                   type="text"
                   value={rescheduleReason}
                   onChange={(e) => setRescheduleReason(e.target.value)}
-                  className="w-full rounded-lg border border-white/10 bg-black/60 p-2 text-xs text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-white/10 bg-black/60 p-2 text-xs text-white focus:border-[#DAF99C] focus:outline-none"
                 />
               </div>
             </div>
@@ -516,7 +514,7 @@ export default function GanttBoard({
                 type="button"
                 disabled={isRescheduling}
                 onClick={handleTriggerReschedule}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 px-4 py-2 text-xs font-semibold text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] disabled:opacity-50"
+                className="lime-button inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] disabled:opacity-50"
               >
                 <RefreshCw className={`h-3.5 w-3.5 ${isRescheduling ? "animate-spin" : ""}`} />
                 {isRescheduling ? "Recalculating..." : "Apply Reschedule"}
