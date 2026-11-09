@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Calendar,
   Lock,
@@ -15,6 +15,12 @@ import {
   GitCommit,
   AlertTriangle,
   X,
+  Play,
+  RotateCcw,
+  Sliders,
+  Check,
+  ChevronRight,
+  ExternalLink,
 } from "lucide-react";
 
 export interface GanttMilestone {
@@ -53,9 +59,10 @@ export default function GanttBoard({
   const [rescheduleReason, setRescheduleReason] = useState("Client requested design revision on responsive layout");
   const [isRescheduling, setIsRescheduling] = useState(false);
 
-  // Calculate timeline start and total duration in days
+  // Interactive timeline scrubber state (Simulate project progression)
   const totalDays = milestones.reduce((sum, m) => sum + m.durationDays, 0) || 10;
-  const daysArray = Array.from({ length: totalDays + 2 }, (_, i) => i + 1);
+  const [currentDay, setCurrentDay] = useState(4); // Default to mid-project (Tranche 2 active)
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Calculate cumulative day offsets for each milestone
   let cumulativeDays = 0;
@@ -69,6 +76,17 @@ export default function GanttBoard({
     };
   });
 
+  // Auto-play scrubber simulation
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isPlaying) {
+      timer = setInterval(() => {
+        setCurrentDay((prev) => (prev >= totalDays ? 1 : prev + 1));
+      }, 1200);
+    }
+    return () => clearInterval(timer);
+  }, [isPlaying, totalDays]);
+
   const paidAmount = milestones
     .filter((m) => m.status === "PAID")
     .reduce((sum, m) => sum + m.amount, 0);
@@ -81,6 +99,12 @@ export default function GanttBoard({
     .filter((m) => m.status === "LOCKED")
     .reduce((sum, m) => sum + m.amount, 0);
 
+  const activeAmount = milestones
+    .filter((m) => m.status === "ACTIVE")
+    .reduce((sum, m) => sum + m.amount, 0);
+
+  const selectedMilestone = milestones.find((m) => m.id === selectedId) || milestones[0];
+
   function handleTriggerReschedule() {
     if (!onReschedule) return;
     setIsRescheduling(true);
@@ -92,86 +116,170 @@ export default function GanttBoard({
   }
 
   return (
-    <div className="trustflow-card p-6 md:p-8 space-y-6">
+    <div className="luxury-card-static p-6 md:p-8 space-y-7 border border-white/10 bg-[#0B0F19]/90 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
+      {/* Ambient background glow inside the board */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 filter blur-[80px] pointer-events-none rounded-full" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/10 filter blur-[80px] pointer-events-none rounded-full" />
+
       {/* Header & Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-zinc-800 gap-4">
+      <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between pb-5 border-b border-white/10 gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 mb-1">
-            <span className="h-2 w-2 rounded-full bg-blue-500" />
-            Bryntum Gantt Engine &bull; Tranche Dependency &amp; Rescheduling Model
+          <div className="inline-flex items-center gap-2 text-xs font-mono text-zinc-400 mb-1.5">
+            <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-400 font-semibold uppercase tracking-wider">Bryntum Gantt Engine</span>
+            <span className="text-zinc-600">&bull;</span>
+            <span className="text-zinc-400">Dependency Locks &amp; Dynamic Rescheduling</span>
           </div>
-          <h2 className="text-xl md:text-2xl font-semibold text-white tracking-tight">
+          <h3 className="text-xl md:text-2xl font-semibold text-white tracking-tight flex items-center gap-3">
             Interactive Milestone Timeline Board
-          </h2>
+            <span className="text-xs font-mono font-normal uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full">
+              Live Interactive
+            </span>
+          </h3>
           <p className="text-xs text-zinc-400 mt-1">
-            Downstream payment tranches are locked 🔒 until predecessor deliverables pass inspection.
+            Downstream payment tranches unlock 🔒 strictly after predecessor deliverables pass automated inspection.
           </p>
         </div>
 
-        {/* Reschedule Control for Sponsor Challenge Prompt #6 */}
-        {onReschedule && (
-          <div className="flex items-center gap-2">
+        {/* Action Controls Cluster */}
+        <div className="flex items-center flex-wrap gap-2.5">
+          {/* Interactive Scrubber Play Button */}
+          <button
+            type="button"
+            onClick={() => setIsPlaying(!isPlaying)}
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] px-3.5 py-1.5 text-xs text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-sm"
+          >
+            {isPlaying ? (
+              <>
+                <span className="h-2 w-2 rounded-sm bg-amber-400 animate-pulse" />
+                <span className="font-mono text-amber-300">Pause Simulation</span>
+              </>
+            ) : (
+              <>
+                <Play className="h-3 w-3 text-emerald-400 fill-emerald-400" />
+                <span>Simulate Timeline Flow</span>
+              </>
+            )}
+          </button>
+
+          {/* Reschedule Control for Sponsor Challenge Prompt #6 */}
+          {onReschedule && (
             <button
               type="button"
               onClick={() => setShowRescheduleModal(true)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/90 hover:border-zinc-700 px-3 py-1.5 text-xs text-zinc-200 transition-quick active:scale-95 shadow-sm"
+              className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 px-3.5 py-1.5 text-xs text-blue-300 font-medium transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-sm shadow-blue-500/10"
               title="Bryntum Agent-Driven Rescheduler (Shifts downstream deadlines upon revision)"
             >
               <RefreshCw className="h-3.5 w-3.5 text-blue-400" />
               <span>Agent Rescheduler (Bryntum #6)</span>
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      {/* Tranche Cashflow Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="rounded-xl border border-emerald-900/40 bg-emerald-950/20 p-3.5 flex items-center justify-between">
-          <div>
-            <div className="text-[10px] uppercase font-mono text-emerald-400 font-semibold">Disbursed Tranches</div>
-            <div className="text-lg font-mono font-bold text-white">${paidAmount.toFixed(2)}</div>
-          </div>
-          <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+      {/* Tranche Cashflow Breakdown Matrix */}
+      <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5 flex flex-col justify-between">
+          <div className="text-[10px] uppercase font-mono text-zinc-400 font-semibold tracking-wider">Total Project Budget</div>
+          <div className="text-xl font-mono font-bold text-white mt-1">${totalBudget.toFixed(2)}</div>
+          <div className="text-[10px] text-zinc-500 mt-0.5">100% Upfront PayPal Escrow</div>
         </div>
 
-        <div className="rounded-xl border border-amber-900/40 bg-amber-950/20 p-3.5 flex items-center justify-between">
-          <div>
-            <div className="text-[10px] uppercase font-mono text-amber-400 font-semibold">In Review (72h Timer)</div>
-            <div className="text-lg font-mono font-bold text-white">${inReviewAmount.toFixed(2)}</div>
+        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/[0.05] p-3.5 flex flex-col justify-between shadow-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] uppercase font-mono text-emerald-400 font-semibold tracking-wider">Disbursed (PAID)</span>
+            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
           </div>
-          <Clock className="h-5 w-5 text-amber-400" />
+          <div className="text-xl font-mono font-bold text-white mt-1">${paidAmount.toFixed(2)}</div>
+          <div className="text-[10px] text-emerald-400/80 mt-0.5">Disbursed via Payouts API</div>
         </div>
 
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3.5 flex items-center justify-between">
-          <div>
-            <div className="text-[10px] uppercase font-mono text-zinc-400 font-semibold">Locked in Escrow</div>
-            <div className="text-lg font-mono font-bold text-white">${lockedAmount.toFixed(2)}</div>
+        <div className="rounded-xl border border-blue-500/30 bg-blue-500/[0.05] p-3.5 flex flex-col justify-between shadow-sm">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] uppercase font-mono text-blue-400 font-semibold tracking-wider">Active Escrow</span>
+            <Sparkles className="h-3.5 w-3.5 text-blue-400" />
           </div>
-          <Lock className="h-5 w-5 text-zinc-400" />
+          <div className="text-xl font-mono font-bold text-white mt-1">${(activeAmount + inReviewAmount).toFixed(2)}</div>
+          <div className="text-[10px] text-blue-300/80 mt-0.5">Deliverable under inspection</div>
+        </div>
+
+        <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5 flex flex-col justify-between">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] uppercase font-mono text-zinc-400 font-semibold tracking-wider">Locked Tranches</span>
+            <Lock className="h-3.5 w-3.5 text-zinc-400" />
+          </div>
+          <div className="text-xl font-mono font-bold text-zinc-300 mt-1">${lockedAmount.toFixed(2)}</div>
+          <div className="text-[10px] text-zinc-500 mt-0.5">Awaiting predecessor finish</div>
+        </div>
+      </div>
+
+      {/* Interactive Day Scrubber Bar */}
+      <div className="relative z-10 rounded-xl border border-white/10 bg-[#070A11] p-3.5 space-y-2">
+        <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <Sliders className="h-3.5 w-3.5 text-cyan-400" />
+            <span className="font-semibold text-white">Timeline Scrubber:</span>
+            <span className="font-mono text-cyan-400 font-bold">Day {currentDay} of {totalDays}</span>
+          </div>
+          <div className="text-[11px] font-mono text-zinc-400">
+            {currentDay <= 3 ? (
+              <span className="text-emerald-400 font-semibold">Tranche 1 completed &bull; Payout executed</span>
+            ) : currentDay <= 7 ? (
+              <span className="text-blue-400 font-semibold">Tranche 2 in progress &bull; Live preview audited</span>
+            ) : (
+              <span className="text-zinc-400">Tranche 3 scheduled &bull; Production transfer</span>
+            )}
+          </div>
+        </div>
+
+        <div className="relative flex items-center pt-1 pb-1">
+          <input
+            type="range"
+            min="1"
+            max={totalDays}
+            value={currentDay}
+            onChange={(e) => setCurrentDay(Number(e.target.value))}
+            className="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+          />
+        </div>
+
+        <div className="flex justify-between text-[10px] font-mono text-zinc-500 px-1">
+          <span>Day 1 (Kickoff)</span>
+          <span>Day {Math.round(totalDays / 2)} (Mid-Sprint)</span>
+          <span>Day {totalDays} (Final Release)</span>
         </div>
       </div>
 
       {/* Gantt Visual Grid */}
-      <div className="overflow-x-auto pt-2">
-        <div className="min-w-[700px] space-y-4">
+      <div className="relative z-10 overflow-x-auto pt-1">
+        <div className="min-w-[720px] space-y-3">
           {/* Day Scale Header */}
-          <div className="grid grid-cols-12 gap-1 text-[11px] font-mono text-zinc-500 border-b border-zinc-800 pb-2">
-            <div className="col-span-4 text-left font-sans text-xs font-semibold text-zinc-400">
-              Tranche / Deliverable
+          <div className="grid grid-cols-12 gap-2 text-[11px] font-mono text-zinc-500 border-b border-white/10 pb-2.5">
+            <div className="col-span-4 text-left font-sans text-xs font-semibold text-zinc-300">
+              Tranche / Scope Breakdown
             </div>
-            <div className="col-span-8 flex justify-between px-2">
-              <span>Day 1 (Kickoff)</span>
-              <span>Day {Math.round(totalDays / 2)}</span>
-              <span>Day {totalDays} (Delivery)</span>
+            <div className="col-span-8 flex justify-between px-3 text-zinc-400">
+              {Array.from({ length: totalDays }, (_, i) => i + 1).map((d) => (
+                <span
+                  key={d}
+                  className={`transition-colors ${
+                    d === currentDay ? "text-cyan-400 font-bold" : "text-zinc-500"
+                  }`}
+                >
+                  D{d}
+                </span>
+              ))}
             </div>
           </div>
 
           {/* Milestone Gantt Rows */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             {milestonePlacements.map((m, index) => {
               const isSelected = selectedId === m.id;
-              const widthPct = Math.max(14, (m.durationDays / totalDays) * 100);
+              const widthPct = Math.max(16, (m.durationDays / totalDays) * 100);
               const leftOffsetPct = (m.startDay / totalDays) * 100;
+              const isPastCurrentDay = currentDay >= m.endDay;
+              const isCurrentlyActiveInScrubber = currentDay >= m.startDay && currentDay <= m.endDay;
 
               return (
                 <div key={m.id} className="space-y-1">
@@ -180,16 +288,16 @@ export default function GanttBoard({
                       setSelectedId(m.id);
                       if (onSelectMilestone) onSelectMilestone(m);
                     }}
-                    className={`grid grid-cols-12 items-center gap-2 rounded-xl border p-3.5 transition-quick cursor-pointer ${
+                    className={`grid grid-cols-12 items-center gap-3 rounded-xl border p-3.5 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer select-none ${
                       isSelected
-                        ? "border-blue-500/80 bg-zinc-900/90 shadow-md"
-                        : "border-zinc-800/80 bg-zinc-950/40 hover:border-zinc-700 hover:bg-zinc-900/40"
+                        ? "border-sky-500/70 bg-[#111827] shadow-lg shadow-sky-500/10"
+                        : "border-white/10 bg-[#0B0F19]/80 hover:border-white/20 hover:bg-[#111827]/60"
                     }`}
                   >
                     {/* Left Column: Tranche Info */}
                     <div className="col-span-4 space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-800 text-[10px] font-bold text-zinc-300">
+                        <span className="flex h-5 w-5 items-center justify-center rounded-md bg-white/10 text-[10px] font-mono font-bold text-zinc-300">
                           M{m.order}
                         </span>
                         <span className="text-sm font-semibold text-white truncate">{m.title}</span>
@@ -199,21 +307,21 @@ export default function GanttBoard({
                         <span className="font-mono font-bold text-emerald-400">
                           ${m.amount.toFixed(2)}
                         </span>
-                        <span className="text-zinc-500">&bull;</span>
-                        <span className="text-zinc-400">{m.durationDays}d</span>
-                        <span className="text-zinc-500">&bull;</span>
+                        <span className="text-zinc-600">&bull;</span>
+                        <span className="text-zinc-400 font-mono">{m.durationDays} days</span>
+                        <span className="text-zinc-600">&bull;</span>
                         <span
-                          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-mono font-medium ${
                             m.status === "PAID"
-                              ? "bg-emerald-950 text-emerald-400 border border-emerald-800/50"
+                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
                               : m.status === "ACTIVE"
-                              ? "bg-blue-950 text-blue-400 border border-blue-800/50 animate-pulse"
+                              ? "bg-blue-500/10 text-blue-400 border border-blue-500/30"
                               : m.status === "IN_REVIEW"
-                              ? "bg-amber-950 text-amber-400 border border-amber-800/50"
-                              : "bg-zinc-900 text-zinc-400 border border-zinc-800"
+                              ? "bg-amber-500/10 text-amber-400 border border-amber-500/30"
+                              : "bg-zinc-800 text-zinc-400 border border-zinc-700"
                           }`}
                         >
-                          {m.status === "PAID" && <CheckCircle2 className="h-3 w-3" />}
+                          {m.status === "PAID" && <Check className="h-3 w-3" />}
                           {m.status === "ACTIVE" && <Sparkles className="h-3 w-3" />}
                           {m.status === "IN_REVIEW" && <Clock className="h-3 w-3" />}
                           {m.status === "LOCKED" && <Lock className="h-3 w-3" />}
@@ -222,58 +330,72 @@ export default function GanttBoard({
                       </div>
                     </div>
 
-                    {/* Right Column: Interactive Gantt Bar */}
-                    <div className="col-span-8 relative h-10 bg-zinc-900/60 rounded-lg border border-zinc-800/50 p-1 flex items-center overflow-hidden">
-                      {/* Background Day Ticks */}
-                      <div className="absolute inset-0 flex justify-between pointer-events-none opacity-10">
-                        {daysArray.map((d) => (
-                          <div key={d} className="border-r border-zinc-600 h-full w-full" />
+                    {/* Right Column: Interactive Gantt Bar with Scrubber Cursor */}
+                    <div className="col-span-8 relative h-11 bg-black/40 rounded-lg border border-white/10 p-1 flex items-center overflow-hidden">
+                      {/* Vertical Grid Ticks */}
+                      <div className="absolute inset-0 flex justify-between pointer-events-none opacity-15">
+                        {Array.from({ length: totalDays }, (_, i) => (
+                          <div key={i} className="border-r border-zinc-500 h-full w-full" />
                         ))}
                       </div>
 
-                      {/* Timeline Bar */}
+                      {/* Scrubber Position Indicator Line */}
+                      <div
+                        style={{ left: `${(currentDay / totalDays) * 100}%` }}
+                        className="absolute top-0 bottom-0 w-0.5 bg-cyan-400 shadow-[0_0_8px_#38BDF8] z-20 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                      />
+
+                      {/* Timeline Milestone Block */}
                       <div
                         style={{
                           marginLeft: `${Math.min(84, leftOffsetPct)}%`,
                           width: `${Math.min(100 - leftOffsetPct, widthPct)}%`,
                         }}
-                        className={`relative h-7 rounded-md px-3 flex items-center justify-between text-xs font-medium transition-decelerate shadow-sm ${
+                        className={`relative h-8 rounded-md px-3 flex items-center justify-between text-xs font-medium transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-md ${
                           m.status === "PAID"
-                            ? "bg-emerald-600 text-white"
+                            ? "bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-emerald-900/30"
                             : m.status === "ACTIVE"
-                            ? "bg-blue-600 text-white shadow-blue-500/20"
+                            ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-blue-900/40 border border-blue-400/30"
                             : m.status === "IN_REVIEW"
-                            ? "bg-amber-600 text-white"
+                            ? "bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-amber-900/30"
                             : "bg-zinc-800 text-zinc-400 border border-zinc-700"
                         }`}
                       >
-                        <span className="truncate text-[11px]">
+                        <span className="truncate text-[11px] font-semibold">
                           {m.status === "PAID"
                             ? "Paid via PayPal"
                             : m.status === "ACTIVE"
-                            ? "Deliverable Ready"
+                            ? "In Progress &bull; Agent 2"
                             : m.status === "IN_REVIEW"
-                            ? "72h Client Review"
+                            ? "72h Silence-Means-Yes"
                             : `Locked (Dep: M${m.order - 1})`}
                         </span>
 
                         {m.status === "LOCKED" ? (
-                          <Lock className="h-3.5 w-3.5 flex-shrink-0 text-zinc-400 ml-1" />
+                          <Lock className="h-3 w-3 flex-shrink-0 text-zinc-400 ml-1" />
                         ) : m.status === "PAID" ? (
                           <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0 text-white ml-1" />
                         ) : (
-                          <ArrowRight className="h-3.5 w-3.5 flex-shrink-0 text-white ml-1" />
+                          <ArrowRight className="h-3 w-3 flex-shrink-0 text-white ml-1" />
                         )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Bryntum Dependency Indicator Line between Tranches */}
+                  {/* Animated Dependency Connector Chain */}
                   {index < milestonePlacements.length - 1 && (
-                    <div className="flex items-center gap-2 pl-6 py-0.5 text-[10px] font-mono text-zinc-600">
-                      <div className="h-2 w-px bg-zinc-700 ml-1" />
-                      <span className="text-zinc-500">
-                        ↳ Dependency Link: M{index + 2} unlocks only after M{index + 1} completes
+                    <div className="flex items-center gap-2 pl-6 py-0.5 text-[11px] font-mono text-zinc-500">
+                      <svg className="w-5 h-4 text-cyan-400" viewBox="0 0 20 16" fill="none">
+                        <path
+                          d="M4 0 V10 H16 M12 6 L16 10 L12 14"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          className="connector-flow"
+                        />
+                      </svg>
+                      <span className="text-zinc-400 flex items-center gap-1.5">
+                        <Lock className="h-3 w-3 text-zinc-500" />
+                        Tranche dependency lock: <strong className="text-zinc-300">M{index + 2}</strong> unlocks only upon <strong className="text-zinc-300">M{index + 1}</strong> verification
                       </span>
                     </div>
                   )}
@@ -284,27 +406,54 @@ export default function GanttBoard({
         </div>
       </div>
 
-      {/* Legend & Guarantees */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs text-zinc-400 border-t border-zinc-800">
-        <div className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-          <span>PAID: Autonomous PayPal Payout dispatched</span>
+      {/* Selected Tranche Detail Card */}
+      {selectedMilestone && (
+        <div className="relative z-10 rounded-xl border border-white/10 bg-[#070A11] p-4 space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-white/5 gap-2">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-500/20 text-xs font-mono font-bold text-blue-400 border border-blue-500/30">
+                M{selectedMilestone.order}
+              </span>
+              <span className="text-sm font-semibold text-white">{selectedMilestone.title}</span>
+            </div>
+
+            <div className="flex items-center gap-3 text-xs font-mono">
+              <span className="text-emerald-400 font-bold">${selectedMilestone.amount.toFixed(2)} USD</span>
+              {selectedMilestone.payoutBatchId && (
+                <span className="text-[11px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md">
+                  PayPal Batch: {selectedMilestone.payoutBatchId}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <p className="text-xs text-zinc-400 leading-relaxed">
+            {selectedMilestone.description}
+          </p>
+
+          <div className="space-y-1.5 pt-1">
+            <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 font-semibold">
+              Inspection Verification Criteria:
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div className="flex items-center gap-2 rounded-lg border border-white/5 bg-white/[0.02] p-2 text-zinc-300">
+                <Check className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
+                <span>HTTP 200 Live Preview URL Crawl</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-lg border border-white/5 bg-white/[0.02] p-2 text-zinc-300">
+                <Check className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
+                <span>Responsive Viewport &amp; Form Element Audit</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
-          <span>ACTIVE: Freelancer submits deliverable URL</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-          <span>72H TIMER: Auto-releases if client is silent</span>
-        </div>
-      </div>
+      )}
 
       {/* Reschedule Modal (Bryntum Challenge Prompt #6) */}
       {showRescheduleModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="trustflow-card max-w-md w-full p-6 space-y-4 border-zinc-700 bg-zinc-950 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+          <div className="luxury-card max-w-md w-full p-6 space-y-4 border-zinc-700 bg-[#0B0F19] shadow-2xl">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2 text-sm font-semibold text-white">
                 <RefreshCw className="h-4 w-4 text-blue-400" />
                 <span>Agent-Driven Rescheduler (Bryntum #6)</span>
@@ -334,7 +483,7 @@ export default function GanttBoard({
                     max="7"
                     value={rescheduleDays}
                     onChange={(e) => setRescheduleDays(Number(e.target.value))}
-                    className="flex-1"
+                    className="flex-1 accent-blue-500"
                   />
                   <span className="text-sm font-mono font-bold text-blue-400 w-12 text-right">
                     +{rescheduleDays}d
@@ -350,12 +499,12 @@ export default function GanttBoard({
                   type="text"
                   value={rescheduleReason}
                   onChange={(e) => setRescheduleReason(e.target.value)}
-                  className="w-full rounded-lg border border-zinc-800 bg-zinc-900 p-2 text-xs text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-white/10 bg-black/60 p-2 text-xs text-white focus:border-blue-500 focus:outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
               <button
                 type="button"
                 onClick={() => setShowRescheduleModal(false)}
@@ -367,7 +516,7 @@ export default function GanttBoard({
                 type="button"
                 disabled={isRescheduling}
                 onClick={handleTriggerReschedule}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 px-4 py-2 text-xs font-semibold text-white transition-quick active:scale-95 disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 px-4 py-2 text-xs font-semibold text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] disabled:opacity-50"
               >
                 <RefreshCw className={`h-3.5 w-3.5 ${isRescheduling ? "animate-spin" : ""}`} />
                 {isRescheduling ? "Recalculating..." : "Apply Reschedule"}

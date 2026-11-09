@@ -20,6 +20,10 @@ import {
   FileCheck,
   Send,
   Zap,
+  RefreshCw,
+  X,
+  MessageSquare,
+  HelpCircle,
 } from "lucide-react";
 import GanttBoard, { GanttMilestone } from "@/components/GanttBoard";
 
@@ -75,6 +79,8 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
+type ActiveRole = "ALL" | "CLIENT" | "FREELANCER";
+
 export default function ProjectCockpitPage({ params }: PageProps) {
   const resolvedParams = use(params);
   const contractId = resolvedParams.id;
@@ -82,6 +88,10 @@ export default function ProjectCockpitPage({ params }: PageProps) {
   const [contract, setContract] = useState<Contract | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  // Role simulation switcher (Client vs Freelancer vs Judge Demo)
+  const [activeRole, setActiveRole] = useState<ActiveRole>("ALL");
 
   // Funding state
   const [isFunding, setIsFunding] = useState(false);
@@ -95,6 +105,12 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
   // Manual Payout / Action state
   const [isProcessingAction, setIsProcessingAction] = useState(false);
+
+  // Client Revision Request Modal
+  const [showRevisionModal, setShowRevisionModal] = useState(false);
+  const [revisionFeedback, setRevisionFeedback] = useState("Please adjust mobile button padding and tweak hero copy per the design system.");
+  const [revisionDays, setRevisionDays] = useState(2);
+  const [isSubmittingRevision, setIsSubmittingRevision] = useState(false);
 
   async function fetchContract() {
     try {
@@ -121,7 +137,6 @@ export default function ProjectCockpitPage({ params }: PageProps) {
     setIsFunding(true);
     setError(null);
     try {
-      // Step 1: Create Order
       const createRes = await fetch("/api/paypal/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -130,7 +145,6 @@ export default function ProjectCockpitPage({ params }: PageProps) {
       const createData = await createRes.json();
       if (!createRes.ok) throw new Error(createData.error || "Order creation failed");
 
-      // Step 2: Capture Order into Platform Escrow
       const captureRes = await fetch("/api/paypal/capture-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -144,6 +158,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
         setSelectedMilestone(captureData.contract.milestones[0]);
       }
 
+      setSuccessMessage(`PayPal Escrow Funded! Captured $${captureData.contract.totalBudget.toFixed(2)} USD into platform custody.`);
       confetti({ particleCount: 75, spread: 60, origin: { y: 0.6 } });
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Funding failed");
@@ -176,17 +191,18 @@ export default function ProjectCockpitPage({ params }: PageProps) {
       setInspectionResult(data);
       setContract(data.contract);
 
-      // If instant payout triggered, fire confetti!
       if (data.inspectionResult?.status === "PASSED") {
+        setSuccessMessage(`All automated criteria verified! Disbursed $${data.contract.milestones.find((m: Milestone) => m.id === milestoneId)?.amount.toFixed(2)} via PayPal Payouts.`);
         confetti({
           particleCount: 120,
           spread: 80,
           origin: { y: 0.5 },
           colors: ["#10B981", "#3B82F6", "#F59E0B"],
         });
+      } else {
+        setSuccessMessage(`Deliverable inspected. Work flagged for client review under 72-Hour "Silence Means Yes" guarantee.`);
       }
 
-      // Update selected milestone
       const updatedM = data.contract.milestones.find((m: Milestone) => m.id === milestoneId);
       if (updatedM) setSelectedMilestone(updatedM);
     } catch (err: unknown) {
@@ -219,6 +235,11 @@ export default function ProjectCockpitPage({ params }: PageProps) {
       const updatedM = data.contract.milestones.find((m: Milestone) => m.id === milestoneId);
       if (updatedM) setSelectedMilestone(updatedM);
 
+      setSuccessMessage(
+        forceAutoRelease
+          ? `Milestone auto-released on 72h timeout! Funds sent via PayPal Payouts.`
+          : `Client approved deliverable! Payout disbursed via PayPal Payouts.`
+      );
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Payout execution failed");
@@ -227,7 +248,29 @@ export default function ProjectCockpitPage({ params }: PageProps) {
     }
   }
 
-  // Agent-Driven Rescheduling (Bryntum Sponsor Prompt #6)
+  // Client Revision Request & Agent Rescheduling (Bryntum Prompt #6)
+  async function handleSubmitRevision(milestoneId: string) {
+    setIsSubmittingRevision(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/milestones/reschedule", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contractId, delayDays: revisionDays }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Reschedule failed");
+      setContract(data.contract);
+      setShowRevisionModal(false);
+      setSuccessMessage(`Revision logged: "${revisionFeedback}". Bryntum Gantt schedule recalculated by +${revisionDays} days.`);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Revision submission failed");
+    } finally {
+      setIsSubmittingRevision(false);
+    }
+  }
+
+  // General Agent-Driven Reschedule Handler
   async function handleReschedule(delayDays: number) {
     try {
       const res = await fetch("/api/milestones/reschedule", {
@@ -238,6 +281,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Reschedule failed");
       setContract(data.contract);
+      setSuccessMessage(`Bryntum schedule recalculated: shifted downstream milestones by ${delayDays} days.`);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Reschedule failed");
     }
@@ -270,18 +314,15 @@ export default function ProjectCockpitPage({ params }: PageProps) {
     .filter((m) => m.status === "PAID")
     .reduce((sum, m) => sum + m.amount, 0);
 
-  const activeMilestone = contract.milestones.find((m) => m.status === "ACTIVE");
-  const inReviewMilestone = contract.milestones.find((m) => m.status === "IN_REVIEW");
-
   return (
-    <div className="min-h-screen bg-black text-zinc-100 py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#030712] text-zinc-100 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Navigation & Status Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-800 pb-4 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-4 gap-4">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white transition-quick"
+              className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white transition-colors"
             >
               <ChevronLeft className="h-4 w-4" />
               Overview
@@ -290,24 +331,72 @@ export default function ProjectCockpitPage({ params }: PageProps) {
             <span className="text-sm font-mono text-zinc-300 truncate max-w-xs">{contract.title}</span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/80 px-3 py-1 text-xs font-mono">
-              <span className={`h-2 w-2 rounded-full ${
-                contract.status === "COMPLETED"
-                  ? "bg-emerald-500"
-                  : contract.status === "FUNDED"
-                  ? "bg-blue-500 animate-pulse"
-                  : "bg-amber-500"
-              }`} />
-              <span>Contract: {contract.status}</span>
-            </div>
-
-            <div className="inline-flex items-center gap-1 text-xs font-mono text-zinc-400">
-              <span className="text-zinc-500">ID:</span>
-              <span>{contract.id.slice(0, 10)}...</span>
-            </div>
+          {/* Role Simulation Switcher */}
+          <div className="flex items-center gap-2 rounded-full border border-white/10 bg-[#0B0F19] p-1 text-xs font-medium shadow-sm">
+            <button
+              type="button"
+              onClick={() => setActiveRole("ALL")}
+              className={`rounded-full px-3.5 py-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                activeRole === "ALL"
+                  ? "bg-blue-600 text-white font-semibold shadow-md shadow-blue-600/30"
+                  : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              Demo / Judge View
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveRole("CLIENT")}
+              className={`rounded-full px-3.5 py-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                activeRole === "CLIENT"
+                  ? "bg-emerald-950/80 text-emerald-300 font-semibold border border-emerald-500/30"
+                  : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              Client: Sarah
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveRole("FREELANCER")}
+              className={`rounded-full px-3.5 py-1 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                activeRole === "FREELANCER"
+                  ? "bg-blue-950/80 text-cyan-300 font-semibold border border-blue-500/30"
+                  : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              Freelancer: Alex
+            </button>
           </div>
         </div>
+
+        {/* Role Helper Banner */}
+        {activeRole === "CLIENT" && (
+          <div className="rounded-xl border border-emerald-900/60 bg-emerald-950/20 p-4 text-xs text-emerald-300 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <User className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+              <span>
+                <strong>Viewing as Client ({contract.clientEmail}):</strong> You fund escrow upfront into PayPal. Review deliverable preview links, approve payouts, or request revisions.
+              </span>
+            </div>
+            <span className="font-mono text-[10px] uppercase text-emerald-400 bg-emerald-900/40 px-2 py-0.5 rounded">
+              Buyer Role
+            </span>
+          </div>
+        )}
+
+        {activeRole === "FREELANCER" && (
+          <div className="rounded-xl border border-blue-900/60 bg-blue-950/20 p-4 text-xs text-blue-300 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <User className="h-4 w-4 text-blue-400 flex-shrink-0" />
+              <span>
+                <strong>Viewing as Freelancer ({contract.freelancerEmail}):</strong> Complete active milestones, submit live staging URLs for Agent 2 AI inspection, and receive direct PayPal payouts.
+              </span>
+            </div>
+            <span className="font-mono text-[10px] uppercase text-blue-400 bg-blue-900/40 px-2 py-0.5 rounded">
+              Provider Role
+            </span>
+          </div>
+        )}
 
         {error && (
           <div className="rounded-xl border border-red-900/60 bg-red-950/40 p-4 text-sm text-red-300 flex items-center gap-3">
@@ -316,8 +405,24 @@ export default function ProjectCockpitPage({ params }: PageProps) {
           </div>
         )}
 
+        {successMessage && (
+          <div className="rounded-xl border border-emerald-900/60 bg-emerald-950/40 p-4 text-sm text-emerald-300 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-emerald-400" />
+              <span>{successMessage}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSuccessMessage(null)}
+              className="text-zinc-400 hover:text-white"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        )}
+
         {/* Contract Escrow Overview Banner */}
-        <div className="trustflow-card p-6 md:p-8 space-y-6">
+        <div className="luxury-card p-6 md:p-8 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-2 max-w-2xl">
               <div className="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 uppercase tracking-wider">
@@ -383,7 +488,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
         {/* Milestone Detail & Deliverable Inspection Section */}
         {selectedMilestone && (
-          <div className="trustflow-card p-6 md:p-8 space-y-6">
+          <div className="luxury-card p-6 md:p-8 space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-800 pb-4 gap-4">
               <div className="flex items-center gap-3">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600/20 text-blue-400 text-sm font-bold">
@@ -420,7 +525,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
             {/* Criteria Checklist */}
             <div className="space-y-3">
               <h4 className="text-xs uppercase tracking-wider font-semibold text-zinc-400">
-                Agreed Sign-Off Criteria & Verification Dossier
+                Agreed Sign-Off Criteria &amp; Verification Dossier
               </h4>
 
               <div className="grid grid-cols-1 gap-2.5">
@@ -454,21 +559,21 @@ export default function ProjectCockpitPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Action Zone: Deliverable Submission & Inspection */}
-            {selectedMilestone.status === "ACTIVE" && (
+            {/* Action Zone: Deliverable Submission & Inspection (Freelancer View / All) */}
+            {selectedMilestone.status === "ACTIVE" && (activeRole === "ALL" || activeRole === "FREELANCER") && (
               <div className="rounded-xl border border-blue-900/60 bg-blue-950/20 p-5 space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-sm font-semibold text-blue-300">
                     <Sparkles className="h-4 w-4 text-blue-400" />
                     <span>Submit Deliverable for Autonomous AI Inspection</span>
                   </div>
-                  <span className="text-xs font-mono text-zinc-400">Agent 2: Inspector Active</span>
+                  <span className="text-xs font-mono text-zinc-400">Agent 2: Inspector Ready</span>
                 </div>
 
                 <div className="space-y-3">
                   <div>
                     <label className="block text-xs text-zinc-300 font-medium mb-1">
-                      Live Preview URL or GitHub Staging Deployment
+                      Live Preview URL or Staging Deployment Link
                     </label>
                     <input
                       type="url"
@@ -522,25 +627,42 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                 </p>
 
                 <div className="flex flex-wrap gap-3 pt-1">
-                  <button
-                    type="button"
-                    disabled={isProcessingAction}
-                    onClick={() => handleReleasePayout(selectedMilestone.id, false)}
-                    className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 px-4 py-2 text-xs font-semibold text-white transition-quick active:scale-95 disabled:opacity-50"
-                  >
-                    <CheckCircle2 className="h-4 w-4" />
-                    {isProcessingAction ? "Processing..." : `Client Sign-Off: Release $${selectedMilestone.amount.toFixed(2)}`}
-                  </button>
+                  {/* Client Sign-off Action */}
+                  {(activeRole === "ALL" || activeRole === "CLIENT") && (
+                    <>
+                      <button
+                        type="button"
+                        disabled={isProcessingAction}
+                        onClick={() => handleReleasePayout(selectedMilestone.id, false)}
+                        className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 px-4 py-2 text-xs font-semibold text-white transition-quick active:scale-95 disabled:opacity-50"
+                      >
+                        <CheckCircle2 className="h-4 w-4" />
+                        {isProcessingAction ? "Processing..." : `Client Sign-Off: Release $${selectedMilestone.amount.toFixed(2)}`}
+                      </button>
 
-                  <button
-                    type="button"
-                    disabled={isProcessingAction}
-                    onClick={() => handleReleasePayout(selectedMilestone.id, true)}
-                    className="inline-flex items-center gap-2 rounded-lg border border-amber-800 bg-amber-950/60 hover:bg-amber-900/60 px-4 py-2 text-xs font-semibold text-amber-300 transition-quick active:scale-95 disabled:opacity-50"
-                  >
-                    <Zap className="h-4 w-4 text-amber-400" />
-                    Simulate 72h Timeout Expiration
-                  </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowRevisionModal(true)}
+                        className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 hover:bg-zinc-800 px-4 py-2 text-xs font-semibold text-zinc-200 transition-quick active:scale-95"
+                      >
+                        <MessageSquare className="h-4 w-4 text-blue-400" />
+                        Request Revision (Agent Rescheduler)
+                      </button>
+                    </>
+                  )}
+
+                  {/* Demo Helper */}
+                  {(activeRole === "ALL" || activeRole === "FREELANCER") && (
+                    <button
+                      type="button"
+                      disabled={isProcessingAction}
+                      onClick={() => handleReleasePayout(selectedMilestone.id, true)}
+                      className="inline-flex items-center gap-2 rounded-lg border border-amber-800 bg-amber-950/60 hover:bg-amber-900/60 px-4 py-2 text-xs font-semibold text-amber-300 transition-quick active:scale-95 disabled:opacity-50"
+                    >
+                      <Zap className="h-4 w-4 text-amber-400" />
+                      Simulate 72h Timeout Expiration
+                    </button>
+                  )}
                 </div>
               </div>
             )}
@@ -593,8 +715,84 @@ export default function ProjectCockpitPage({ params }: PageProps) {
             )}
           </div>
         )}
+
+        {/* Client Revision Modal */}
+        {showRevisionModal && selectedMilestone && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+            <div className="luxury-card max-w-lg w-full p-6 space-y-4 border-white/10 bg-[#0B0F19] shadow-2xl">
+              <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                  <MessageSquare className="h-4 w-4 text-blue-400" />
+                  <span>Request Deliverable Revision</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowRevisionModal(false)}
+                  className="text-zinc-500 hover:text-white"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Provide specific revision feedback to the freelancer. Trustflow's <strong>Bryntum Rescheduler</strong> will automatically shift downstream milestone deadlines so the freelancer is not penalized for turnaround time.
+              </p>
+
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-xs font-medium text-zinc-300 mb-1">
+                    Revision Details &amp; Feedback
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={revisionFeedback}
+                    onChange={(e) => setRevisionFeedback(e.target.value)}
+                    className="w-full rounded-lg border border-zinc-800 bg-zinc-900 p-2.5 text-xs text-white focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-zinc-300 mb-1">
+                    Gantt Timeline Extension for Downstream Tranches
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="range"
+                      min="1"
+                      max="7"
+                      value={revisionDays}
+                      onChange={(e) => setRevisionDays(Number(e.target.value))}
+                      className="flex-1"
+                    />
+                    <span className="text-sm font-mono font-bold text-blue-400 w-12 text-right">
+                      +{revisionDays}d
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => setShowRevisionModal(false)}
+                  className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={isSubmittingRevision}
+                  onClick={() => handleSubmitRevision(selectedMilestone.id)}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 px-4 py-2 text-xs font-semibold text-white transition-quick active:scale-95 disabled:opacity-50"
+                >
+                  <RefreshCw className={`h-3.5 w-3.5 ${isSubmittingRevision ? "animate-spin" : ""}`} />
+                  {isSubmittingRevision ? "Rescheduling..." : "Submit & Reschedule Gantt"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-

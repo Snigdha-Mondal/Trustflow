@@ -1,0 +1,134 @@
+{
+  "url": "http://localhost:3000",
+  "timestamp": "2026-11-09T18:49:37.288Z",
+  "htmlLength": 67547,
+  "domCounts": {
+    "sections": 7,
+    "headings": 14,
+    "buttons": 12,
+    "links": 16,
+    "inputs": 1
+  },
+  "typography": {
+    "textSizes": [
+      "text-[10px]",
+      "text-[11px]",
+      "text-base",
+      "text-lg",
+      "text-sm",
+      "text-xl",
+      "text-xs"
+    ],
+    "fontWeights": [
+      "font-bold",
+      "font-medium",
+      "font-normal",
+      "font-semibold"
+    ],
+    "fontFamilies": [
+      "font-mono",
+      "font-sans"
+    ],
+    "headingTokens": [
+      "body-1",
+      "body-2",
+      "heading-1",
+      "heading-2",
+      "title-1"
+    ],
+    "uniqueSizesCount": 7
+  },
+  "colors": {
+    "backgroundClasses": [
+      "bg-[#030712]",
+      "bg-[#050811]",
+      "bg-[#070A11]",
+      "bg-[#0B0F19]/80",
+      "bg-[#0B0F19]/90",
+      "bg-[#0F172A]/80",
+      "bg-[#111827]",
+      "bg-amber-500/10",
+      "bg-black",
+      "bg-black/40",
+      "bg-black/60",
+      "bg-black/70",
+      "bg-blue-500/10",
+      "bg-blue-500/20",
+      "bg-blue-500/[0.05]",
+      "bg-cyan-400",
+      "bg-emerald-400",
+      "bg-emerald-500/10",
+      "bg-emerald-500/20",
+      "bg-emerald-500/[0.05]",
+      "bg-gradient-to-br",
+      "bg-gradient-to-r",
+      "bg-white/10",
+      "bg-white/[0.02]",
+      "bg-white/[0.03]",
+      "bg-white/[0.04]",
+      "bg-zinc-800"
+    ],
+    "textColors": [
+      "text-amber-400",
+      "text-blue-300",
+      "text-blue-300/80",
+      "text-blue-400",
+      "text-cyan-400",
+      "text-emerald-300",
+      "text-emerald-400",
+      "text-emerald-400/80",
+      "text-white",
+      "text-zinc-100",
+      "text-zinc-200",
+      "text-zinc-300",
+      "text-zinc-400",
+      "text-zinc-500",
+      "text-zinc-600"
+    ],
+    "borderColors": [
+      "border-amber-500/20",
+      "border-blue-400/30",
+      "border-blue-500/20",
+      "border-blue-500/30",
+      "border-blue-500/50",
+      "border-blue-500/60",
+      "border-emerald-500/20",
+      "border-emerald-500/30",
+      "border-white/10",
+      "border-white/5",
+      "border-zinc-500",
+      "border-zinc-700"
+    ]
+  },
+  "frameAndGeometry": {
+    "radiiClasses": [
+      "rounded-2xl",
+      "rounded-full",
+      "rounded-lg",
+      "rounded-md",
+      "rounded-xl"
+    ],
+    "borderClasses": [
+      "border"
+    ],
+    "singleSidedBorders": []
+  },
+  "motionAndStates": {
+    "transitions": [
+      "animate-pulse",
+      "duration-300",
+      "duration-400",
+      "ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "transition-all",
+      "transition-colors",
+      "transition-transform"
+    ],
+    "hoverCount": 10,
+    "activeCount": 1,
+    "focusCount": 0,
+    "hasWordByWordScrollReveal": true,
+    "hasInteractiveScrubber": true,
+    "hasDependencyConnectors": true,
+    "hasAmbientGlowAndPhysics": true
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "url": "http://localhost:3000",
+  "timestamp": "2026-11-09T18:35:03.585Z",
+  "htmlLength": 57381,
+  "domCounts": {
+    "sections": 8,
+    "headings": 15,
+    "buttons": 7,
+    "links": 16,
+    "inputs": 0
+  },
+  "typography": {
+    "textSizes": [
+      "text-3xl",
+      "text-5xl",
+      "text-[10px]",
+      "text-[11px]",
+      "text-base",
+      "text-lg",
+      "text-sm",
+      "text-xl",
+      "text-xs"
+    ],
+    "fontWeights": [
+      "font-bold",
+      "font-medium",
+      "font-semibold"
+    ],
+    "fontFamilies": [
+      "font-mono",
+      "font-sans"
+    ],
+    "uniqueSizesCount": 9
+  },
+  "colors": {
+    "backgroundClasses": [
+      "bg-[#05070B]",
+      "bg-[#0B0F17]/80",
+      "bg-amber-500",
+      "bg-amber-950/20",
+      "bg-black",
+      "bg-black/60",
+      "bg-blue-500",
+      "bg-blue-500/10",
+      "bg-blue-500/20",
+      "bg-blue-500/[0.08]",
+      "bg-blue-600",
+      "bg-blue-950",
+      "bg-blue-950/[0.05]",
+      "bg-emerald-400",
+      "bg-emerald-500",
+      "bg-emerald-500/10",
+      "bg-emerald-500/20",
+      "bg-emerald-500/[0.06]",
+      "bg-emerald-600",
+      "bg-emerald-950",
+      "bg-emerald-950/20",
+      "bg-gradient-to-br",
+      "bg-gradient-to-r",
+      "bg-red-400",
+      "bg-red-950/[0.04]",
+      "bg-white/[0.02]",
+      "bg-white/[0.03]",
+      "bg-white/[0.04]",
+      "bg-zinc-700",
+      "bg-zinc-800",
+      "bg-zinc-900",
+      "bg-zinc-900/40",
+      "bg-zinc-900/60",
+      "bg-zinc-900/90",
+      "bg-zinc-950/40"
+    ],
+    "textColors": [
+      "text-amber-400",
+      "text-blue-300",
+      "text-blue-400",
+      "text-emerald-300",
+      "text-emerald-400",
+      "text-red-400",
+      "text-white",
+      "text-zinc-100",
+      "text-zinc-200",
+      "text-zinc-300",
+      "text-zinc-400",
+      "text-zinc-500",
+      "text-zinc-600"
+    ],
+    "borderColors": [
+      "border-amber-900/40",
+      "border-blue-500/20",
+      "border-blue-500/30",
+      "border-blue-500/40",
+      "border-blue-500/80",
+      "border-blue-800/50",
+      "border-emerald-500/20",
+      "border-emerald-500/30",
+      "border-emerald-800/50",
+      "border-emerald-900/40",
+      "border-red-500/20",
+      "border-white/10",
+      "border-white/5",
+      "border-zinc-600",
+      "border-zinc-700",
+      "border-zinc-800",
+      "border-zinc-800/50",
+      "border-zinc-800/80"
+    ]
+  },
+  "frameAndGeometry": {
+    "radiiClasses": [
+      "rounded",
+      "rounded-2xl",
+      "rounded-full",
+      "rounded-lg",
+      "rounded-md",
+      "rounded-xl"
+    ],
+    "borderClasses": [
+      "border"
+    ],
+    "singleSidedBorders": []
+  },
+  "motionAndStates": {
+    "transitions": [
+      "animate-float",
+      "animate-ping",
+      "animate-pulse",
+      "duration-300",
+      "transition-all",
+      "transition-decelerate",
+      "transition-quick",
+      "transition-transform"
+    ],
+    "hoverCount": 7,
+    "activeCount": 1,
+    "focusCount": 0,
+    "hasWordByWordScrollReveal": false,
+    "hasStaggeredAnimations": false,
+    "hasPhysicsOrGlowEffects": false
+  }
+}

@@ -202,46 +202,46 @@ export default function WizardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-zinc-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#030712] text-zinc-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Navigation Bar */}
-        <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+        <div className="flex items-center justify-between border-b border-white/10 pb-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-quick"
+            className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors"
           >
             <ChevronLeft className="h-4 w-4" />
             Back to Home
           </Link>
-          <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase">
-            <ShieldCheck className="h-4 w-4 text-emerald-500" />
-            Agent 1: Scope & Milestone Clarifier
+          <div className="flex items-center gap-2 text-xs font-mono text-zinc-400 uppercase tracking-wider">
+            <ShieldCheck className="h-4 w-4 text-emerald-400" />
+            Agent 1: Scope &amp; Milestone Clarifier
           </div>
         </div>
 
         {/* Header */}
         <div className="space-y-2">
-          <h1 className="text-3xl md:text-4xl font-semibold hero-gradient-text tracking-tight">
+          <h1 className="heading-2 hero-gradient-text">
             Create Escrow Contract
           </h1>
-          <p className="text-base text-zinc-400">
+          <p className="body-1 text-zinc-400">
             Deconstruct unstructured project requirements into objective payment tranches with Gemini AI.
           </p>
         </div>
 
         {error && (
-          <div className="rounded-xl border border-red-900/60 bg-red-950/40 p-4 text-sm text-red-300 flex items-center gap-3">
+          <div className="rounded-xl border border-red-500/40 bg-red-950/30 p-4 text-sm text-red-300 flex items-center gap-3">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-400" />
             <span>{error}</span>
           </div>
         )}
 
         {/* Section 1: Project Intake */}
-        <div className="trustflow-card p-6 md:p-8 space-y-6">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
-            <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600/20 text-blue-400 text-xs font-bold">1</span>
-              Project Intake & Parties
+        <div className="luxury-card p-6 md:p-8 space-y-6">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <h2 className="title-1 text-white flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600/20 text-cyan-400 text-xs font-bold">1</span>
+              Project Intake &amp; Parties
             </h2>
             <span className="text-xs text-zinc-400 font-mono">Step 1 of 2</span>
           </div>
@@ -261,7 +261,7 @@ export default function WizardPage() {
                     setTotalBudget(tmpl.budget);
                     setProjectTitle(tmpl.label);
                   }}
-                  className="rounded-lg border border-zinc-800 bg-zinc-900/80 px-3 py-1.5 text-xs text-zinc-300 hover:border-zinc-700 hover:text-white transition-quick active:scale-[0.98]"
+                  className="rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs text-zinc-300 hover:border-sky-500/40 hover:text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
                 >
                   {tmpl.label} (${tmpl.budget})
                 </button>
@@ -279,7 +279,7 @@ export default function WizardPage() {
               value={brief}
               onChange={(e) => setBrief(e.target.value)}
               placeholder="Paste raw project brief, client emails, or feature requests..."
-              className="w-full rounded-xl border border-zinc-800 bg-zinc-900/90 p-4 text-sm text-white placeholder-zinc-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-xl border border-white/10 bg-black/60 p-4 text-sm text-white placeholder-zinc-500 focus:border-sky-400 focus:outline-none focus:ring-1 focus:ring-sky-400"
             />
           </div>
 
@@ -295,7 +295,7 @@ export default function WizardPage() {
                   step="10"
                   value={totalBudget}
                   onChange={(e) => setTotalBudget(Number(e.target.value))}
-                  className="w-full rounded-lg border border-zinc-800 bg-zinc-900/90 pl-7 pr-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-lg border border-white/10 bg-black/60 pl-7 pr-3 py-2 text-sm text-white focus:border-sky-400 focus:outline-none"
                 />
               </div>
             </div>
@@ -306,7 +306,7 @@ export default function WizardPage() {
                 type="email"
                 value={clientEmail}
                 onChange={(e) => setClientEmail(e.target.value)}
-                className="w-full rounded-lg border border-zinc-800 bg-zinc-900/90 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-lg border border-white/10 bg-black/60 px-3 py-2 text-sm text-white focus:border-sky-400 focus:outline-none"
               />
             </div>
 
@@ -316,7 +316,7 @@ export default function WizardPage() {
                 type="email"
                 value={freelancerEmail}
                 onChange={(e) => setFreelancerEmail(e.target.value)}
-                className="w-full rounded-lg border border-zinc-800 bg-zinc-900/90 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+                className="w-full rounded-lg border border-white/10 bg-black/60 px-3 py-2 text-sm text-white focus:border-sky-400 focus:outline-none"
               />
             </div>
           </div>
@@ -327,7 +327,7 @@ export default function WizardPage() {
               type="button"
               disabled={isGenerating}
               onClick={handleGeneratePlan}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-500 px-5 py-2.5 text-sm font-semibold text-white transition-decelerate active:scale-95 disabled:opacity-50"
+              className="shimmer-button inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 px-6 py-2.5 text-sm font-semibold text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] disabled:opacity-50 shadow-md shadow-blue-900/30"
             >
               <Sparkles className="h-4 w-4" />
               {isGenerating ? "Decomposing Brief with Gemini..." : "Deconstruct Brief with Agent 1"}
@@ -336,7 +336,7 @@ export default function WizardPage() {
         </div>
 
         {/* Section 2: Milestone Tranches Review */}
-        <div className="trustflow-card p-6 md:p-8 space-y-6">
+        <div className="luxury-card p-6 md:p-8 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-zinc-800 pb-4 gap-2">
             <div>
               <h2 className="text-xl font-semibold text-white flex items-center gap-2">
@@ -460,7 +460,7 @@ export default function WizardPage() {
           </div>
 
           {/* Submission Action */}
-          <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-zinc-800 gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between pt-4 border-t border-white/10 gap-4">
             <div className="text-xs text-zinc-400 flex items-center gap-2">
               <ShieldCheck className="h-4 w-4 text-emerald-400" />
               <span>Full budget captured upfront in PayPal Escrow. Disburses on verified completion.</span>
@@ -470,7 +470,7 @@ export default function WizardPage() {
               type="button"
               disabled={isSubmitting || !isBudgetBalanced}
               onClick={handleCreateContract}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-500 px-6 py-3 text-sm font-semibold text-white transition-decelerate active:scale-95 disabled:opacity-50"
+              className="shimmer-button w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] disabled:opacity-50 shadow-xl shadow-blue-900/40"
             >
               {isSubmitting ? "Creating Contract..." : "Proceed to Escrow Cockpit"}
               <ArrowRight className="h-4 w-4" />

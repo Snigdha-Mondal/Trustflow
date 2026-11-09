@@ -19,6 +19,15 @@ import {
   Globe,
   Code2,
   ExternalLink,
+  Cpu,
+  Check,
+  ChevronRight,
+  Terminal,
+  Play,
+  RotateCcw,
+  Sliders,
+  DollarSign,
+  AlertCircle,
 } from "lucide-react";
 import GanttBoard, { GanttMilestone } from "@/components/GanttBoard";
 
@@ -26,7 +35,7 @@ const INITIAL_DEMO_MILESTONES: GanttMilestone[] = [
   {
     id: "m1",
     order: 1,
-    title: "Design System & Wireframes",
+    title: "Design System, Wireframes & Scaffold",
     description: "Geist typography tokens, spacing scale, and mobile wireframes.",
     amount: 300,
     durationDays: 3,
@@ -36,7 +45,7 @@ const INITIAL_DEMO_MILESTONES: GanttMilestone[] = [
   {
     id: "m2",
     order: 2,
-    title: "Frontend Implementation (Next.js)",
+    title: "Frontend Implementation & Lead Forms",
     description: "Responsive hero, contact lead forms, and verified routes.",
     amount: 300,
     durationDays: 4,
@@ -54,8 +63,11 @@ const INITIAL_DEMO_MILESTONES: GanttMilestone[] = [
 ];
 
 export default function LandingPage() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(0); // Open first by default for quick objection handling
   const [landingMilestones, setLandingMilestones] = useState<GanttMilestone[]>(INITIAL_DEMO_MILESTONES);
+
+  // Interactive Live Escrow Simulator Step in Hero
+  const [simStep, setSimStep] = useState<1 | 2 | 3 | 4>(2);
 
   // Tagline reveal animation state (B11 in DESIGN.md)
   const taglineRef = useRef<HTMLDivElement>(null);
@@ -80,11 +92,11 @@ export default function LandingPage() {
               if (count >= taglineWords.length) {
                 clearInterval(interval);
               }
-            }, 80);
+            }, 60);
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.25 }
     );
 
     if (taglineRef.current) {
@@ -107,15 +119,15 @@ export default function LandingPage() {
   const FAQS = [
     {
       q: "How does Trustflow protect freelancers from being ghosted?",
-      a: "Trustflow enforces a 72-Hour Silence-Means-Yes guarantee. When you submit deliverables for a milestone containing subjective aesthetic checks, the client has 72 hours to review. If they take no action, the milestone funds in PayPal escrow automatically disburse to your PayPal email.",
+      a: "Trustflow enforces an ironclad 72-Hour Silence-Means-Yes guarantee. When you submit deliverables for a milestone containing subjective aesthetic checks, the client has 72 hours to review. If they go silent, the full milestone funds in PayPal escrow automatically disburse to your PayPal email.",
     },
     {
       q: "How does Trustflow protect clients from paying for broken work?",
-      a: "Clients fund the project upfront into escrow, but zero dollars are disbursed until the deliverable passes inspection. Agent 2 crawls your live URL, validates HTTP status codes, checks responsive tags, and parses DOM elements before any payout can execute.",
+      a: "Clients fund the project upfront into escrow, but zero dollars are disbursed until the deliverable passes inspection. Agent 2 crawls the live staging preview, validates HTTP status codes, checks responsive tags, and verifies form inputs before any payout can execute.",
     },
     {
       q: "What PayPal APIs are used behind the scenes?",
-      a: "Trustflow integrates two official PayPal APIs: the Orders API (v2) with intent CAPTURE to hold 100% of the project budget safely in platform escrow, and the Payouts API (v1) to disburse instant batch payouts directly to the freelancer's PayPal email upon milestone completion.",
+      a: "Trustflow integrates two official PayPal APIs: the Orders API (v2) with intent CAPTURE to hold 100% of the project budget safely in platform escrow custody, and the Payouts API (v1) to disburse instant batch payouts directly to the freelancer's PayPal email upon milestone completion.",
     },
     {
       q: "Can the AI Agent unilaterally fail a freelancer's work?",
@@ -132,28 +144,44 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-zinc-100 flex flex-col selection:bg-blue-600 selection:text-white">
-      {/* Floating Navigation Header (B7 in DESIGN.md) */}
-      <header className="fixed top-4 inset-x-0 z-50 max-w-4xl mx-auto px-4">
-        <nav className="flex items-center justify-between rounded-full border border-zinc-800 bg-zinc-950/80 backdrop-blur-md px-5 py-2.5 shadow-lg">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600 text-white font-bold text-sm">
+    <div className="relative min-h-screen bg-[#030712] text-zinc-100 flex flex-col overflow-hidden selection:bg-blue-600 selection:text-white">
+      {/* Top Ambient Radial Spotlight */}
+      <div className="ambient-glow-top" />
+
+      {/* Floating Capsule Dock Navigation */}
+      <header className="fixed top-5 inset-x-0 z-50 max-w-4xl mx-auto px-4">
+        <nav className="flex items-center justify-between rounded-full border border-white/10 bg-[#0B0F19]/80 backdrop-blur-2xl px-5 py-2.5 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.85)]">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white font-bold text-sm shadow-md shadow-blue-500/30 group-hover:scale-105 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]">
               T
             </span>
-            <span className="font-semibold text-base tracking-tight text-white">Trustflow</span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-base tracking-tight text-white">Trustflow</span>
+              <span className="text-[10px] font-mono uppercase bg-blue-500/10 text-cyan-400 border border-blue-500/20 px-2 py-0.5 rounded-full">
+                Escrow
+              </span>
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-6 text-xs font-medium text-zinc-400">
-            <a href="#how-it-works" className="hover:text-white transition-quick">How It Works</a>
-            <a href="#inspection" className="hover:text-white transition-quick">Inspection</a>
-            <a href="#timeline" className="hover:text-white transition-quick">Gantt Board</a>
-            <a href="#faq" className="hover:text-white transition-quick">FAQ</a>
+            <a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a>
+            <a href="#inspection" className="hover:text-white transition-colors">Inspection</a>
+            <a href="#timeline" className="hover:text-white transition-colors">Gantt Board</a>
+            <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
           </div>
 
           <div className="flex items-center gap-3">
             <Link
+              href="/demo"
+              className="hidden sm:inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-white px-2.5 py-1.5 transition-colors"
+            >
+              <span>Live Demo</span>
+              <ExternalLink className="h-3 w-3 text-cyan-400" />
+            </Link>
+
+            <Link
               href="/wizard"
-              className="rounded-full bg-blue-600 hover:bg-blue-500 px-4 py-1.5 text-xs font-semibold text-white transition-decelerate active:scale-95 shadow-sm"
+              className="shimmer-button rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-blue-600/30 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
             >
               Create Contract
             </Link>
@@ -161,71 +189,276 @@ export default function LandingPage() {
         </nav>
       </header>
 
-      {/* Hero Section (B5 in DESIGN.md: Headline max 680px, left-to-right text gradient) */}
-      <section className="pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center space-y-8">
-        <div className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-4 py-1.5 text-xs text-zinc-400">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-          PayPal AI Hackathon 2026 &bull; Bryntum Sponsor Track
+      {/* Hero Section */}
+      <section className="relative z-10 pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center space-y-8">
+        {/* Floating Pill Badge */}
+        <div className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md px-4 py-1.5 text-xs text-zinc-300 shadow-inner">
+          <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="font-medium text-zinc-200">Autonomous Freelance Escrow</span>
+          <span className="text-zinc-600">&bull;</span>
+          <span className="text-cyan-400 font-mono font-medium">PayPal Orders &amp; Payouts</span>
         </div>
 
-        <h1 className="text-5xl md:text-6xl font-semibold leading-none tracking-tight max-w-[680px] mx-auto hero-gradient-text">
-          Freelance milestone escrow without payment anxiety
+        {/* Hero Headline (Capped at 680px with Meaningful Line Breaks) */}
+        <h1 className="heading-1 hero-gradient-text max-w-[680px] mx-auto">
+          Freelance milestone escrow without payment anxiety or ghosting
         </h1>
 
-        <p className="text-base md:text-lg text-zinc-400 max-w-[680px] mx-auto leading-relaxed">
-          Lock client budget into PayPal escrow upfront. Decompose the brief into objective tranches with AI. When the code passes automated inspection, get paid instantly.
+        {/* Subheadline */}
+        <p className="body-1 text-zinc-400 max-w-[640px] mx-auto">
+          Lock client budget into PayPal escrow upfront. Decompose the brief into objective tranches with AI. When deliverables pass automated inspection, get paid instantly.
         </p>
 
-        {/* Primary CTA (One clear action above the fold per A4) */}
+        {/* Dual CTA Cluster */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
           <Link
             href="/wizard"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 px-6 py-3.5 text-base font-semibold text-white transition-decelerate active:scale-95 shadow-lg shadow-blue-900/20"
+            className="shimmer-button w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 px-7 py-3.5 text-base font-semibold text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-xl shadow-blue-900/30"
           >
             Create Escrow Contract
             <ArrowRight className="h-4 w-4" />
           </Link>
-          <a
-            href="#how-it-works"
-            className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900/80 hover:bg-zinc-800 px-6 py-3.5 text-base font-medium text-zinc-300 transition-decelerate"
+
+          <Link
+            href="/demo"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] backdrop-blur-md px-7 py-3.5 text-base font-medium text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
           >
-            Explore How It Works
-          </a>
+            <span>Explore Live Demo Cockpit</span>
+            <ExternalLink className="h-4 w-4 text-cyan-400" />
+          </Link>
         </div>
 
-        {/* Proof Signal (A2 in DESIGN.md) */}
-        <div className="pt-8 border-t border-zinc-900 flex flex-wrap items-center justify-center gap-8 text-xs font-mono text-zinc-500 uppercase tracking-wider">
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+        {/* Social Proof & Security Strip */}
+        <div className="pt-6 border-t border-white/5 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs font-mono text-zinc-400 uppercase tracking-wider">
+          <span className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
             100% Upfront PayPal Escrow
           </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+          <span className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
             72-Hour "Silence Means Yes"
           </span>
-          <span className="flex items-center gap-1.5">
-            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+          <span className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
             Bryntum Gantt Dependencies
           </span>
+        </div>
+
+        {/* Cinematic Live Escrow Simulation Terminal */}
+        <div className="pt-6 max-w-4xl mx-auto">
+          <div className="luxury-card p-6 md:p-8 text-left space-y-6">
+            {/* Top Bar with Contract ID and Step Switcher */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 gap-3">
+              <div className="flex items-center gap-3">
+                <span className="flex h-3 w-3 rounded-full bg-emerald-400 animate-pulse" />
+                <div>
+                  <span className="text-xs font-mono text-zinc-400 uppercase">Live Escrow Protocol &bull; Contract #demo-contract-2026</span>
+                  <h3 className="text-lg font-semibold text-white">Full-Stack SaaS Platform &amp; Mobile Lead Engine</h3>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-mono text-emerald-300 font-semibold shadow-sm">
+                  <CreditCard className="h-3.5 w-3.5" />
+                  <span>$900.00 USD Locked in PayPal</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Interactive Step Switcher (Demonstrating the 4 Engines) */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs text-zinc-400">
+                <span className="font-semibold text-zinc-300">Click a phase to test Trustflow autonomous logic:</span>
+                <span className="font-mono text-cyan-400">Step {simStep} of 4</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSimStep(1)}
+                  className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
+                    simStep === 1
+                      ? "border-emerald-500/60 bg-emerald-500/10 text-white shadow-md shadow-emerald-500/10"
+                      : "border-white/5 bg-white/[0.02] text-zinc-400 hover:border-white/10"
+                  }`}
+                >
+                  <div className="text-[10px] font-mono uppercase text-emerald-400 font-bold">Phase 1</div>
+                  <div className="text-xs font-semibold mt-0.5">Upfront Funding</div>
+                  <div className="text-[10px] text-zinc-500 font-mono">PayPal Orders API</div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSimStep(2)}
+                  className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
+                    simStep === 2
+                      ? "border-blue-500/60 bg-blue-500/10 text-white shadow-md shadow-blue-500/10"
+                      : "border-white/5 bg-white/[0.02] text-zinc-400 hover:border-white/10"
+                  }`}
+                >
+                  <div className="text-[10px] font-mono uppercase text-blue-400 font-bold">Phase 2</div>
+                  <div className="text-xs font-semibold mt-0.5">Deliverable Audit</div>
+                  <div className="text-[10px] text-zinc-500 font-mono">Agent 2 + Cheerio</div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSimStep(3)}
+                  className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
+                    simStep === 3
+                      ? "border-amber-500/60 bg-amber-500/10 text-white shadow-md shadow-amber-500/10"
+                      : "border-white/5 bg-white/[0.02] text-zinc-400 hover:border-white/10"
+                  }`}
+                >
+                  <div className="text-[10px] font-mono uppercase text-amber-400 font-bold">Phase 3</div>
+                  <div className="text-xs font-semibold mt-0.5">72h Auto-Release</div>
+                  <div className="text-[10px] text-zinc-500 font-mono">Anti-Ghosting Guard</div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSimStep(4)}
+                  className={`p-2.5 rounded-xl border text-left transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] ${
+                    simStep === 4
+                      ? "border-emerald-500/60 bg-emerald-500/10 text-white shadow-md shadow-emerald-500/10"
+                      : "border-white/5 bg-white/[0.02] text-zinc-400 hover:border-white/10"
+                  }`}
+                >
+                  <div className="text-[10px] font-mono uppercase text-emerald-400 font-bold">Phase 4</div>
+                  <div className="text-xs font-semibold mt-0.5">Instant Payout</div>
+                  <div className="text-[10px] text-zinc-500 font-mono">PayPal Payouts API</div>
+                </button>
+              </div>
+            </div>
+
+            {/* Tranche Preview Blocks */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {/* Tranche 1 */}
+              <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/[0.05] p-3.5 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-emerald-300">M1: Wireframes &amp; Scaffold</span>
+                  <span className="text-[10px] font-mono uppercase bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-md font-bold">
+                    PAID
+                  </span>
+                </div>
+                <div className="text-lg font-mono font-bold text-white">$300.00</div>
+                <p className="text-[11px] text-zinc-400">Disbursed via PayPal Payouts batch #78912</p>
+              </div>
+
+              {/* Tranche 2 */}
+              <div className={`rounded-xl border p-3.5 space-y-1.5 transition-all duration-300 ${
+                simStep === 2
+                  ? "border-blue-500/50 bg-blue-500/10 shadow-lg shadow-blue-500/10"
+                  : simStep === 3
+                  ? "border-amber-500/50 bg-amber-500/10"
+                  : simStep === 4
+                  ? "border-emerald-500/50 bg-emerald-500/10"
+                  : "border-blue-500/30 bg-blue-500/[0.05]"
+              }`}>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-blue-300">M2: Frontend Implementation</span>
+                  <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-md font-bold ${
+                    simStep === 4
+                      ? "bg-emerald-500/20 text-emerald-400"
+                      : simStep === 3
+                      ? "bg-amber-500/20 text-amber-400"
+                      : "bg-blue-500/20 text-blue-400"
+                  }`}>
+                    {simStep === 4 ? "PAID" : simStep === 3 ? "IN REVIEW" : "ACTIVE ⚡"}
+                  </span>
+                </div>
+                <div className="text-lg font-mono font-bold text-white">$300.00</div>
+                <p className="text-[11px] text-zinc-400">
+                  {simStep === 4
+                    ? "Payout executed to freelancer PayPal email"
+                    : simStep === 3
+                    ? "72-Hour timer active • Silence means yes"
+                    : "Deliverable preview URL under automated crawl"}
+                </p>
+              </div>
+
+              {/* Tranche 3 */}
+              <div className={`rounded-xl border p-3.5 space-y-1.5 ${
+                simStep === 4
+                  ? "border-blue-500/40 bg-blue-500/10"
+                  : "border-white/5 bg-white/[0.02] opacity-65"
+              }`}>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-zinc-400">M3: Production Handover</span>
+                  <span className="text-[10px] font-mono uppercase bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-md flex items-center gap-1">
+                    {simStep === 4 ? "UNLOCKED ⚡" : <><Lock className="h-2.5 w-2.5" /> LOCKED</>}
+                  </span>
+                </div>
+                <div className="text-lg font-mono font-bold text-zinc-300">$300.00</div>
+                <p className="text-[11px] text-zinc-500">
+                  {simStep === 4 ? "Now active for deliverable submission" : "Unlocks upon M2 completion"}
+                </p>
+              </div>
+            </div>
+
+            {/* Live Terminal Tracer Snippet */}
+            <div className="rounded-xl border border-white/10 bg-black/70 p-4 font-mono text-xs space-y-1.5 text-zinc-300">
+              <div className="flex items-center justify-between text-zinc-500 text-[11px] pb-1.5 border-b border-white/5">
+                <div className="flex items-center gap-2">
+                  <Terminal className="h-3.5 w-3.5 text-cyan-400" />
+                  <span className="text-zinc-400">Trustflow Autonomous Execution Tracer</span>
+                </div>
+                <span className="text-emerald-400 font-semibold">● LIVE SANDBOX</span>
+              </div>
+
+              {simStep === 1 && (
+                <div className="space-y-1">
+                  <div className="text-zinc-400">&gt; POST /v2/checkout/orders &rarr; intent: CAPTURE</div>
+                  <div className="text-emerald-400">&gt; Status: COMPLETED &bull; Order ID: 4T891238479210</div>
+                  <div className="text-cyan-400">&gt; Escrow Vault: $900.00 USD secured in platform custody</div>
+                </div>
+              )}
+
+              {simStep === 2 && (
+                <div className="space-y-1">
+                  <div className="text-emerald-400">&gt; GET https://preview-sample.vercel.app &rarr; 200 OK (142ms)</div>
+                  <div className="text-emerald-400">&gt; DOM audit: meta[name=&quot;viewport&quot;] responsive tags verified</div>
+                  <div className="text-emerald-400">&gt; DOM audit: form input[type=&quot;email&quot;] lead capture detected</div>
+                  <div className="text-cyan-400">&gt; Gemini Agent 2 confidence: 96.5% &bull; Objective criteria validated</div>
+                </div>
+              )}
+
+              {simStep === 3 && (
+                <div className="space-y-1">
+                  <div className="text-amber-400">&gt; Invariant: Subjective design review flagged for human client</div>
+                  <div className="text-amber-400">&gt; Timer initiated: 72:00:00 remaining on contract #demo-contract-2026</div>
+                  <div className="text-zinc-400">&gt; Guaranteed safety rule: Inaction triggers autonomous disbursement</div>
+                </div>
+              )}
+
+              {simStep === 4 && (
+                <div className="space-y-1">
+                  <div className="text-emerald-400">&gt; POST /v1/payments/payouts &rarr; batch_id: PAYOUTS_BATCH_78912</div>
+                  <div className="text-emerald-400">&gt; Disbursed $300.00 USD to freelancer@trustflow.dev</div>
+                  <div className="text-cyan-400">&gt; Bryntum Gantt Board: Milestone 2 set to PAID &bull; Milestone 3 UNLOCKED</div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Mandatory Tagline Reveal Section (B11 in DESIGN.md) */}
       <section
         ref={taglineRef}
-        className="py-24 px-4 sm:px-6 lg:px-8 border-y border-zinc-900 bg-black text-center"
+        className="relative py-28 px-4 sm:px-6 lg:px-8 border-y border-white/5 bg-[#050811] text-center"
       >
-        <div className="max-w-[680px] mx-auto space-y-4">
-          <p className="text-xs uppercase tracking-widest font-mono text-zinc-500 font-semibold">
-            The Trust Guarantee
+        <div className="max-w-[680px] mx-auto space-y-5">
+          <p className="text-xs uppercase tracking-widest font-mono text-cyan-400 font-semibold flex items-center justify-center gap-2">
+            <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
+            The Trustflow Guarantee
           </p>
-          <h2 className="text-3xl md:text-4xl font-semibold leading-snug">
+          <h2 className="heading-2 leading-snug tracking-tight">
             {taglineWords.map((word, idx) => {
               const isActive = idx < activeWordsCount;
               return (
                 <span
                   key={idx}
-                  className={`inline-block mr-2.5 transition-all duration-300 ${
+                  className={`inline-block mr-2.5 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                     isActive ? "opacity-100 text-white" : "opacity-25 text-zinc-600"
                   }`}
                 >
@@ -237,169 +470,122 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Problem to Solution Comparison (A2 in DESIGN.md) */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-12">
+      {/* Bento Grid Architecture: The Three Engines */}
+      <section id="how-it-works" className="py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-12">
         <div className="text-center space-y-3 max-w-[680px] mx-auto">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
-            Why traditional freelance escrow fails
+          <h2 className="heading-2 text-white">
+            How Trustflow eliminates freelance payment failure
           </h2>
-          <p className="text-sm md:text-base text-zinc-400">
-            Freelancers lose billions to delayed reviews and ghosting. Clients fear paying upfront for broken code.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Legacy Card */}
-          <div className="trustflow-card p-6 md:p-8 space-y-5 border-red-950/40 bg-zinc-950">
-            <div className="text-xs font-mono uppercase tracking-wider text-red-400 font-bold">
-              Legacy Platforms (Upwork, Escrow.com)
-            </div>
-            <ul className="space-y-3 text-xs md:text-sm text-zinc-400">
-              <li className="flex items-start gap-2.5">
-                <span className="text-red-500 font-bold">✕</span>
-                <span><strong>10% to 20% platform cut</strong> deducted from every invoice.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-red-500 font-bold">✕</span>
-                <span><strong>Endless client delays:</strong> Funds remain trapped until a human clicks approve.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-red-500 font-bold">✕</span>
-                <span><strong>Scope creep:</strong> Clients shift requirements mid-contract without compensation.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-red-500 font-bold">✕</span>
-                <span><strong>Ghosting nightmare:</strong> Weeks of customer support tickets if clients disappear.</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Trustflow Card */}
-          <div className="trustflow-card p-6 md:p-8 space-y-5 border-blue-900/50 bg-zinc-900/60 shadow-xl">
-            <div className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
-              <ShieldCheck className="h-4 w-4 text-emerald-400" />
-              Trustflow Escrow Protocol
-            </div>
-            <ul className="space-y-3 text-xs md:text-sm text-zinc-200">
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span><strong>Zero take rate:</strong> Keep 100% of your earnings; minimal standard PayPal processing.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span><strong>72-Hour "Silence Means Yes":</strong> Funds auto-release if the client goes silent.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span><strong>Locked criteria:</strong> Scope is immutable upfront; AI prevents feature bloat.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span><strong>Instant real fiat:</strong> PayPal Payouts API disburses cash straight to your account.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works: 3 Steps (A2 in DESIGN.md) */}
-      <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-zinc-900 max-w-5xl mx-auto space-y-12">
-        <div className="text-center space-y-3 max-w-[680px] mx-auto">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
-            How Trustflow works in three steps
-          </h2>
-          <p className="text-sm md:text-base text-zinc-400">
-            From raw client prompt to verified payout in hours, not weeks.
+          <p className="body-1 text-zinc-400">
+            Three interconnected engines replace arbitrary marketplace bureaucracy with deterministic code.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Step 1 */}
-          <div className="trustflow-card p-6 space-y-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600/20 text-blue-400 font-mono font-bold text-sm">
-              01
+          {/* Engine 1: Upfront Escrow */}
+          <div className="luxury-card p-7 space-y-4 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/10 text-cyan-400 border border-blue-500/20 font-mono font-bold text-base">
+                01
+              </div>
+              <h3 className="title-1 text-white">PayPal Upfront Custody</h3>
+              <p className="body-2 text-zinc-400">
+                Clients authorize 100% of the project budget upfront into PayPal escrow using the Orders API with intent CAPTURE. Freelancers build knowing every dollar is already locked in custody.
+              </p>
             </div>
-            <h3 className="text-base font-semibold text-white">AI Scope Decomposition</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              Agent 1 transforms raw project briefs into 3 objective milestone tranches. Automated criteria (HTTP, DOM, routes) are separated from subjective design review.
-            </p>
+            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-cyan-400 flex items-center gap-1.5">
+              <CreditCard className="h-3.5 w-3.5" />
+              <span>Orders API (v2) intent: CAPTURE</span>
+            </div>
           </div>
 
-          {/* Step 2 */}
-          <div className="trustflow-card p-6 space-y-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600/20 text-blue-400 font-mono font-bold text-sm">
-              02
+          {/* Engine 2: AI Deliverable Inspector */}
+          <div className="luxury-card p-7 space-y-4 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-bold text-base">
+                02
+              </div>
+              <h3 className="title-1 text-white">Autonomous Inspection</h3>
+              <p className="body-2 text-zinc-400">
+                When code or staging links are submitted, Cheerio crawls live HTTP status, viewport meta tags, and form fields, while Gemini AI audits objective criteria. Passing work triggers payouts instantly.
+              </p>
             </div>
-            <h3 className="text-base font-semibold text-white">Upfront PayPal Escrow</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              Client authorizes and captures 100% of the project budget upfront using the PayPal Orders API. The Bryntum Gantt board initializes with Milestone 1 active.
-            </p>
+            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
+              <Bot className="h-3.5 w-3.5" />
+              <span>Deterministic DOM &bull; Node Fetch</span>
+            </div>
           </div>
 
-          {/* Step 3 */}
-          <div className="trustflow-card p-6 space-y-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600/20 text-emerald-400 font-mono font-bold text-sm">
-              03
+          {/* Engine 3: 72-Hour Auto-Release */}
+          <div className="luxury-card p-7 space-y-4 flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20 font-mono font-bold text-base">
+                03
+              </div>
+              <h3 className="title-1 text-white">Silence Means Yes</h3>
+              <p className="body-2 text-zinc-400">
+                If deliverables require subjective design sign-off, a 72-hour countdown starts. If the client goes silent or delays review, milestone funds automatically disburse to the freelancer's PayPal account.
+              </p>
             </div>
-            <h3 className="text-base font-semibold text-white">Verified Autonomous Payout</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">
-              Freelancer submits preview URL. Agent 2 crawls and audits the work. Passing criteria trigger the PayPal Payouts API immediately, unlocking the next tranche.
-            </p>
+            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-amber-400 flex items-center gap-1.5">
+              <Clock className="h-3.5 w-3.5" />
+              <span>Guaranteed Anti-Ghosting Clock</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Section: Inspection Deep Dive (Anchor #inspection) */}
-      <section id="inspection" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-zinc-900 max-w-5xl mx-auto space-y-12">
+      <section id="inspection" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5 max-w-5xl mx-auto space-y-12">
         <div className="text-center space-y-3 max-w-[680px] mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-900/60 bg-blue-950/40 px-3 py-1 text-xs font-mono text-blue-400">
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3.5 py-1 text-xs font-mono text-cyan-400">
             <Bot className="h-3.5 w-3.5" />
             Agent 2 &bull; Multimodal Deliverable Inspector
           </div>
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
+          <h2 className="heading-2 text-white">
             Objective deliverable verification without human bias
           </h2>
-          <p className="text-sm md:text-base text-zinc-400">
+          <p className="body-1 text-zinc-400">
             AI reasons and audits, but deterministic code validates URLs and triggers payouts.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="trustflow-card p-6 space-y-4">
+          <div className="luxury-card p-7 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-950 text-emerald-400 border border-emerald-800/40">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                 <Globe className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-base font-semibold text-white">Deterministic DOM &amp; HTTP Crawl</h3>
+                <h3 className="title-1 text-white">Deterministic DOM &amp; HTTP Crawl</h3>
                 <p className="text-xs text-zinc-400">Node Fetch + Cheerio validation engine</p>
               </div>
             </div>
-            <p className="text-xs text-zinc-300 leading-relaxed">
+            <p className="body-2 text-zinc-300">
               When a deliverable URL is submitted, the crawler inspects HTTP response status (200 OK), checks the responsive viewport meta tag, verifies form inputs, and inspects routes before invoking the AI.
             </p>
-            <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-3 font-mono text-[11px] text-zinc-400 space-y-1">
-              <div className="text-emerald-400">✓ GET https://staging.preview.app &rarr; 200 OK (142ms)</div>
-              <div className="text-emerald-400">✓ meta[name="viewport"] responsive scale verified</div>
-              <div className="text-emerald-400">✓ form input[type="email"] lead capture present</div>
+            <div className="rounded-xl border border-white/10 bg-black/60 p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
+              <div className="text-emerald-400">&#10003; GET https://staging.preview.app &rarr; 200 OK (142ms)</div>
+              <div className="text-emerald-400">&#10003; meta[name=&quot;viewport&quot;] responsive scale verified</div>
+              <div className="text-emerald-400">&#10003; form input[type=&quot;email&quot;] lead capture present</div>
             </div>
           </div>
 
-          <div className="trustflow-card p-6 space-y-4">
+          <div className="luxury-card p-7 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-950 text-blue-400 border border-blue-800/40">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 text-cyan-400 border border-blue-500/20">
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-base font-semibold text-white">The 72h Silence-Means-Yes Safety Guard</h3>
+                <h3 className="title-1 text-white">The 72h Silence-Means-Yes Safety Guard</h3>
                 <p className="text-xs text-zinc-400">Guaranteed freelancer ghosting defense</p>
               </div>
             </div>
-            <p className="text-xs text-zinc-300 leading-relaxed">
+            <p className="body-2 text-zinc-300">
               AI can <strong>never</strong> unilaterally reject work. If criteria contain subjective aesthetics, the deliverable routes to client review with a 72-hour countdown timer. If the client is silent, funds auto-release.
             </p>
-            <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-3 font-mono text-[11px] text-zinc-400 space-y-1">
-              <div className="text-amber-400">⏳ In-Review: 72h countdown started for M2</div>
+            <div className="rounded-xl border border-white/10 bg-black/60 p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
+              <div className="text-amber-400">&#9203; In-Review: 72h countdown started for M2</div>
               <div className="text-zinc-400">&bull; Client approves &rarr; Instant PayPal Payout</div>
               <div className="text-zinc-400">&bull; Client silent &rarr; Auto-releases on timeout</div>
             </div>
@@ -408,16 +594,16 @@ export default function LandingPage() {
       </section>
 
       {/* Section: Bryntum Gantt Timeline Board Showcase (Anchor #timeline) */}
-      <section id="timeline" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-zinc-900 max-w-5xl mx-auto space-y-8">
+      <section id="timeline" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5 max-w-5xl mx-auto space-y-8">
         <div className="text-center space-y-3 max-w-[680px] mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-900/60 bg-emerald-950/40 px-3 py-1 text-xs font-mono text-emerald-400">
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1 text-xs font-mono text-emerald-400">
             <Layers className="h-3.5 w-3.5" />
             Bryntum Sponsor Track &bull; Challenge Prompts #1 &amp; #6
           </div>
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
+          <h2 className="heading-2 text-white">
             Interactive Bryntum Gantt Timeline Board
           </h2>
-          <p className="text-sm md:text-base text-zinc-400">
+          <p className="body-1 text-zinc-400">
             Sequential payment tranche dependency locks and automated agent-driven rescheduling. Test the live board below:
           </p>
         </div>
@@ -433,21 +619,21 @@ export default function LandingPage() {
         <div className="text-center pt-2">
           <Link
             href="/demo"
-            className="inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800/80 px-5 py-2.5 text-xs font-semibold text-zinc-200 transition-quick active:scale-95 shadow-sm"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] px-6 py-3 text-xs font-semibold text-zinc-200 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-md"
           >
             <span>Open Full Interactive Cockpit Demo</span>
-            <ExternalLink className="h-3.5 w-3.5 text-blue-400" />
+            <ExternalLink className="h-3.5 w-3.5 text-cyan-400" />
           </Link>
         </div>
       </section>
 
-      {/* FAQ Section (A2 in DESIGN.md: 6-12 questions) */}
-      <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-zinc-900 max-w-4xl mx-auto space-y-12">
-        <div className="text-center space-y-3">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
+      {/* FAQ Accordion Section (Anchor #faq) */}
+      <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5 max-w-4xl mx-auto space-y-12">
+        <div className="text-center space-y-3 max-w-[680px] mx-auto">
+          <h2 className="heading-2 text-white">
             Frequently asked questions
           </h2>
-          <p className="text-sm md:text-base text-zinc-400">
+          <p className="body-1 text-zinc-400">
             Everything you need to know about Trustflow escrow and autonomous payout releases.
           </p>
         </div>
@@ -458,18 +644,24 @@ export default function LandingPage() {
             return (
               <div
                 key={idx}
-                className="trustflow-card overflow-hidden transition-quick border-zinc-800"
+                className={`luxury-card overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  isOpen ? "border-sky-500/40 bg-[#0F172A]/80 shadow-lg shadow-sky-500/10" : "border-white/10"
+                }`}
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full flex items-center justify-between p-5 text-left text-sm font-semibold text-white hover:text-blue-400 transition-quick"
+                  className="w-full flex items-center justify-between p-5 text-left text-sm md:text-base font-semibold text-white hover:text-cyan-400 transition-colors"
                 >
-                  <span>{faq.q}</span>
-                  <ChevronDown className={`h-4 w-4 text-zinc-500 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                  <span className="pr-4">{faq.q}</span>
+                  <ChevronDown
+                    className={`h-4 w-4 text-zinc-400 flex-shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      isOpen ? "rotate-180 text-cyan-400" : ""
+                    }`}
+                  />
                 </button>
                 {isOpen && (
-                  <div className="px-5 pb-5 text-xs md:text-sm text-zinc-400 leading-relaxed border-t border-zinc-800/60 pt-3">
+                  <div className="px-5 pb-5 text-xs md:text-sm text-zinc-300 leading-relaxed border-t border-white/5 pt-3">
                     {faq.a}
                   </div>
                 )}
@@ -479,19 +671,19 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Final CTA Section (A2 & B1 in DESIGN.md: identical to top CTA) */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 border-t border-zinc-900 bg-zinc-950 text-center space-y-6">
+      {/* Final Risk-Reversal CTA Section */}
+      <section className="py-28 px-4 sm:px-6 lg:px-8 border-t border-white/5 bg-[#030712] text-center space-y-6">
         <div className="max-w-[680px] mx-auto space-y-4">
-          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight hero-gradient-text">
+          <h2 className="heading-2 hero-gradient-text">
             Start your next freelance contract with zero payment anxiety
           </h2>
-          <p className="text-sm md:text-base text-zinc-400 leading-relaxed">
+          <p className="body-1 text-zinc-400">
             Protect your time with locked upfront escrow, automated AI verification, and guaranteed PayPal payouts.
           </p>
           <div className="pt-2">
             <Link
               href="/wizard"
-              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 hover:bg-blue-500 px-7 py-3.5 text-base font-semibold text-white transition-decelerate active:scale-95 shadow-lg shadow-blue-900/20"
+              className="shimmer-button inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 px-8 py-4 text-base font-semibold text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] shadow-xl shadow-blue-900/40"
             >
               Create Escrow Contract
               <ArrowRight className="h-4 w-4" />
@@ -500,18 +692,18 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer (B10 ship requirements) */}
-      <footer className="border-t border-zinc-900 py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-4">
+      {/* High-Class Footer */}
+      <footer className="border-t border-white/5 py-10 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-4">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-zinc-300">Trustflow</span>
           <span>&copy; 2026. Built for PayPal AI Hackathon &amp; Bryntum Sponsor Track.</span>
         </div>
-        <div className="flex items-center gap-4 text-zinc-400">
-          <Link href="/wizard" className="hover:text-white transition-quick">Scope Wizard</Link>
-          <a href="#how-it-works" className="hover:text-white transition-quick">How It Works</a>
-          <a href="#inspection" className="hover:text-white transition-quick">Inspection</a>
-          <a href="#timeline" className="hover:text-white transition-quick">Gantt Board</a>
-          <a href="#faq" className="hover:text-white transition-quick">FAQ</a>
+        <div className="flex items-center gap-5 text-zinc-400">
+          <Link href="/wizard" className="hover:text-white transition-colors">Scope Wizard</Link>
+          <a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a>
+          <a href="#inspection" className="hover:text-white transition-colors">Inspection</a>
+          <a href="#timeline" className="hover:text-white transition-colors">Gantt Board</a>
+          <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
         </div>
       </footer>
     </div>
