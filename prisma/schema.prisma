@@ -1,0 +1,66 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Contract {
+  id              String      @id @default(cuid())
+  title           String
+  description     String
+  totalBudget     Float
+  currency        String      @default("USD")
+  clientEmail     String
+  freelancerEmail String
+  status          String      @default("DRAFT") // DRAFT, FUNDED, ACTIVE, COMPLETED, CANCELLED
+  paypalOrderId   String?
+  paypalCaptureId String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  milestones      Milestone[]
+}
+
+model Milestone {
+  id              String                  @id @default(cuid())
+  contractId      String
+  contract        Contract                @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  order           Int
+  title           String
+  description     String
+  amount          Float
+  durationDays    Int
+  status          String                  @default("LOCKED") // LOCKED, ACTIVE, SUBMITTED, IN_REVIEW, PAID
+  startDate       DateTime?
+  endDate         DateTime?
+  payoutBatchId   String?
+  reviewDeadline  DateTime?
+  criteria        Criterion[]
+  inspections     DeliverableInspection[]
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
+}
+
+model Criterion {
+  id          String    @id @default(cuid())
+  milestoneId String
+  milestone   Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+  text        String
+  isAutomated Boolean   @default(false)
+  passed      Boolean?
+  evidence    String?
+}
+
+model DeliverableInspection {
+  id           String    @id @default(cuid())
+  milestoneId  String
+  milestone    Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+  submittedUrl String
+  notes        String?
+  status       String    // PASSED, FLAGGED_FOR_HUMAN_REVIEW
+  confidence   Float
+  rawReport    String    // JSON text of inspection details
+  createdAt    DateTime  @default(now())
+}
