@@ -27,14 +27,14 @@ Work is split into phases. Each item is a small verified slice with a clear outc
 ## Phase 2: Agent 1 (Scope Clarifier) & Contract Creation
 **Exit Goal:** User can input a project brief, generate 3 balanced milestone tranches with separated automated vs subjective criteria, and persist the contract.
 
-- [ ] **2.1 Scope Clarifier API (`/api/milestones/generate`)**
+- [x] **2.1 Scope Clarifier API (`/api/milestones/generate`)**
   - Implement Agent 1 prompt enforcing de-scoper constraints (no hallucinated enterprise bloat; exact budget sums).
-- [ ] **2.2 Scope Clarifier Wizard UI**
+- [x] **2.2 Scope Clarifier Wizard UI**
   - Create interactive wizard allowing user to enter brief, preview AI-generated milestones, edit criteria, and adjust amounts.
-- [ ] **2.3 Contract Creation & Retrieval API (`/api/contracts`)**
+- [x] **2.3 Contract Creation & Retrieval API (`/api/contracts`)**
   - Save contract with nested milestones and criteria to SQLite.
   - Implement contract detail fetch endpoint (`/api/contracts/[id]`).
-- [ ] 🔒 **2.4 Phase 2 Review & Verification**
+- [x] 🔒 **2.4 Phase 2 Review & Verification**
   - Validate milestone generation with sample briefs; ensure sums match budget.
 
 ---

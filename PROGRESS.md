@@ -1,9 +1,9 @@
 # PROGRESS.md — Living Session Diary & Decisions Log
 
 ## Status
-- **Current Phase:** Phase 2 (Agent 1: Scope Clarifier & Contract Creation)
-- **Current Task:** 2.1 Scope Clarifier API (`/api/milestones/generate`)
-- **Overall Project State:** Green (Phase 1 verified and passed; database migrated, PayPal/Gemini client tested, Next.js 15 build green)
+- **Current Phase:** Phase 3 (PayPal Escrow Funding & Bryntum Gantt Board)
+- **Current Task:** 3.1 PayPal Checkout Integration (`/api/paypal/create-order` & `/api/paypal/capture-order`)
+- **Overall Project State:** Green (Phase 2 verified: Agent 1 Scope Clarifier, Wizard UI, and Contract APIs passing all 9 tests)
 
 ---
 
@@ -12,25 +12,23 @@
 ### 2026-11-09 (Session 1: Architectural Inception & Specifications)
 - Imported and established `MASTER_GUIDE.md` (22-section production blueprint for PayPal AI Hackathon).
 - Incorporated `elayadesign/ai-design-skills` (`skills/landing-page-design/SKILL.md` and `skills/figma-designer/SKILL.md`).
-- Authored the core DeftBench agent loop files:
-  - `AGENTS.md` (Front door with 8 golden rules, fixed decisions, where-to-find table).
-  - `CLAUDE.md` (Redirect to AGENTS.md).
-  - `ENGINEERING_PLAYBOOK.md` (Engineering manager: 9-step loop, DoR/DoD, stop signs, source of truth hierarchy, DeftBench lessons learned).
-  - `PRD.md` (Product Requirements Document: personas, functional scope, de-scoper constraints).
-  - `ARCHITECTURE.md` (Technical blueprint, Prisma SQLite schema, API contracts, PayPal & Gemini integration architectures).
-  - `DESIGN.md` (Design system: Geist font, type scale snapping, spacing tokens 0-900, corner radius formula, flat backgrounds, hero text gradient only, base deceleration curves, tagline reveal section).
-  - `BACKLOG.md` (Phased task slices with exit criteria and 🔒 review checkpoints).
+- Authored the core DeftBench agent loop files (`AGENTS.md`, `CLAUDE.md`, `ENGINEERING_PLAYBOOK.md`, `PRD.md`, `ARCHITECTURE.md`, `DESIGN.md`, `BACKLOG.md`).
 - Initialized `docs/` directories for ADRs, stories, plans, and manual tests.
 
 ### 2026-11-09 (Session 2: Phase 1 Foundation & Scaffolding)
 - Scaffolded Next.js 15 + TypeScript + Tailwind CSS with React 19.
-- Configured `tailwind.config.ts` and `src/app/globals.css` with exact design tokens from `DESIGN.md`.
-- Implemented Prisma schema with SQLite (`prisma/schema.prisma`) for `Contract`, `Milestone`, `Criterion`, and `DeliverableInspection`. Pushed schema and generated Prisma client.
-- Implemented `src/lib/paypal.ts`: OAuth2 access token caching, Orders creation/capture (`intent: CAPTURE`), and Payouts dispatch (`/v1/payments/payouts`) with strict idempotency.
-- Implemented `src/lib/gemini.ts`: Agent 1 (Scope Clarifier) with de-scoper constraints and budget math guarantees, and Agent 2 (Deliverable Inspector) with safety guardrails (cannot unilaterally reject work).
-- Implemented `src/lib/inspector.ts`: Cheerio + fetch crawler engine for DOM/HTTP validation.
-- Implemented unit test suite in `test/phase1.test.mjs` (7/7 tests passed).
-- Successfully executed `npm run build` (0 errors, optimized static generation).
+- Configured design tokens from `DESIGN.md` in `tailwind.config.ts` and `src/app/globals.css`.
+- Migrated Prisma schema with SQLite for `Contract`, `Milestone`, `Criterion`, and `DeliverableInspection`.
+- Implemented PayPal, Gemini, and crawler clients.
+- Automated unit test suite with 7 passing tests; Next.js 15 build green.
+
+### 2026-11-09 (Session 3: Phase 2 Scope Clarifier & Contract Wizard)
+- Implemented `POST /api/milestones/generate` for Agent 1 Scope Clarifier with mathematical budget sum checks and de-scoper bounds.
+- Implemented `POST /api/contracts` and `GET /api/contracts` with atomic transactions for nested milestones and criteria.
+- Implemented `GET /api/contracts/[id]` returning contract stats (paid, active, locked, in-review).
+- Built interactive Scope Clarifier Wizard UI (`src/app/wizard/page.tsx`) adhering strictly to `DESIGN.md` (Geist font, flat card backgrounds, template loaders, live budget balancer, criterion automated/subjective toggles).
+- Added Phase 2 tests in `test/phase2.test.mjs` (9/9 tests pass).
+- Full Next.js production build succeeded.
 
 ---
 
