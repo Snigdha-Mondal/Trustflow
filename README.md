@@ -145,7 +145,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ```bash
 npm test
 ```
-Runs 11 automated test fixtures verifying PayPal OAuth token caching, Orders capture, Payouts dispatch, de-scoper constraints, DOM crawler validation, and Gantt rescheduling.
+Runs 41 automated test fixtures (including the comprehensive 30-fixture evaluation benchmark) verifying PayPal OAuth token caching, Orders capture, Payouts dispatch, de-scoper constraints, DOM crawler validation, subjective routing, and Gantt rescheduling.
 
 ---
 
