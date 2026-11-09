@@ -85,3 +85,24 @@ Work is split into phases. Each item is a small verified slice with a clear outc
   - Implement tests covering PayPal auth, milestone math, URL inspection, and payout dispatch (11/11 tests pass).
 - [x] 🔒 **5.5 Phase 5 Final Acceptance & Video Script Verification**
   - End-to-end run of the 3-minute hackathon demo script with seeded demo contract.
+
+---
+
+## Phase 6: Freelancer Ghosting Protection & Agent 3 Continuity Engine
+**Exit Goal:** Client can claim an abandonment refund for milestones overdue >72 hours with no activity; PayPal refunds only unreleased balance; Agent 3 synthesizes completed deliverables into a turnkey Takeover Brief with one-click clipboard copy.
+
+- [x] **6.1 PayPal Escrow Refund Route (`/api/paypal/refund`)**
+  - PayPal Sandbox capture refund (`/v2/payments/captures/{id}/refund`) refunding only unreleased escrow balance (`totalBudget - sum(paidMilestones)`).
+  - Prior paid tranches remain safe with the freelancer.
+  - Contract updated to `ABANDONED_REFUNDED`, milestones to `ABANDONED`.
+- [x] **6.2 Agent 3 AI Continuity Handoff Generator (`/api/handoff/generate`)**
+  - Audits verified milestones, live preview URLs, passed criteria, and pending scope.
+  - Generates structured Takeover Brief with financial matrix, working state, remaining scope, and replacement action plan.
+  - Persists dossier into database (`Contract.handoffDossier`).
+- [x] **6.3 Gantt Board & Project Cockpit Upgrades**
+  - Bryntum Gantt renders pulsing `⚠️ INACTIVITY WARNING • 72h Overdue` badge on overdue tranches.
+  - Client action button: `"Claim Inactivity Refund & Generate Handoff"` with `"Simulate 72h Inactivity"` demo toggle.
+  - `TakeoverModal.tsx` displaying refund receipt, structured technical briefing, raw Markdown view, and `"Copy Handoff Brief"` button.
+- [x] 🔒 **6.4 Phase 6 Review & Test Suite Verification**
+  - `test/ghosting_protection.test.mjs` verifying refund math, database updates, and dossier generation. Full suite passing with 43/43 tests.
+
