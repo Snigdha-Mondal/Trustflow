@@ -121,3 +121,25 @@
    - TypeScript check passed (`npx tsc --noEmit` -> 0 errors).
    - Test suite passed with 100% success (`npm test` -> 41/41 passing).
 
+---
+
+## Session 5: Hero Refinements & Cult UI Fractal Dot Grid Integration
+**Date:** 2026-11-10
+**Goal:** Perfect the hero display typography, convert background cards into faint watermark shadows, and integrate Cult UI's kinetic FractalDotGrid interactive canvas.
+
+### Accomplishments:
+1. **Hero Typography & Bounds Fix:**
+   - Calibrated `.hero-display-title` font-size clamp to `clamp(2rem, 9.4vw, 7.8rem)` with `width: 100%`, `text-align: center`, and `overflow: visible`, eliminating the "W" truncation on all desktop, tablet, and mobile viewports.
+   - Removed the subtext line `"by PayPal and Gemini AI"` for a cleaner, bolder poster presentation.
+2. **Background Watermark Shadows:**
+   - Reduced `.ticket-stamp` opacity to `0.08` with `filter: grayscale(100%)` and subtle dashed border `rgba(255, 255, 255, 0.12)`.
+   - Expanded background stamps to 10 dynamically distributed cards across the viewport (*"SCOPE CREEP?"*, *"UNPAID INVOICES?"*, *"60-DAY ARBITRATION?"*, *"SILENT CLIENTS?"*), creating a refined architectural watermark depth.
+3. **Cult UI FractalDotGrid Canvas Integration:**
+   - Integrated `src/components/ui/bg-animated-fractal-dot-grid.tsx` with dynamic mouse movement tracking, fluid canvas wave displacement, and radial mouse glow.
+   - Tuned dot color and glow to Acid Lime `#DAF99C` (`rgba(218, 249, 156, 1)`) with `dotSize: 4`, `dotSpacing: 20`, and `waveIntensity: 30`.
+   - Set canvas mode to `transparent` and `pointer-events-none` so interactions across the page remain 100% responsive.
+4. **Verification & Audit:**
+   - Zero TypeScript compilation errors (`npx tsc --noEmit`).
+   - 41/41 tests passing (`npm test`).
+   - Live dev server verified at `http://localhost:3000` (`200 OK`).
+
