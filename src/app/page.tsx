@@ -197,63 +197,87 @@ export default function LandingPage() {
 
       {/* Hero Section (Razorpay "Fix My Itch" Inspired Poster Layout) */}
       <section className="relative z-10 pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
-        {/* Scattered Background Problem & Guarantee Ticket Stamps (Razorpay Inspo Vibe) */}
+        {/* Scattered Background Problem & Guarantee Ticket Stamps (Subtle Greyish Silhouette Shadows) */}
         <div className="pointer-events-none select-none absolute inset-0 z-0 overflow-hidden">
           {/* Stamp 1: Top Left */}
-          <div className="ticket-stamp hidden md:block absolute top-12 left-2 rotate-[-5deg] p-3 max-w-[220px] text-zinc-300">
-            <div className="text-[10px] font-mono uppercase tracking-wider text-[#DAF99C] font-bold">CLIENT GHOSTING?</div>
-            <div className="text-xs font-semibold mt-0.5 text-white">72-Hour "Silence Means Yes" auto-release.</div>
+          <div className="ticket-stamp hidden sm:block absolute top-10 left-2 rotate-[-5deg] p-3 max-w-[220px]">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">CLIENT GHOSTING?</div>
+            <div className="text-xs font-semibold mt-0.5 text-zinc-400">72-Hour "Silence Means Yes" auto-release.</div>
           </div>
 
-          {/* Stamp 2: Top Right */}
-          <div className="ticket-stamp hidden md:block absolute top-10 right-4 rotate-[4deg] p-3 max-w-[230px] text-zinc-300">
-            <div className="text-[10px] font-mono uppercase tracking-wider text-[#DAF99C] font-bold">20% TAKE RATE?</div>
-            <div className="text-xs font-semibold mt-0.5 text-white">Zero platform cut. Keep 100% of your earnings.</div>
+          {/* Stamp 2: Top Center-Left */}
+          <div className="ticket-stamp hidden md:block absolute top-4 left-[28%] rotate-[-8deg] p-3 max-w-[210px]">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">SCOPE CREEP?</div>
+            <div className="text-xs font-semibold mt-0.5 text-zinc-400">AI decomposes brief into objective locked tranches.</div>
           </div>
 
-          {/* Stamp 3: Middle Left */}
-          <div className="ticket-stamp hidden lg:block absolute top-48 -left-4 rotate-[6deg] p-3.5 max-w-[240px] text-zinc-300">
-            <div className="text-[10px] font-mono uppercase tracking-wider text-white font-bold flex items-center gap-1.5">
-              <CreditCard className="h-3 w-3 text-[#DAF99C]" />
+          {/* Stamp 3: Top Center-Right */}
+          <div className="ticket-stamp hidden md:block absolute top-6 right-[26%] rotate-[7deg] p-3 max-w-[210px]">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">UNPAID INVOICES?</div>
+            <div className="text-xs font-semibold mt-0.5 text-zinc-400">100% upfront client budget captured in PayPal escrow.</div>
+          </div>
+
+          {/* Stamp 4: Top Right */}
+          <div className="ticket-stamp hidden sm:block absolute top-8 right-4 rotate-[4deg] p-3 max-w-[230px]">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">20% TAKE RATE?</div>
+            <div className="text-xs font-semibold mt-0.5 text-zinc-400">Zero platform cut. Keep 100% of your earnings.</div>
+          </div>
+
+          {/* Stamp 5: Middle Left */}
+          <div className="ticket-stamp hidden md:block absolute top-44 -left-4 rotate-[6deg] p-3.5 max-w-[240px]">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold flex items-center gap-1.5">
+              <CreditCard className="h-3 w-3 text-zinc-400" />
               PAYPAL UPFRONT ESCROW
             </div>
-            <div className="text-xs font-mono font-bold text-[#DAF99C] mt-1">$900.00 LOCKED IN CUSTODY</div>
+            <div className="text-xs font-mono font-bold text-zinc-400 mt-1">$900.00 LOCKED IN CUSTODY</div>
           </div>
 
-          {/* Stamp 4: Middle Right */}
-          <div className="ticket-stamp hidden lg:block absolute top-44 -right-4 rotate-[-6deg] p-3.5 max-w-[240px] text-zinc-300">
-            <div className="text-[10px] font-mono uppercase tracking-wider text-white font-bold flex items-center gap-1.5">
-              <Bot className="h-3 w-3 text-[#DAF99C]" />
+          {/* Stamp 6: Middle Right */}
+          <div className="ticket-stamp hidden md:block absolute top-40 -right-4 rotate-[-6deg] p-3.5 max-w-[240px]">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold flex items-center gap-1.5">
+              <Bot className="h-3 w-3 text-zinc-400" />
               AGENT 2 INSPECTION
             </div>
-            <div className="text-xs font-semibold text-zinc-200 mt-1">HTTP 200 &amp; DOM verified before payouts trigger.</div>
+            <div className="text-xs font-semibold text-zinc-400 mt-1">HTTP 200 &amp; DOM verified before payouts trigger.</div>
           </div>
 
-          {/* Stamp 5: Bottom Center-Right */}
-          <div className="ticket-stamp hidden xl:block absolute bottom-10 right-16 rotate-[3deg] p-3 max-w-[240px] text-zinc-300">
-            <div className="text-[10px] font-mono uppercase tracking-wider text-[#DAF99C] font-bold">BRYNTUM TIMELINE</div>
-            <div className="text-xs font-semibold text-white">Automatic rescheduling prevents penalty delays.</div>
+          {/* Stamp 7: Far Right Upper */}
+          <div className="ticket-stamp hidden lg:block absolute top-24 right-10 rotate-[-10deg] p-3 max-w-[210px]">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">UNILATERAL REJECTION?</div>
+            <div className="text-xs font-semibold mt-0.5 text-zinc-400">AI cannot fail work; subjective checks trigger human timer.</div>
+          </div>
+
+          {/* Stamp 8: Bottom Left */}
+          <div className="ticket-stamp hidden lg:block absolute bottom-12 left-4 rotate-[5deg] p-3.5 max-w-[230px]">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">60-DAY ARBITRATION?</div>
+            <div className="text-xs font-semibold mt-0.5 text-zinc-400">Deterministic DOM, SSL &amp; HTTP crawl in under 3s.</div>
+          </div>
+
+          {/* Stamp 9: Bottom Center */}
+          <div className="ticket-stamp hidden xl:block absolute bottom-6 left-[35%] rotate-[-4deg] p-3 max-w-[220px]">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">SILENT CLIENTS?</div>
+            <div className="text-xs font-semibold mt-0.5 text-zinc-400">Autonomous PayPal Payout dispatch upon timeout.</div>
+          </div>
+
+          {/* Stamp 10: Bottom Center-Right */}
+          <div className="ticket-stamp hidden sm:block absolute bottom-8 right-12 rotate-[3deg] p-3 max-w-[240px]">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-bold">BRYNTUM TIMELINE</div>
+            <div className="text-xs font-semibold text-zinc-400">Automatic rescheduling prevents penalty delays.</div>
           </div>
         </div>
 
         {/* Hero Content Container (Expansive Poster Layout across Screen) */}
-        <div className="relative z-10 space-y-6 pt-4 max-w-6xl mx-auto">
+        <div className="relative z-10 space-y-6 pt-4 max-w-6xl mx-auto px-2 sm:px-4">
           {/* Kicker / Subtitle Above Title */}
           <div className="flex items-center justify-center gap-2 text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-[#DAF99C] font-bold">
             <span>Autonomous Freelance Escrow Protocol</span>
           </div>
 
-          {/* Massive Display Title: TRUSTFLOW (Full Screen Impact like "FIX MY ITCH") */}
-          <div className="w-full text-center">
+          {/* Massive Display Title: TRUSTFLOW (Full Screen Impact with Perfect Margin) */}
+          <div className="w-full text-center overflow-visible">
             <h1 className="hero-display-title">
               TRUSTFLOW
             </h1>
-            {/* "by PayPal & Gemini AI" lockup aligned to right (mirroring "by Razorpay") */}
-            <div className="flex justify-end pr-2 sm:pr-8 md:pr-12 -mt-1 sm:-mt-2 md:-mt-4">
-              <span className="text-xs sm:text-sm md:text-base font-mono text-zinc-400 tracking-normal">
-                by <span className="font-extrabold text-white">PayPal</span> &amp; <span className="text-[#DAF99C] font-extrabold">Gemini AI</span>
-              </span>
-            </div>
           </div>
 
           {/* Subheadline */}
