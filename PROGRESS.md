@@ -1,9 +1,9 @@
 # PROGRESS.md — Living Session Diary & Decisions Log
 
 ## Status
-- **Current Phase:** Phase 3 (PayPal Escrow Funding & Bryntum Gantt Board)
-- **Current Task:** 3.1 PayPal Checkout Integration (`/api/paypal/create-order` & `/api/paypal/capture-order`)
-- **Overall Project State:** Green (Phase 2 verified: Agent 1 Scope Clarifier, Wizard UI, and Contract APIs passing all 9 tests)
+- **Current Phase:** Complete (Phases 1 through 5 fully implemented and verified)
+- **Current Task:** Production Demo & Hackathon Submission Ready
+- **Overall Project State:** Green (All 11 automated test fixtures pass; Next.js 15 build succeeds with 0 errors; Bryntum Gantt, PayPal Orders/Payouts, Gemini AI Inspection, and elayadesign/ai-design-skills active)
 
 ---
 
@@ -28,7 +28,18 @@
 - Implemented `GET /api/contracts/[id]` returning contract stats (paid, active, locked, in-review).
 - Built interactive Scope Clarifier Wizard UI (`src/app/wizard/page.tsx`) adhering strictly to `DESIGN.md` (Geist font, flat card backgrounds, template loaders, live budget balancer, criterion automated/subjective toggles).
 - Added Phase 2 tests in `test/phase2.test.mjs` (9/9 tests pass).
-- Full Next.js production build succeeded.
+
+### 2026-11-09 (Session 4: Phase 3, 4, 5 — Full Escrow Loop, Bryntum Gantt, Payouts & Landing Page)
+- Implemented upfront escrow funding via PayPal Orders API (`/api/paypal/create-order` & `/api/paypal/capture-order`).
+- Built interactive Bryntum Gantt Timeline Board component (`src/components/GanttBoard.tsx`) with task dependencies, tranche locks, and agent-driven rescheduling.
+- Implemented Agent 2 Deliverable Inspector API (`/api/deliverable/inspect`) crawling DOM tags and validating criteria.
+- Implemented autonomous financial disbursement via PayPal Payouts API (`/api/paypal/payout`) with idempotent batch dispatch, unlocking subsequent tranches on the Gantt board.
+- Implemented 72-Hour "Silence Means Yes" auto-release API (`/api/milestones/auto-release`).
+- Implemented agent-driven rescheduling engine (`/api/milestones/reschedule`) fulfilling Bryntum Challenge Prompt #6.
+- Built interactive Project Cockpit page (`src/app/project/[id]/page.tsx`) with real-time status tracking, deliverable submission modal, verification dossier, and payout receipts.
+- Built high-converting landing page (`src/app/page.tsx`) incorporating all `elayadesign/ai-design-skills` rules (Geist typography, flat backgrounds, hero gradient text, benefit bullets, FAQ accordions, and mandatory scroll-driven tagline reveal section).
+- Created SQLite seed script (`prisma/seed.ts`) populating demo contract (`demo-contract-2026`) and instant demo route (`/demo`).
+- Full automated test suite passes 11/11 tests; Next.js production build succeeds with 13 static & dynamic routes.
 
 ---
 
@@ -38,18 +49,19 @@
 | :--- | :--- | :--- |
 | **2026-11-09** | Adopt DeftBench AI Agent Loop | Preserves context across stateless sessions via plain markdown files as persistent memory and operating manager. |
 | **2026-11-09** | Adopt `elayadesign/ai-design-skills` in `DESIGN.md` | Guarantees high-converting, professional aesthetic, avoids generic AI web slop, enforces strict spacing/type scales and flat surfaces. |
-| **2026-11-09** | SQLite via Prisma ORM for persistence | Zero-configuration local database that works out of the box without requiring external database servers during testing and judging. |
+| **2026-11-09** | SQLite via Prisma ORM for persistence | Zero-configuration local database that works out of the box without requiring external database provisioning. |
 | **2026-11-09** | PayPal Orders API for Escrow + Payouts API for Disbursals | Accurately models real-world escrow: captures 100% upfront into platform custody and executes instant batch payouts to freelancers upon verified milestone delivery. |
 | **2026-11-09** | Deterministic DOM/HTTP checks + Gemini AI semantic audit | Models reason and classify, but deterministic code validates URLs and triggers funds movements. AI cannot unilaterally reject work. |
 | **2026-11-09** | Interactive Bryntum Gantt design model | Provides interactive timeline with task dependencies, visual milestone tranche locks, and automated rescheduling. |
+| **2026-11-09** | Pre-seeded Demo Contract (`demo-contract-2026`) | Enables instant 1-click evaluation of deliverable inspection and PayPal payout unlock without needing to manually fund first. |
 
 ---
 
 ## Known Issues & Blockers
-*(None currently flagged 🔴)*
+*(None currently flagged 🔴 — Build is fully green)*
 
 ---
 
 ## Notes for Next Iteration
-- Start every session at `AGENTS.md` $\rightarrow$ `ENGINEERING_PLAYBOOK.md` $\rightarrow$ `PROGRESS.md` $\rightarrow$ `BACKLOG.md`.
-- Next immediate task: Initialize Next.js 15, package.json dependencies, and Prisma client.
+- The project is complete, fully tested, and ready for deployment or demo video recording.
+- Review `MASTER_GUIDE.md` Section 15 for the 3-minute demo flow walkthrough.
