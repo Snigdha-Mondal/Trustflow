@@ -90,3 +90,4 @@ test("Agent 2 Deliverable Inspector: audit logic & guardrails", async () => {
   assert.ok(audit.confidence >= 0.85);
   assert.equal(audit.criteriaAudits.length, 3);
 });
+

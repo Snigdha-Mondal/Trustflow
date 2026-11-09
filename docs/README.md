@@ -7,3 +7,4 @@ This directory maintains the permanent record of architectural decisions, featur
 - **`stories/`**: User stories and feature specifications for major components.
 - **`plans/`**: Step-by-step build plans linking to backlog items.
 - **`manual-tests/`**: Test scripts for human testers documenting what automated tests cannot prove.
+

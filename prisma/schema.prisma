@@ -64,3 +64,4 @@ model DeliverableInspection {
   rawReport    String    // JSON text of inspection details
   createdAt    DateTime  @default(now())
 }
+

@@ -163,3 +163,4 @@ Every interactive element must provide:
 - Target mobile viewport: 390px width minimum. Zero horizontal scroll overflow.
 - Mobile navigation: Full-screen overlay menu with staggered link entrances.
 - Touch targets: Minimum 44x44px clickable areas on touch devices.
+

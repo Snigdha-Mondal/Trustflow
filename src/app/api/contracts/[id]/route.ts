@@ -61,3 +61,4 @@ export async function GET(req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
+

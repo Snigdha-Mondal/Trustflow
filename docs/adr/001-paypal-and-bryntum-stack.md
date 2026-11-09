@@ -31,3 +31,4 @@ Traditional platforms charge 10-20% take rates and rely on manual dispute proces
 ## Consequences
 - **Positive:** Full compliance with PayPal AI Hackathon criteria; zero runtime database dependencies during judging; high conversion design fidelity via `elayadesign/ai-design-skills`; crystal clear audit trail.
 - **Negative:** SQLite is local to the instance (sufficient for MVP and demo); PayPal Sandbox credentials must be configured in `.env.local`.
+

@@ -182,3 +182,4 @@ test("Phase 5: Agent-Driven Rescheduling (Bryntum Prompt #6)", async () => {
     assert.equal(refreshed.endDate.getTime(), newEnd.getTime());
   }
 });
+

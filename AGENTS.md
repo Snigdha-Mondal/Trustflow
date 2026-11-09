@@ -42,3 +42,4 @@ Trustflow is an automated, freelance-first milestone escrow workflow powered by 
 | **Architecture Decisions** | [docs/adr/](docs/adr/) | Formal Architecture Decision Records (ADRs) |
 | **Detailed Stories & Specs**| [docs/stories/](docs/stories/) | Requirements for major features |
 | **Test Verification Plans** | [docs/manual-tests/](docs/manual-tests/) | Human and automated verification scripts |
+

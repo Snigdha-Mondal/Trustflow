@@ -16,10 +16,46 @@ import {
   CreditCard,
   FileCheck,
   TrendingUp,
+  Globe,
+  Code2,
+  ExternalLink,
 } from "lucide-react";
+import GanttBoard, { GanttMilestone } from "@/components/GanttBoard";
+
+const INITIAL_DEMO_MILESTONES: GanttMilestone[] = [
+  {
+    id: "m1",
+    order: 1,
+    title: "Design System & Wireframes",
+    description: "Geist typography tokens, spacing scale, and mobile wireframes.",
+    amount: 300,
+    durationDays: 3,
+    status: "PAID",
+    payoutBatchId: "PAYOUTS_BATCH_78912",
+  },
+  {
+    id: "m2",
+    order: 2,
+    title: "Frontend Implementation (Next.js)",
+    description: "Responsive hero, contact lead forms, and verified routes.",
+    amount: 300,
+    durationDays: 4,
+    status: "ACTIVE",
+  },
+  {
+    id: "m3",
+    order: 3,
+    title: "Production Deployment & Handover",
+    description: "Valid SSL certificate, domain routing, and repository transfer.",
+    amount: 300,
+    durationDays: 3,
+    status: "LOCKED",
+  },
+];
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [landingMilestones, setLandingMilestones] = useState<GanttMilestone[]>(INITIAL_DEMO_MILESTONES);
 
   // Tagline reveal animation state (B11 in DESIGN.md)
   const taglineRef = useRef<HTMLDivElement>(null);
@@ -37,7 +73,6 @@ export default function LandingPage() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Animate word by word
             let count = 0;
             const interval = setInterval(() => {
               count += 1;
@@ -58,6 +93,16 @@ export default function LandingPage() {
 
     return () => observer.disconnect();
   }, [taglineWords.length]);
+
+  function handleLandingReschedule(delayDays: number) {
+    setLandingMilestones((prev) =>
+      prev.map((m) =>
+        m.status !== "PAID"
+          ? { ...m, durationDays: m.durationDays + delayDays }
+          : m
+      )
+    );
+  }
 
   const FAQS = [
     {
@@ -100,7 +145,7 @@ export default function LandingPage() {
 
           <div className="hidden md:flex items-center gap-6 text-xs font-medium text-zinc-400">
             <a href="#how-it-works" className="hover:text-white transition-quick">How It Works</a>
-            <a href="#features" className="hover:text-white transition-quick">Inspection</a>
+            <a href="#inspection" className="hover:text-white transition-quick">Inspection</a>
             <a href="#timeline" className="hover:text-white transition-quick">Gantt Board</a>
             <a href="#faq" className="hover:text-white transition-quick">FAQ</a>
           </div>
@@ -304,6 +349,98 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Section: Inspection Deep Dive (Anchor #inspection) */}
+      <section id="inspection" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-zinc-900 max-w-5xl mx-auto space-y-12">
+        <div className="text-center space-y-3 max-w-[680px] mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-900/60 bg-blue-950/40 px-3 py-1 text-xs font-mono text-blue-400">
+            <Bot className="h-3.5 w-3.5" />
+            Agent 2 &bull; Multimodal Deliverable Inspector
+          </div>
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
+            Objective deliverable verification without human bias
+          </h2>
+          <p className="text-sm md:text-base text-zinc-400">
+            AI reasons and audits, but deterministic code validates URLs and triggers payouts.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="trustflow-card p-6 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-950 text-emerald-400 border border-emerald-800/40">
+                <Globe className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-white">Deterministic DOM &amp; HTTP Crawl</h3>
+                <p className="text-xs text-zinc-400">Node Fetch + Cheerio validation engine</p>
+              </div>
+            </div>
+            <p className="text-xs text-zinc-300 leading-relaxed">
+              When a deliverable URL is submitted, the crawler inspects HTTP response status (200 OK), checks the responsive viewport meta tag, verifies form inputs, and inspects routes before invoking the AI.
+            </p>
+            <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-3 font-mono text-[11px] text-zinc-400 space-y-1">
+              <div className="text-emerald-400">✓ GET https://staging.preview.app &rarr; 200 OK (142ms)</div>
+              <div className="text-emerald-400">✓ meta[name="viewport"] responsive scale verified</div>
+              <div className="text-emerald-400">✓ form input[type="email"] lead capture present</div>
+            </div>
+          </div>
+
+          <div className="trustflow-card p-6 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-950 text-blue-400 border border-blue-800/40">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-white">The 72h Silence-Means-Yes Safety Guard</h3>
+                <p className="text-xs text-zinc-400">Guaranteed freelancer ghosting defense</p>
+              </div>
+            </div>
+            <p className="text-xs text-zinc-300 leading-relaxed">
+              AI can <strong>never</strong> unilaterally reject work. If criteria contain subjective aesthetics, the deliverable routes to client review with a 72-hour countdown timer. If the client is silent, funds auto-release.
+            </p>
+            <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-3 font-mono text-[11px] text-zinc-400 space-y-1">
+              <div className="text-amber-400">⏳ In-Review: 72h countdown started for M2</div>
+              <div className="text-zinc-400">&bull; Client approves &rarr; Instant PayPal Payout</div>
+              <div className="text-zinc-400">&bull; Client silent &rarr; Auto-releases on timeout</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section: Bryntum Gantt Timeline Board Showcase (Anchor #timeline) */}
+      <section id="timeline" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-zinc-900 max-w-5xl mx-auto space-y-8">
+        <div className="text-center space-y-3 max-w-[680px] mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-900/60 bg-emerald-950/40 px-3 py-1 text-xs font-mono text-emerald-400">
+            <Layers className="h-3.5 w-3.5" />
+            Bryntum Sponsor Track &bull; Challenge Prompts #1 &amp; #6
+          </div>
+          <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
+            Interactive Bryntum Gantt Timeline Board
+          </h2>
+          <p className="text-sm md:text-base text-zinc-400">
+            Sequential payment tranche dependency locks and automated agent-driven rescheduling. Test the live board below:
+          </p>
+        </div>
+
+        {/* Embedded Interactive Gantt Board */}
+        <GanttBoard
+          milestones={landingMilestones}
+          totalBudget={900}
+          currency="USD"
+          onReschedule={handleLandingReschedule}
+        />
+
+        <div className="text-center pt-2">
+          <Link
+            href="/demo"
+            className="inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800/80 px-5 py-2.5 text-xs font-semibold text-zinc-200 transition-quick active:scale-95 shadow-sm"
+          >
+            <span>Open Full Interactive Cockpit Demo</span>
+            <ExternalLink className="h-3.5 w-3.5 text-blue-400" />
+          </Link>
+        </div>
+      </section>
+
       {/* FAQ Section (A2 in DESIGN.md: 6-12 questions) */}
       <section id="faq" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-zinc-900 max-w-4xl mx-auto space-y-12">
         <div className="text-center space-y-3">
@@ -372,6 +509,8 @@ export default function LandingPage() {
         <div className="flex items-center gap-4 text-zinc-400">
           <Link href="/wizard" className="hover:text-white transition-quick">Scope Wizard</Link>
           <a href="#how-it-works" className="hover:text-white transition-quick">How It Works</a>
+          <a href="#inspection" className="hover:text-white transition-quick">Inspection</a>
+          <a href="#timeline" className="hover:text-white transition-quick">Gantt Board</a>
           <a href="#faq" className="hover:text-white transition-quick">FAQ</a>
         </div>
       </footer>

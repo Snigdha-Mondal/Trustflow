@@ -172,3 +172,4 @@ model DeliverableInspection {
 - Tokens are cached in-memory with automatic expiration renewal.
 - Gemini API calls use the official Google GenAI SDK with structured output JSON schemas.
 - External preview URLs inspected by the crawler run in memory with request timeouts and size limits (10MB max).
+

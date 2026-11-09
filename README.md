@@ -157,3 +157,4 @@ Runs 11 automated test fixtures verifying PayPal OAuth token caching, Orders cap
 4. **Deliverable Submission & AI Inspection (1:40 - 2:20):** Freelancer enters preview URL (`https://preview-sample.vercel.app`) and clicks **"Run Inspection & Trigger Payout"**. Agent 2 crawls the URL, verifies HTTP 200, checks the viewport, and detects the contact form inputs.
 5. **The Payout Moment (2:20 - 2:45):** All automated criteria pass! **PayPal Payouts API executes immediately.** Confetti fires, the transaction batch ID is recorded, and Milestone 2 automatically unlocks on the Gantt chart!
 6. **72-Hour "Silence Means Yes" (2:45 - 3:00):** For subjective deliverables, show the 72-hour countdown badge and simulate the timeout auto-release guarantee.
+

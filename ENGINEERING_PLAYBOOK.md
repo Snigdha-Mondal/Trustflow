@@ -140,3 +140,4 @@ A task is ONLY complete when:
 5. **Fix the cause, don't hide it:** Never disable lint rules, TypeScript checks, or tests to make a build pass. Fix the root cause.
 6. **Never fake it:** If mock data isn't needed, test with real database or sandbox responses. Mark incomplete work as deferred rather than faking passes.
 7. **Keep the entry file clean:** Keep `AGENTS.md` concise so it is always read in full every session.
+
