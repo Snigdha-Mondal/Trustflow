@@ -349,35 +349,12 @@ export default function WizardPage() {
             </div>
 
             {/* Live Budget Sum Indicator */}
-            <div className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-mono font-semibold ${
+            <div className={`inline-flex items-center gap-2 rounded-none border px-3 py-1.5 text-xs font-mono font-semibold ${
               isBudgetBalanced
                 ? "border-[#DAF99C]/40 bg-[#DAF99C]/10 text-[#DAF99C]"
                 : "border-[#FBBF24]/40 bg-[#FBBF24]/10 text-[#FBBF24]"
             }`}>
               {isBudgetBalanced ? <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" /> : <AlertCircle className="h-4 w-4 text-[#FBBF24]" />}
-              <span>
-                Total Tranches: ${calculatedSum.toFixed(2)} / ${totalBudget.toFixed(2)}
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-zinc-800 pb-4 gap-2">
-            <div>
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600/20 text-blue-400 text-xs font-bold">2</span>
-                Objective Milestone Tranches
-              </h2>
-              <p className="text-xs text-zinc-400 mt-1">
-                De-scoped to prevent creep. Separated into automated inspection vs client sign-off.
-              </p>
-            </div>
-
-            {/* Live Budget Sum Indicator */}
-            <div className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-mono ${
-              isBudgetBalanced
-                ? "border-emerald-800/80 bg-emerald-950/40 text-emerald-300"
-                : "border-amber-800/80 bg-amber-950/40 text-amber-300"
-            }`}>
-              {isBudgetBalanced ? <CheckCircle2 className="h-4 w-4 text-emerald-400" /> : <AlertCircle className="h-4 w-4 text-amber-400" />}
               <span>
                 Total Tranches: ${calculatedSum.toFixed(2)} / ${totalBudget.toFixed(2)}
               </span>

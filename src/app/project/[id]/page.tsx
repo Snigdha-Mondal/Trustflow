@@ -679,9 +679,22 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                   {isFunding ? "Authorizing PayPal..." : `Fund $${contract.totalBudget.toFixed(2)} via PayPal`}
                 </button>
               ) : (
-                <div className="mt-2 w-full flex items-center justify-center gap-1.5 text-[11px] font-mono text-[#0E1012] bg-[#DAF99C] font-semibold rounded-none py-1 px-2">
-                  <CheckCircle2 className="h-3.5 w-3.5" />
-                  <span>Escrow Locked in PayPal</span>
+                <div className="w-full mt-2 space-y-1">
+                  <div className="w-full flex items-center justify-center gap-1.5 text-[11px] font-mono text-[#0E1012] bg-[#DAF99C] font-semibold rounded-none py-1 px-2">
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    <span>Escrow Locked in PayPal</span>
+                  </div>
+                  {activeRole === "ALL" && (
+                    <button
+                      type="button"
+                      disabled={isFunding}
+                      onClick={handleFundEscrow}
+                      className="w-full text-[10px] font-mono text-zinc-400 hover:text-[#DAF99C] transition-colors text-center pt-0.5 block"
+                      title="Re-run the live PayPal sandbox order creation & capture flow"
+                    >
+                      {isFunding ? "Authorizing PayPal Orders..." : "↻ Test PayPal Funding Flow"}
+                    </button>
+                  )}
                 </div>
               )}
             </div>
