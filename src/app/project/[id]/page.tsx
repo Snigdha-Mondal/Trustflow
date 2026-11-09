@@ -24,8 +24,12 @@ import {
   X,
   MessageSquare,
   HelpCircle,
+  AlertTriangle,
+  ShieldAlert,
 } from "lucide-react";
 import GanttBoard, { GanttMilestone } from "@/components/GanttBoard";
+import TakeoverModal from "@/components/TakeoverModal";
+import type { TakeoverBrief } from "@/lib/handoff";
 
 interface Criterion {
   id: string;
@@ -52,7 +56,7 @@ interface Milestone {
   description: string;
   amount: number;
   durationDays: number;
-  status: "LOCKED" | "ACTIVE" | "IN_REVIEW" | "PAID";
+  status: "LOCKED" | "ACTIVE" | "IN_REVIEW" | "PAID" | "ABANDONED";
   startDate?: string | null;
   endDate?: string | null;
   payoutBatchId?: string | null;
@@ -69,9 +73,12 @@ interface Contract {
   currency: string;
   clientEmail: string;
   freelancerEmail: string;
-  status: "DRAFT" | "FUNDED" | "ACTIVE" | "COMPLETED" | "CANCELLED";
+  status: "DRAFT" | "FUNDED" | "ACTIVE" | "COMPLETED" | "CANCELLED" | "ABANDONED_REFUNDED";
   paypalOrderId?: string | null;
   paypalCaptureId?: string | null;
+  refundId?: string | null;
+  refundedAmount?: number | null;
+  handoffDossier?: string | null;
   milestones: Milestone[];
 }
 
@@ -112,12 +119,44 @@ export default function ProjectCockpitPage({ params }: PageProps) {
   const [revisionDays, setRevisionDays] = useState(2);
   const [isSubmittingRevision, setIsSubmittingRevision] = useState(false);
 
+  // Freelancer Ghosting Protection states
+  const [isSimulatingInactivity, setIsSimulatingInactivity] = useState(false);
+  const [isProcessingRefund, setIsProcessingRefund] = useState(false);
+  const [showTakeoverModal, setShowTakeoverModal] = useState(false);
+  const [takeoverBrief, setTakeoverBrief] = useState<TakeoverBrief | null>(null);
+  const [refundReceipt, setRefundReceipt] = useState<{
+    refundId: string;
+    amount: number;
+    currency: string;
+    recipient?: string;
+  } | null>(null);
+
   async function fetchContract() {
     try {
       const res = await fetch(`/api/contracts/${contractId}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to load contract");
       setContract(data.contract);
+
+      // Hydrate handoff dossier if present
+      if (data.contract.handoffDossier) {
+        try {
+          const parsed = JSON.parse(data.contract.handoffDossier);
+          setTakeoverBrief(parsed);
+        } catch {
+          // ignore
+        }
+      }
+
+      if (data.contract.refundId && data.contract.refundedAmount) {
+        setRefundReceipt({
+          refundId: data.contract.refundId,
+          amount: data.contract.refundedAmount,
+          currency: data.contract.currency || "USD",
+          recipient: data.contract.clientEmail,
+        });
+      }
+
       if (data.contract.milestones.length > 0 && !selectedMilestone) {
         setSelectedMilestone(data.contract.milestones[0]);
       }
@@ -125,6 +164,69 @@ export default function ProjectCockpitPage({ params }: PageProps) {
       setError(err instanceof Error ? err.message : "Error loading contract");
     } finally {
       setLoading(false);
+    }
+  }
+
+  // Determine if a milestone has triggered a 72-hour inactivity warning
+  const isOverdue = (m: Milestone) => {
+    if (contract?.status === "ABANDONED_REFUNDED") return false;
+    if (isSimulatingInactivity && m.status === "ACTIVE") return true;
+    if (m.status === "ACTIVE" && m.endDate && new Date(m.endDate).getTime() < Date.now()) return true;
+    return false;
+  };
+
+  // Claim Inactivity Refund & Generate AI Takeover Brief
+  async function handleClaimInactivityRefund() {
+    setIsProcessingRefund(true);
+    setError(null);
+    try {
+      // Step 1: PayPal Escrow Refund Route (POST /api/paypal/refund)
+      const refundRes = await fetch("/api/paypal/refund", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contractId,
+          reason: "Freelancer milestone overdue > 72 hours with zero activity. Triggering Trustflow Ghosting Protection refund.",
+        }),
+      });
+
+      const refundData = await refundRes.json();
+      if (!refundRes.ok) throw new Error(refundData.error || "PayPal refund execution failed");
+
+      // Step 2: Agent 3 AI Continuity Handoff Generator (POST /api/handoff/generate)
+      const handoffRes = await fetch("/api/handoff/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contractId, forceRefresh: true }),
+      });
+
+      const handoffData = await handoffRes.json();
+      if (!handoffRes.ok) throw new Error(handoffData.error || "AI handoff generator failed");
+
+      setTakeoverBrief(handoffData.takeoverBrief);
+      setRefundReceipt({
+        refundId: refundData.refundId,
+        amount: refundData.refundedAmount,
+        currency: refundData.currency || "USD",
+        recipient: contract?.clientEmail,
+      });
+
+      // Refresh contract state
+      await fetchContract();
+      setShowTakeoverModal(true);
+      setSuccessMessage(
+        `Freelancer Ghosting Protection executed! $${refundData.refundedAmount.toFixed(2)} refunded to client PayPal account. Turnkey Takeover Brief generated.`
+      );
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.5 },
+        colors: ["#F59E0B", "#10B981", "#DAF99C"],
+      });
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Inactivity refund claim failed");
+    } finally {
+      setIsProcessingRefund(false);
     }
   }
 
@@ -421,6 +523,78 @@ export default function ProjectCockpitPage({ params }: PageProps) {
           </div>
         )}
 
+        {/* Abandoned & Refunded Status Banner */}
+        {contract.status === "ABANDONED_REFUNDED" && (
+          <div className="rounded-none border border-amber-500/40 bg-amber-500/10 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
+            <div className="flex items-start gap-3.5">
+              <div className="h-10 w-10 bg-amber-500/20 border border-amber-500/40 flex items-center justify-center flex-shrink-0">
+                <ShieldAlert className="h-5 w-5 text-amber-400" />
+              </div>
+              <div>
+                <div className="font-semibold text-amber-200 text-sm flex items-center gap-2">
+                  <span>Contract Abandoned &amp; Escrow Refunded via PayPal</span>
+                  <span className="font-mono text-[10px] bg-amber-400/20 px-2 py-0.5 border border-amber-400/40 text-amber-300">
+                    72h Ghosting Protection
+                  </span>
+                </div>
+                <div className="text-zinc-300 text-xs mt-1">
+                  Remaining unreleased escrow balance of <strong className="text-white font-mono">${(contract.refundedAmount || (contract.totalBudget - paidTotal)).toFixed(2)} USD</strong> was refunded back to your PayPal account.
+                  Completed milestones remain safely disbursed to the previous contributor.
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowTakeoverModal(true)}
+              className="lime-button inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-none flex-shrink-0 shadow-md"
+            >
+              <FileCheck className="h-4 w-4 text-[#0E1012]" />
+              <span>View AI Takeover Brief</span>
+            </button>
+          </div>
+        )}
+
+        {/* Freelancer Ghosting Protection Quick Actions (Client & Judge View) */}
+        {contract.status !== "ABANDONED_REFUNDED" && contract.status !== "DRAFT" && (activeRole === "ALL" || activeRole === "CLIENT") && (
+          <div className="rounded-none border border-white/10 bg-[#1C1D20]/90 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2.5">
+              <ShieldAlert className="h-4 w-4 text-amber-400 flex-shrink-0" />
+              <div className="text-zinc-300">
+                <strong className="text-white">Freelancer Ghosting Protection:</strong> If a milestone sits inactive past deadline (&gt;72h), claim an immediate refund of unreleased escrow.
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 flex-wrap self-end sm:self-auto">
+              {activeRole === "ALL" && (
+                <button
+                  type="button"
+                  onClick={() => setIsSimulatingInactivity(!isSimulatingInactivity)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-none font-mono text-xs transition-colors border ${
+                    isSimulatingInactivity
+                      ? "bg-amber-400 text-black border-amber-300 font-bold"
+                      : "bg-[#25272B] text-zinc-300 border-white/10 hover:text-white"
+                  }`}
+                  title="Toggle simulation of milestone overdue > 72 hours"
+                >
+                  <AlertTriangle className="h-3 w-3" />
+                  <span>{isSimulatingInactivity ? "Clear 72h Inactivity" : "Simulate 72h Inactivity"}</span>
+                </button>
+              )}
+
+              <button
+                type="button"
+                disabled={isProcessingRefund}
+                onClick={handleClaimInactivityRefund}
+                className="lime-button inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-none transition-all active:scale-[0.98] disabled:opacity-50"
+              >
+                <ShieldAlert className="h-3.5 w-3.5 text-[#0E1012]" />
+                {isProcessingRefund ? "Processing Refund..." : "Claim Inactivity Refund & Generate Handoff"}
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Contract Escrow Overview Banner */}
         <div className="luxury-card p-6 md:p-8 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -479,11 +653,15 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
         {/* Interactive Bryntum Gantt Timeline Board */}
         <GanttBoard
-          milestones={contract.milestones as GanttMilestone[]}
+          milestones={contract.milestones.map((m) => ({
+            ...m,
+            isInactivityOverdue: isOverdue(m),
+          })) as GanttMilestone[]}
           totalBudget={contract.totalBudget}
           currency={contract.currency}
           onSelectMilestone={(m) => setSelectedMilestone(m as Milestone)}
           onReschedule={handleReschedule}
+          onClaimInactivityRefund={handleClaimInactivityRefund}
         />
 
         {/* Milestone Detail & Deliverable Inspection Section */}
@@ -792,6 +970,14 @@ export default function ProjectCockpitPage({ params }: PageProps) {
             </div>
           </div>
         )}
+
+        {/* Agent 3: Replacement Freelancer Takeover Modal */}
+        <TakeoverModal
+          isOpen={showTakeoverModal}
+          onClose={() => setShowTakeoverModal(false)}
+          brief={takeoverBrief}
+          refundReceipt={refundReceipt}
+        />
       </div>
     </div>
   );

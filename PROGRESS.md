@@ -140,3 +140,38 @@
    - 41/41 tests passing (`npm test`).
    - Live dev server verified at `http://localhost:3000` (`200 OK`).
 
+---
+
+## Session 6: Freelancer Ghosting Protection & Agent 3 AI Continuity Handoff
+**Date:** 2026-11-10
+**Goal:** Implement symmetrical fairness for clients with automated 72-hour freelancer inactivity abandonment refunds and turnkey AI-generated replacement takeover dossiers.
+
+### Accomplishments:
+1. **Database Schema Extension (`prisma/schema.prisma`):**
+   - Added `refundId String?`, `refundedAmount Float?`, and `handoffDossier String?` to the `Contract` model.
+   - Updated `Contract.status` to support `ABANDONED_REFUNDED`.
+   - Updated `Milestone.status` to support `ABANDONED`.
+   - Executed schema sync via Prisma Client v5.22.0.
+2. **PayPal Escrow Refund Route (`src/app/api/paypal/refund/route.ts` & `src/lib/paypal.ts`):**
+   - Implemented `POST /api/paypal/refund` calling PayPal Sandbox Refund API (`POST /v2/payments/captures/{capture_id}/refund`).
+   - Built unreleased balance isolation logic: calculates `unreleasedAmount = totalBudget - paidMilestonesAmount`. Only unreleased tranches are refunded to the client's PayPal account; already disbursed funds are retained by the freelancer.
+   - Marks unreleased milestones as `ABANDONED` and contract status as `ABANDONED_REFUNDED`.
+3. **Agent 3: AI Continuity Handoff Generator (`src/app/api/handoff/generate/route.ts` & `src/lib/handoff.ts`):**
+   - Built Agent 3 AI Continuity Auditor utilizing Google GenAI SDK (`gemini-1.5-flash`) with structured fallback continuity synthesis.
+   - Generates turnkey Takeover Brief including:
+     - Financial Matrix: Original budget, paid-to-date, refunded replacement budget, and estimated days remaining.
+     - Working State: Completed milestones, verified preview links, passed acceptance criteria, and tech stack.
+     - Remaining Scope: Uncompleted milestones, pending acceptance criteria, and known handover risks.
+     - Replacement Action Plan: 5-step concrete roadmap for a replacement freelancer.
+     - Full copyable Markdown takeover document.
+   - Persists dossier into `Contract.handoffDossier`.
+4. **UI & Bryntum Gantt Timeline Upgrades (`src/components/GanttBoard.tsx`, `src/components/TakeoverModal.tsx`, `src/app/project/[id]/page.tsx`):**
+   - **Gantt Milestone Inactivity Warning:** Overdue milestones (>72h without submission) render an amber pulsing `⚠️ INACTIVITY WARNING` badge on the timeline bar.
+   - **Client Action Toolbar:** Displays `"Claim Inactivity Refund & Generate Handoff"` button for clients and judges, with a `"Simulate 72h Inactivity"` toggle.
+   - **Takeover Modal Component (`TakeoverModal.tsx`):** Crisp architectural modal adhering strictly to zero border-radius (`rounded-none`) and Bohne & Söhne palette (`#141517` charcoal, `#DAF99C` acid lime), with PayPal refund receipt banner, tabbed view (Visual Dossier vs Raw Markdown), and one-click `"Copy Handoff Brief"` clipboard action.
+5. **Testing & Verification:**
+   - Authored new end-to-end test suite `test/ghosting_protection.test.mjs` verifying refund calculation, partial release safety, database status updates, and Agent 3 dossier creation.
+   - All 43/43 tests passing (`npm test`).
+   - Production build succeeds with 0 errors (`npm run build`).
+
+

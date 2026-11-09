@@ -30,11 +30,12 @@ export interface GanttMilestone {
   description: string;
   amount: number;
   durationDays: number;
-  status: "LOCKED" | "ACTIVE" | "IN_REVIEW" | "PAID";
+  status: "LOCKED" | "ACTIVE" | "IN_REVIEW" | "PAID" | "ABANDONED";
   startDate?: string | null;
   endDate?: string | null;
   payoutBatchId?: string | null;
   reviewDeadline?: string | null;
+  isInactivityOverdue?: boolean;
   criteria?: { id: string; text: string; isAutomated: boolean; passed?: boolean | null }[];
 }
 
@@ -44,6 +45,7 @@ interface GanttBoardProps {
   currency?: string;
   onSelectMilestone?: (milestone: GanttMilestone) => void;
   onReschedule?: (delayDays: number) => void;
+  onClaimInactivityRefund?: (milestoneId: string) => void;
 }
 
 export default function GanttBoard({
@@ -52,6 +54,7 @@ export default function GanttBoard({
   currency = "USD",
   onSelectMilestone,
   onReschedule,
+  onClaimInactivityRefund,
 }: GanttBoardProps) {
   const [selectedId, setSelectedId] = useState<string | null>(milestones[0]?.id || null);
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
@@ -309,27 +312,32 @@ export default function GanttBoard({
                         <span className="text-zinc-400 font-mono">{m.durationDays} days</span>
                         <span className="text-zinc-600">&bull;</span>
                         <span
-                          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-mono font-semibold ${
-                            m.status === "PAID"
+                          className={`inline-flex items-center gap-1 rounded-none px-2 py-0.5 text-[10px] font-mono font-semibold ${
+                            m.isInactivityOverdue
+                              ? "bg-amber-400 text-black border border-amber-300 font-bold animate-pulse"
+                              : m.status === "PAID"
                               ? "bg-[#DAF99C] text-[#0E1012]"
                               : m.status === "ACTIVE"
                               ? "bg-white text-[#0E1012]"
                               : m.status === "IN_REVIEW"
                               ? "bg-[#FBBF24] text-[#0E1012]"
+                              : m.status === "ABANDONED"
+                              ? "bg-red-950 text-red-300 border border-red-500/50"
                               : "bg-[#25272B] text-zinc-400 border border-zinc-700"
                           }`}
                         >
-                          {m.status === "PAID" && <Check className="h-3 w-3" />}
-                          {m.status === "ACTIVE" && <Sparkles className="h-3 w-3" />}
-                          {m.status === "IN_REVIEW" && <Clock className="h-3 w-3" />}
-                          {m.status === "LOCKED" && <Lock className="h-3 w-3" />}
-                          {m.status}
+                          {m.isInactivityOverdue && <AlertTriangle className="h-3 w-3 text-black" />}
+                          {!m.isInactivityOverdue && m.status === "PAID" && <Check className="h-3 w-3" />}
+                          {!m.isInactivityOverdue && m.status === "ACTIVE" && <Sparkles className="h-3 w-3" />}
+                          {!m.isInactivityOverdue && m.status === "IN_REVIEW" && <Clock className="h-3 w-3" />}
+                          {!m.isInactivityOverdue && m.status === "LOCKED" && <Lock className="h-3 w-3" />}
+                          {m.isInactivityOverdue ? "OVERDUE > 72h" : m.status}
                         </span>
                       </div>
                     </div>
 
                     {/* Right Column: Interactive Gantt Bar with Scrubber Cursor */}
-                    <div className="col-span-8 relative h-11 bg-black/40 rounded-lg border border-white/10 p-1 flex items-center overflow-hidden">
+                    <div className="col-span-8 relative h-11 bg-black/40 rounded-none border border-white/10 p-1 flex items-center overflow-hidden">
                       {/* Vertical Grid Ticks */}
                       <div className="absolute inset-0 flex justify-between pointer-events-none opacity-15">
                         {Array.from({ length: totalDays }, (_, i) => (
@@ -349,27 +357,45 @@ export default function GanttBoard({
                           marginLeft: `${Math.min(84, leftOffsetPct)}%`,
                           width: `${Math.min(100 - leftOffsetPct, widthPct)}%`,
                         }}
-                        className={`relative h-8 rounded-md px-3 flex items-center justify-between text-xs font-semibold transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-md ${
-                          m.status === "PAID"
+                        className={`relative h-8 rounded-none px-3 flex items-center justify-between text-xs font-semibold transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-md ${
+                          m.isInactivityOverdue
+                            ? "bg-amber-400 text-black border-2 border-amber-300 shadow-[0_0_15px_rgba(251,191,36,0.5)]"
+                            : m.status === "PAID"
                             ? "bg-[#DAF99C] text-[#0E1012]"
                             : m.status === "ACTIVE"
                             ? "bg-white text-[#0E1012] border border-[#DAF99C]/50"
                             : m.status === "IN_REVIEW"
                             ? "bg-[#FBBF24] text-[#0E1012]"
+                            : m.status === "ABANDONED"
+                            ? "bg-red-950/90 text-red-300 border border-red-500/50"
                             : "bg-[#25272B] text-zinc-400 border border-zinc-700"
                         }`}
                       >
-                        <span className="truncate text-[11px] font-bold">
-                          {m.status === "PAID"
-                            ? "Paid via PayPal"
-                            : m.status === "ACTIVE"
-                            ? "In Progress &bull; Agent 2"
-                            : m.status === "IN_REVIEW"
-                            ? "72h Silence-Means-Yes"
-                            : `Locked (Dep: M${m.order - 1})`}
+                        <span className="truncate text-[11px] font-bold flex items-center gap-1.5">
+                          {m.isInactivityOverdue ? (
+                            <>
+                              <span className="bg-black text-amber-300 px-1.5 py-0.5 text-[9px] font-mono tracking-wider font-extrabold flex items-center gap-1 rounded-none">
+                                <AlertTriangle className="h-3 w-3" />
+                                ⚠️ INACTIVITY WARNING
+                              </span>
+                              <span className="hidden sm:inline text-black font-semibold">&bull; 72h Overdue</span>
+                            </>
+                          ) : m.status === "PAID" ? (
+                            "Paid via PayPal"
+                          ) : m.status === "ACTIVE" ? (
+                            "In Progress &bull; Agent 2"
+                          ) : m.status === "IN_REVIEW" ? (
+                            "72h Silence-Means-Yes"
+                          ) : m.status === "ABANDONED" ? (
+                            "Abandoned & Refunded"
+                          ) : (
+                            `Locked (Dep: M${m.order - 1})`
+                          )}
                         </span>
 
-                        {m.status === "LOCKED" ? (
+                        {m.isInactivityOverdue ? (
+                          <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 text-black font-bold ml-1 animate-bounce" />
+                        ) : m.status === "LOCKED" ? (
                           <Lock className="h-3 w-3 flex-shrink-0 text-zinc-400 ml-1" />
                         ) : m.status === "PAID" ? (
                           <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0 text-[#0E1012] ml-1" />
@@ -428,6 +454,32 @@ export default function GanttBoard({
           <p className="text-xs text-zinc-400 leading-relaxed">
             {selectedMilestone.description}
           </p>
+
+          {/* 72h Inactivity Warning Box */}
+          {selectedMilestone.isInactivityOverdue && (
+            <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-none flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-start gap-2.5">
+                <AlertTriangle className="h-4 w-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <div className="text-xs font-semibold text-amber-200">
+                    72-Hour Inactivity Breach Detected
+                  </div>
+                  <div className="text-[11px] text-zinc-300">
+                    No deliverable submitted past the contractual deadline. Client is entitled to an immediate refund of unreleased escrow.
+                  </div>
+                </div>
+              </div>
+              {onClaimInactivityRefund && (
+                <button
+                  type="button"
+                  onClick={() => onClaimInactivityRefund(selectedMilestone.id)}
+                  className="lime-button px-3 py-1.5 text-xs font-semibold rounded-none flex-shrink-0"
+                >
+                  Claim Inactivity Refund &amp; Generate Handoff
+                </button>
+              )}
+            </div>
+          )}
 
           <div className="space-y-1.5 pt-1">
             <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 font-semibold">

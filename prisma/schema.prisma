@@ -15,9 +15,12 @@ model Contract {
   currency        String      @default("USD")
   clientEmail     String
   freelancerEmail String
-  status          String      @default("DRAFT") // DRAFT, FUNDED, ACTIVE, COMPLETED, CANCELLED
+  status          String      @default("DRAFT") // DRAFT, FUNDED, ACTIVE, COMPLETED, CANCELLED, ABANDONED_REFUNDED
   paypalOrderId   String?
   paypalCaptureId String?
+  refundId        String?
+  refundedAmount  Float?
+  handoffDossier  String?     // JSON text of Agent 3 Takeover Brief
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   milestones      Milestone[]

@@ -238,3 +238,53 @@ export async function executePayPalPayout(params: {
   return response.json();
 }
 
+/**
+ * Refund unreleased escrow funds back to client via PayPal Captures Refund API:
+ * POST /v2/payments/captures/{capture_id}/refund
+ */
+export async function refundPayPalCapture(params: {
+  captureId: string;
+  amount: number;
+  currency?: string;
+  noteReason?: string;
+}) {
+  const { captureId, amount, currency = "USD", noteReason = "Freelancer abandonment inactivity claim" } = params;
+  const token = await getPayPalAccessToken();
+
+  if (token.startsWith("mock_") || token.startsWith("sim_") || captureId.startsWith("CAPTURE_SIM_")) {
+    return {
+      id: `REFUND_SIM_${Math.random().toString(36).substring(2, 9).toUpperCase()}`,
+      status: "COMPLETED",
+      amount: {
+        value: amount.toFixed(2),
+        currency_code: currency,
+      },
+      note_to_payer: noteReason,
+      create_time: new Date().toISOString(),
+    };
+  }
+
+  const response = await fetch(`${PAYPAL_API_BASE}/v2/payments/captures/${captureId}/refund`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      amount: {
+        value: amount.toFixed(2),
+        currency_code: currency,
+      },
+      note_to_payer: noteReason,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(`PayPal Refund failed: ${response.status} ${errorBody}`);
+  }
+
+  return response.json();
+}
+
+
