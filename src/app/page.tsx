@@ -30,6 +30,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import GanttBoard, { GanttMilestone } from "@/components/GanttBoard";
+import { FractalDotGrid } from "@/components/ui/bg-animated-fractal-dot-grid";
 
 const INITIAL_DEMO_MILESTONES: GanttMilestone[] = [
   {
@@ -195,8 +196,25 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* Hero Section (Razorpay "Fix My Itch" Inspired Poster Layout) */}
+      {/* Hero Section (Razorpay "Fix My Itch" Inspired Poster Layout with Cult UI Fractal Dot Grid) */}
       <section className="relative z-10 pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+        {/* Cult UI Animated Fractal Dot Grid Canvas */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          <FractalDotGrid
+            dotSize={4}
+            dotSpacing={20}
+            dotOpacity={0.3}
+            waveIntensity={30}
+            waveRadius={200}
+            dotColor="rgba(218, 249, 156, 1)"
+            glowColor="rgba(218, 249, 156, 1)"
+            enableNoise={true}
+            noiseOpacity={0.03}
+            enableMouseGlow={true}
+            initialPerformance="medium"
+          />
+        </div>
+
         {/* Scattered Background Problem & Guarantee Ticket Stamps (Subtle Greyish Silhouette Shadows) */}
         <div className="pointer-events-none select-none absolute inset-0 z-0 overflow-hidden">
           {/* Stamp 1: Top Left */}
