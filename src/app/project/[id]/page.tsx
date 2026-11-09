@@ -747,7 +747,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                     rows={3}
                     value={revisionFeedback}
                     onChange={(e) => setRevisionFeedback(e.target.value)}
-                    className="w-full rounded-lg border border-white/10 bg-black/60 p-2.5 text-xs text-white focus:border-[#DAF99C] focus:outline-none"
+                    className="w-full rounded-none border border-white/10 bg-black/60 p-2.5 text-xs text-white focus:border-[#DAF99C] focus:outline-none"
                   />
                 </div>
 
@@ -775,7 +775,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                 <button
                   type="button"
                   onClick={() => setShowRevisionModal(false)}
-                  className="rounded-lg px-3 py-1.5 text-xs text-zinc-400 hover:text-white"
+                  className="rounded-none px-3 py-1.5 text-xs text-zinc-400 hover:text-white"
                 >
                   Cancel
                 </button>
@@ -783,7 +783,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                   type="button"
                   disabled={isSubmittingRevision}
                   onClick={() => handleSubmitRevision(selectedMilestone.id)}
-                  className="lime-button inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold active:scale-[0.98] disabled:opacity-50"
+                  className="lime-button inline-flex items-center gap-1.5 rounded-none px-4 py-2 text-xs font-semibold active:scale-[0.98] disabled:opacity-50"
                 >
                   <RefreshCw className={`h-3.5 w-3.5 ${isSubmittingRevision ? "animate-spin" : ""}`} />
                   {isSubmittingRevision ? "Rescheduling..." : "Submit & Reschedule Gantt"}
