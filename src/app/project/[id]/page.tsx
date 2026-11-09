@@ -119,6 +119,9 @@ export default function ProjectCockpitPage({ params }: PageProps) {
   const [revisionDays, setRevisionDays] = useState(2);
   const [isSubmittingRevision, setIsSubmittingRevision] = useState(false);
 
+  // Demo Reset state
+  const [isResettingDemo, setIsResettingDemo] = useState(false);
+
   // Freelancer Ghosting Protection states
   const [isSimulatingInactivity, setIsSimulatingInactivity] = useState(false);
   const [isProcessingRefund, setIsProcessingRefund] = useState(false);
@@ -174,6 +177,27 @@ export default function ProjectCockpitPage({ params }: PageProps) {
     if (m.status === "ACTIVE" && m.endDate && new Date(m.endDate).getTime() < Date.now()) return true;
     return false;
   };
+
+  // Reset Demo Contract to fresh state
+  async function handleResetDemo() {
+    setIsResettingDemo(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/demo/reset", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to reset demo");
+      setContract(data.contract);
+      setSelectedMilestone(data.contract.milestones[0]);
+      setIsSimulatingInactivity(false);
+      setTakeoverBrief(null);
+      setRefundReceipt(null);
+      setSuccessMessage("Demo contract reset to fresh state! (Milestone 1 Paid, Milestone 2 Active).");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Reset failed");
+    } finally {
+      setIsResettingDemo(false);
+    }
+  }
 
   // Claim Inactivity Refund & Generate AI Takeover Brief
   async function handleClaimInactivityRefund() {
@@ -468,6 +492,19 @@ export default function ProjectCockpitPage({ params }: PageProps) {
             >
               Freelancer: Alex
             </button>
+
+            {contract.id === "demo-contract-2026" && (
+              <button
+                type="button"
+                disabled={isResettingDemo}
+                onClick={handleResetDemo}
+                className="rounded-none border-l border-white/10 pl-2.5 pr-2 py-1 text-[11px] text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5 font-mono"
+                title="Reset demo contract back to default state (M1 Paid, M2 Active)"
+              >
+                <RefreshCw className={`h-3 w-3 ${isResettingDemo ? "animate-spin text-[#DAF99C]" : "text-zinc-500"}`} />
+                <span>{isResettingDemo ? "Resetting..." : "Reset Demo"}</span>
+              </button>
+            )}
           </div>
         </div>
 
