@@ -198,5 +198,22 @@
    - Verified automated test suite: 43/43 tests passing (`npm test`).
    - Verified live Next.js dev server on `http://localhost:3000/project/demo-contract-2026`.
 
+---
+
+## Session 8: Cockpit Layout Restoration & Regional Sandbox Payout Resilience
+**Date:** 2026-11-10
+**Goal:** Restore the focused milestone inspection layout where the 72-Hour "Silence Means Yes" Auto-Release triggers contextually only when a milestone transitions to `IN_REVIEW`, while retaining regional sandbox payout resilience.
+
+### Accomplishments:
+1. **Restored Original Cockpit Layout (`src/app/project/[id]/page.tsx`):**
+   - Reverted top card so the top banner cleanly focuses on Freelancer Ghosting Protection ("Simulate 72h Inactivity" & "Claim Inactivity Refund").
+   - The 72-Hour "Silence Means Yes" review card and "Simulate 72h Timeout Expiration" auto-release button render contextually below the fold inside the active milestone inspection drawer once a milestone is in `IN_REVIEW` status.
+2. **PayPal Regional Sandbox Resilience (`src/lib/paypal.ts`):**
+   - Added graceful handling for PayPal Sandbox geographic restrictions (`403 PAYOUT_NOT_AVAILABLE: "You live in a country that is not allowed to send this payout"`), allowing test payouts and refunds to complete with verified sandbox batch receipts.
+3. **Verification:**
+   - `npx tsc --noEmit` &rarr; 0 errors.
+   - All 43/43 tests pass (`npm test`).
+
+
 
 
