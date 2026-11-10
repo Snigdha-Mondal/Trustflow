@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && prisma db push && tsx prisma/seed.ts && next build",
     "start": "next start",
     "lint": "next lint",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:generate": "prisma generate",
-    "test": "tsx --test test/*.test.mjs"
+    "test": "tsx --test test/*.test.mjs",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

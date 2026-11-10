@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
+  outputFileTracingIncludes: {
+    "/api/**/*": ["./prisma/dev.db"],
+  },
 };
 
 export default nextConfig;
