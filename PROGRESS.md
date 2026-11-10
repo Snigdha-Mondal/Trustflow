@@ -249,6 +249,18 @@
    - `npx tsc --noEmit` &rarr; 0 errors.
    - 43/43 automated tests pass.
 
+---
+
+## Session 11: Open Source MIT License Compliance
+**Date:** 2026-11-10
+**Goal:** Satisfy hackathon public open source rules by adding a root LICENSE file and declaring MIT license in package.json.
+
+### Accomplishments:
+1. Created official root `LICENSE` file adhering to the MIT License specification with 2026 copyright attribution.
+2. Updated `package.json` with `"license": "MIT"`.
+3. Pushed changes to GitHub repository `main` branch to activate the MIT license pill in the GitHub repository sidebar.
+
+
 
 
 
