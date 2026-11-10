@@ -3,7 +3,7 @@ services:
     name: trustflow
     runtime: node
     plan: free
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --include=dev && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
@@ -20,3 +20,4 @@ services:
         sync: false
       - key: GEMINI_API_KEY
         sync: false
+
