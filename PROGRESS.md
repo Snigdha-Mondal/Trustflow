@@ -260,6 +260,26 @@
 2. Updated `package.json` with `"license": "MIT"`.
 3. Pushed changes to GitHub repository `main` branch to activate the MIT license pill in the GitHub repository sidebar.
 
+---
+
+## Session 12: Fully Editable Wizard Milestones & Criteria
+**Date:** 2026-11-10
+**Goal:** Empower users to freely customize sign-off criteria text, milestone duration (number of days), milestone title, and deliverable descriptions in the Scope Wizard.
+
+### Accomplishments:
+1. **Editable Criteria Text (`src/app/wizard/page.tsx`):**
+   - Replaced static text with an inline input field for each criterion (`handleCriterionTextChange`).
+   - Clicking "+ Add Criterion" now adds a clean input where users can type custom requirements directly.
+2. **Editable Milestone Duration (`handleMilestoneDurationChange`):**
+   - Replaced static duration text with an interactive number input for days (`min="1" max="90"`).
+3. **Editable Title & Description:**
+   - Made milestone titles and scope descriptions fully editable before contract creation.
+4. **Verification & Deployment:**
+   - `npx tsc --noEmit` &rarr; 0 errors.
+   - 43/43 automated tests pass.
+   - Pushed to GitHub `main` for automatic deployment to Render.
+
+
 
 
 
