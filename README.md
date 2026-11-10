@@ -34,26 +34,27 @@ Trustflow is an autonomous milestone escrow protocol that creates symmetrical pr
 
 ```mermaid
 flowchart TD
-    A[Client Project Brief] --> B[Agent 1: Scope & Milestone Clarifier]
-    B --> C[Deconstruct into Objective Milestones & Criteria]
-    C --> D[Upfront Escrow Funding via PayPal Orders API]
-    D --> E[Interactive Milestone Timeline Board]
-    E --> F[Milestone 1: Active | Downstream Milestones: Locked]
-    F --> G[Freelancer Submits Deliverable Preview URL]
-    G --> H[Agent 2: Deliverable Inspector]
+    A["Client Project Brief"] --> B["Agent 1: Scope & Milestone Clarifier"]
+    B --> C["Deconstruct into Objective Milestones & Criteria"]
+    C --> D["Upfront Escrow Funding via PayPal Orders API"]
+    D --> E["Interactive Milestone Timeline Board"]
+    E --> F["Milestone 1: Active • Downstream Milestones: Locked"]
+    F --> G["Freelancer Submits Deliverable Preview URL"]
+    G --> H["Agent 2: Deliverable Inspector"]
     
-    H -->|Automated Criteria Verified| I[PayPal Payouts API Disbursal]
-    H -->|Subjective Criteria Present| J[72-Hour Review Window]
+    H -->|Automated Criteria Verified| I["PayPal Payouts API Disbursal"]
+    H -->|Subjective Criteria Present| J["72-Hour Review Window"]
     
     J -->|Client Approves| I
-    J -->|Client Silent for 72h| K[Silence Means Yes Auto-Release] --> I
+    J -->|Client Silent for 72h| K["Silence Means Yes Auto-Release"]
+    K --> I
     
-    F -->|Freelancer Inactive for 72h Past Deadline| L[Freelancer Ghosting Protection]
-    L --> M[PayPal Refund API: Return Unreleased Escrow]
-    L --> N[Agent 3: AI Continuity Handoff Brief]
+    F -->|Freelancer Inactive >72h| L["Freelancer Ghosting Protection"]
+    L --> M["PayPal Refund API: Return Unreleased Escrow"]
+    L --> N["Agent 3: AI Continuity Handoff Brief"]
     
-    I --> O[Next Milestone Unlocks on Timeline]
-    O -->|All Milestones Completed| P[Contract Completed]
+    I --> O["Next Milestone Unlocks on Timeline"]
+    O -->|All Milestones Completed| P["Contract Completed"]
 ```
 
 ---
