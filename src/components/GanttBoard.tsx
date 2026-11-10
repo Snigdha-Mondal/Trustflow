@@ -383,7 +383,7 @@ export default function GanttBoard({
                           ) : m.status === "PAID" ? (
                             "Paid via PayPal"
                           ) : m.status === "ACTIVE" ? (
-                            "In Progress &bull; Agent 2"
+                            "In Progress • Agent 2"
                           ) : m.status === "IN_REVIEW" ? (
                             "72h Silence-Means-Yes"
                           ) : m.status === "ABANDONED" ? (
