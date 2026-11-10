@@ -21,7 +21,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Milestone not found" }, { status: 404 });
     }
 
-    if (milestone.status !== "IN_REVIEW") {
+    if (milestone.status === "PAID") {
+      return NextResponse.json({ error: "Milestone has already been paid" }, { status: 400 });
+    }
+
+    if (milestone.status !== "IN_REVIEW" && !force) {
       return NextResponse.json({ error: "Milestone is not currently in client review" }, { status: 400 });
     }
 

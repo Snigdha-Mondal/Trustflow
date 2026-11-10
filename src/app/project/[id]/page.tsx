@@ -122,6 +122,10 @@ export default function ProjectCockpitPage({ params }: PageProps) {
   // Demo Reset state
   const [isResettingDemo, setIsResettingDemo] = useState(false);
 
+  // 72h Silence Means Yes Simulation States
+  const [isSimulatingReview, setIsSimulatingReview] = useState(false);
+  const [isAutoReleasing, setIsAutoReleasing] = useState(false);
+
   // Freelancer Ghosting Protection states
   const [isSimulatingInactivity, setIsSimulatingInactivity] = useState(false);
   const [isProcessingRefund, setIsProcessingRefund] = useState(false);
@@ -251,6 +255,63 @@ export default function ProjectCockpitPage({ params }: PageProps) {
       setError(err instanceof Error ? err.message : "Inactivity refund claim failed");
     } finally {
       setIsProcessingRefund(false);
+    }
+  }
+
+  // Simulate Transition to 72h Review State (Silence Means Yes)
+  async function handleSimulateReview(milestoneId?: string) {
+    const targetId =
+      milestoneId ||
+      contract?.milestones.find((m) => m.status === "ACTIVE")?.id ||
+      selectedMilestone?.id;
+
+    if (!targetId) {
+      setError("No active milestone found to submit for review.");
+      return;
+    }
+
+    setIsSimulatingReview(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/milestones/simulate-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contractId, milestoneId: targetId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to submit for review");
+      setContract(data.contract);
+      const updated = data.contract.milestones.find((m: Milestone) => m.id === targetId);
+      if (updated) setSelectedMilestone(updated);
+      setSuccessMessage(
+        'Milestone entered 72-Hour "Silence Means Yes" review window! Timer active.'
+      );
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to simulate review");
+    } finally {
+      setIsSimulatingReview(false);
+    }
+  }
+
+  // Trigger 72h Silence-Means-Yes Auto-Release
+  async function handleTriggerSilenceAutoRelease(milestoneId?: string) {
+    const targetId =
+      milestoneId ||
+      contract?.milestones.find((m) => m.status === "IN_REVIEW")?.id ||
+      contract?.milestones.find((m) => m.status === "ACTIVE")?.id ||
+      selectedMilestone?.id;
+
+    if (!targetId) {
+      setError("No milestone available to auto-release.");
+      return;
+    }
+
+    setIsAutoReleasing(true);
+    setError(null);
+    try {
+      await handleReleasePayout(targetId, true);
+    } finally {
+      setIsAutoReleasing(false);
     }
   }
 
@@ -440,6 +501,13 @@ export default function ProjectCockpitPage({ params }: PageProps) {
     .filter((m) => m.status === "PAID")
     .reduce((sum, m) => sum + m.amount, 0);
 
+  const unreleasedTotal = Math.max(0, contract.totalBudget - paidTotal);
+
+  const activeOrReviewMilestone =
+    contract.milestones.find((m) => m.status === "IN_REVIEW") ||
+    contract.milestones.find((m) => m.status === "ACTIVE") ||
+    selectedMilestone;
+
   return (
     <div className="min-h-screen bg-[#141517] text-zinc-100 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -592,42 +660,125 @@ export default function ProjectCockpitPage({ params }: PageProps) {
           </div>
         )}
 
-        {/* Freelancer Ghosting Protection Quick Actions (Client & Judge View) */}
-        {contract.status !== "ABANDONED_REFUNDED" && contract.status !== "DRAFT" && (activeRole === "ALL" || activeRole === "CLIENT") && (
-          <div className="rounded-none border border-white/10 bg-[#1C1D20]/90 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2.5">
-              <ShieldAlert className="h-4 w-4 text-amber-400 flex-shrink-0" />
-              <div className="text-zinc-300">
-                <strong className="text-white">Freelancer Ghosting Protection:</strong> If a milestone sits inactive past deadline (&gt;72h), claim an immediate refund of unreleased escrow.
+        {/* Symmetrical Dual Ghosting Protection Dashboard (Client & Freelancer Fair Protection) */}
+        {contract.status !== "ABANDONED_REFUNDED" && contract.status !== "DRAFT" && (
+          <div className="rounded-none border border-white/10 bg-[#161719] p-5 space-y-4 shadow-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-[#DAF99C] animate-pulse" />
+                <h3 className="text-xs font-mono font-bold tracking-wider uppercase text-white">
+                  Symmetrical Ghosting Protection Protocol
+                </h3>
               </div>
+              <span className="text-[11px] font-mono text-zinc-400">
+                Guaranteed fairness for both Client &amp; Freelancer &bull; 72-Hour Deadlines
+              </span>
             </div>
 
-            <div className="flex items-center gap-2.5 flex-wrap self-end sm:self-auto">
-              {activeRole === "ALL" && (
-                <button
-                  type="button"
-                  onClick={() => setIsSimulatingInactivity(!isSimulatingInactivity)}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-none font-mono text-xs transition-colors border ${
-                    isSimulatingInactivity
-                      ? "bg-amber-400 text-black border-amber-300 font-bold"
-                      : "bg-[#25272B] text-zinc-300 border-white/10 hover:text-white"
-                  }`}
-                  title="Toggle simulation of milestone overdue > 72 hours"
-                >
-                  <AlertTriangle className="h-3 w-3" />
-                  <span>{isSimulatingInactivity ? "Clear 72h Inactivity" : "Simulate 72h Inactivity"}</span>
-                </button>
-              )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Card 1: Client Ghosting Protection ("Silence Means Yes") */}
+              <div className="rounded-none border border-[#DAF99C]/30 bg-[#1C1D20] p-4 flex flex-col justify-between gap-3">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 text-xs font-bold text-[#DAF99C]">
+                      <Clock className="h-4 w-4 text-[#DAF99C]" />
+                      <span>Client Ghosting ("Silence Means Yes")</span>
+                    </div>
+                    {activeOrReviewMilestone && (
+                      <span className="font-mono text-[10px] bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 px-2 py-0.5">
+                        M{activeOrReviewMilestone.order}: {activeOrReviewMilestone.status}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-zinc-300 leading-relaxed">
+                    If freelancer submits work and client is silent for &gt;72h, escrow funds <strong>auto-release to freelancer</strong> via PayPal Payouts.
+                  </p>
+                  {activeOrReviewMilestone && activeOrReviewMilestone.status !== "PAID" ? (
+                    <div className="text-[11px] font-mono text-zinc-400 bg-black/30 p-2 border border-white/5">
+                      Target: <span className="text-white font-medium">{activeOrReviewMilestone.title}</span> (${activeOrReviewMilestone.amount.toFixed(2)} USD)
+                    </div>
+                  ) : (
+                    <div className="text-[11px] font-mono text-emerald-400 bg-black/30 p-2 border border-white/5">
+                      ✓ All milestones completed &amp; disbursed!
+                    </div>
+                  )}
+                </div>
 
-              <button
-                type="button"
-                disabled={isProcessingRefund}
-                onClick={handleClaimInactivityRefund}
-                className="lime-button inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-none transition-all active:scale-[0.98] disabled:opacity-50"
-              >
-                <ShieldAlert className="h-3.5 w-3.5 text-[#0E1012]" />
-                {isProcessingRefund ? "Processing Refund..." : "Claim Inactivity Refund & Generate Handoff"}
-              </button>
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/5">
+                  {activeOrReviewMilestone && activeOrReviewMilestone.status === "ACTIVE" && (
+                    <button
+                      type="button"
+                      disabled={isSimulatingReview}
+                      onClick={() => handleSimulateReview(activeOrReviewMilestone.id)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-none font-mono text-xs transition-colors border bg-[#25272B] text-zinc-200 border-white/10 hover:text-white hover:border-white/20 disabled:opacity-50"
+                      title="Set milestone into 72-hour review window with active countdown"
+                    >
+                      <Clock className="h-3 w-3 text-[#DAF99C]" />
+                      <span>{isSimulatingReview ? "Submitting..." : "1. Enter 72h Review State"}</span>
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    disabled={isAutoReleasing || isProcessingAction || !activeOrReviewMilestone || activeOrReviewMilestone.status === "PAID"}
+                    onClick={() => handleTriggerSilenceAutoRelease(activeOrReviewMilestone?.id)}
+                    className="lime-button inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-none transition-all active:scale-[0.98] disabled:opacity-50"
+                    title="Simulate 72h passing with zero client response to auto-release funds to freelancer"
+                  >
+                    <Zap className="h-3.5 w-3.5 text-[#0E1012]" />
+                    <span>{isAutoReleasing || isProcessingAction ? "Auto-Releasing..." : "⚡ Trigger 72h Auto-Release Payout"}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Card 2: Freelancer Ghosting Protection (Inactivity Refund & Agent 3) */}
+              <div className="rounded-none border border-amber-500/30 bg-[#1C1D20] p-4 flex flex-col justify-between gap-3">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 text-xs font-bold text-amber-400">
+                      <ShieldAlert className="h-4 w-4 text-amber-400" />
+                      <span>Freelancer Ghosting (Inactivity Refund)</span>
+                    </div>
+                    <span className="font-mono text-[10px] bg-amber-500/10 text-amber-300 border border-amber-500/20 px-2 py-0.5">
+                      ${unreleasedTotal.toFixed(2)} USD in Escrow
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-300 leading-relaxed">
+                    If freelancer is inactive past deadline (&gt;72h), client claims <strong>instant PayPal refund</strong> of unreleased escrow + generates <strong>Agent 3 Takeover Brief</strong>.
+                  </p>
+                  <div className="text-[11px] font-mono text-zinc-400 bg-black/30 p-2 border border-white/5">
+                    Unreleased Escrow: <span className="text-amber-300 font-semibold">${unreleasedTotal.toFixed(2)} USD</span> &bull; {contract.milestones.filter(m => m.status !== "PAID").length} Milestones Remaining
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/5">
+                  {activeRole === "ALL" && (
+                    <button
+                      type="button"
+                      onClick={() => setIsSimulatingInactivity(!isSimulatingInactivity)}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-none font-mono text-xs transition-colors border ${
+                        isSimulatingInactivity
+                          ? "bg-amber-400 text-black border-amber-300 font-bold"
+                          : "bg-[#25272B] text-zinc-300 border-white/10 hover:text-white"
+                      }`}
+                      title="Toggle simulation of milestone overdue > 72 hours"
+                    >
+                      <AlertTriangle className="h-3 w-3" />
+                      <span>{isSimulatingInactivity ? "Clear 72h Inactivity" : "Simulate 72h Inactivity"}</span>
+                    </button>
+                  )}
+
+                  <button
+                    type="button"
+                    disabled={isProcessingRefund || unreleasedTotal <= 0}
+                    onClick={handleClaimInactivityRefund}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-none bg-amber-400 hover:bg-amber-300 text-black transition-all active:scale-[0.98] disabled:opacity-50"
+                  >
+                    <ShieldAlert className="h-3.5 w-3.5 text-black" />
+                    <span>{isProcessingRefund ? "Processing Refund..." : "Claim Inactivity Refund & Generate Handoff"}</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -824,15 +975,28 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                     />
                   </div>
 
-                  <button
-                    type="button"
-                    disabled={isInspecting}
-                    onClick={() => handleInspectDeliverable(selectedMilestone.id)}
-                    className="lime-button inline-flex items-center gap-2 rounded-none px-5 py-2.5 text-xs font-semibold active:scale-[0.98] disabled:opacity-50"
-                  >
-                    <Bot className="h-4 w-4 text-[#0E1012]" />
-                    {isInspecting ? "Auditing Code & Live Preview..." : "Run Inspection & Trigger Payout"}
-                  </button>
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <button
+                      type="button"
+                      disabled={isInspecting}
+                      onClick={() => handleInspectDeliverable(selectedMilestone.id)}
+                      className="lime-button inline-flex items-center gap-2 rounded-none px-5 py-2.5 text-xs font-semibold active:scale-[0.98] disabled:opacity-50"
+                    >
+                      <Bot className="h-4 w-4 text-[#0E1012]" />
+                      {isInspecting ? "Auditing Code & Live Preview..." : "Run Inspection & Trigger Payout"}
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={isSimulatingReview}
+                      onClick={() => handleSimulateReview(selectedMilestone.id)}
+                      className="inline-flex items-center gap-2 rounded-none border border-[#DAF99C]/30 bg-[#DAF99C]/10 hover:bg-[#DAF99C]/20 px-4 py-2.5 text-xs font-semibold text-[#DAF99C] transition-all duration-300 active:scale-[0.98] disabled:opacity-50"
+                      title="Transition this milestone into 72h review state to test Silence Means Yes countdown"
+                    >
+                      <Clock className="h-4 w-4 text-[#DAF99C]" />
+                      {isSimulatingReview ? "Submitting..." : "Submit for 72h Review"}
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
