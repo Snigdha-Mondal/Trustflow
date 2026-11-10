@@ -382,11 +382,11 @@ export default function LandingPage() {
                   onClick={() => setSimStep(3)}
                   className={`p-2.5 rounded-none border text-left transition-all duration-200 active:scale-[0.98] ${
                     simStep === 3
-                      ? "border-[#FBBF24] bg-[#FBBF24]/10 text-white shadow-md shadow-[#FBBF24]/10"
+                      ? "border-[#DAF99C] bg-[#DAF99C]/10 text-white shadow-md shadow-[#DAF99C]/10"
                       : "border-white/5 bg-[#25272B]/60 text-zinc-400 hover:border-white/10"
                   }`}
                 >
-                  <div className="text-[10px] font-mono uppercase text-[#FBBF24] font-bold">Phase 3</div>
+                  <div className="text-[10px] font-mono uppercase text-[#DAF99C] font-bold">Phase 3</div>
                   <div className="text-xs font-semibold mt-0.5">72h Auto-Release</div>
                   <div className="text-[10px] text-zinc-400 font-mono">Anti-Ghosting Guard</div>
                 </button>
@@ -426,7 +426,7 @@ export default function LandingPage() {
                 simStep === 2
                   ? "border-[#DAF99C]/70 bg-[#25272B] shadow-lg shadow-[#DAF99C]/10"
                   : simStep === 3
-                  ? "border-[#FBBF24]/70 bg-[#FBBF24]/10"
+                  ? "border-[#DAF99C]/70 bg-[#DAF99C]/10"
                   : simStep === 4
                   ? "border-[#DAF99C]/70 bg-[#DAF99C]/10"
                   : "border-white/10 bg-[#25272B]/60"
@@ -437,7 +437,7 @@ export default function LandingPage() {
                     simStep === 4
                       ? "bg-[#DAF99C] text-[#0E1012]"
                       : simStep === 3
-                      ? "bg-[#FBBF24] text-[#0E1012]"
+                      ? "bg-[#DAF99C] text-[#0E1012]"
                       : "bg-white text-[#0E1012]"
                   }`}>
                     {simStep === 4 ? "PAID" : simStep === 3 ? "IN REVIEW" : "ACTIVE ⚡"}
@@ -501,8 +501,8 @@ export default function LandingPage() {
 
               {simStep === 3 && (
                 <div className="space-y-1">
-                  <div className="text-[#FBBF24]">&gt; Invariant: Subjective design review flagged for human client</div>
-                  <div className="text-[#FBBF24]">&gt; Timer initiated: 72:00:00 remaining on contract #demo-contract-2026</div>
+                  <div className="text-[#DAF99C]">&gt; Invariant: Subjective design review flagged for human client</div>
+                  <div className="text-[#DAF99C]">&gt; Timer initiated: 72:00:00 remaining on contract #demo-contract-2026</div>
                   <div className="text-zinc-300">&gt; Guaranteed safety rule: Inaction triggers autonomous disbursement</div>
                 </div>
               )}
@@ -600,7 +600,7 @@ export default function LandingPage() {
           {/* Engine 3: 72-Hour Auto-Release */}
           <div className="luxury-card p-7 space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
-              <div className="flex h-12 w-12 items-center justify-center bg-[#FBBF24]/10 text-[#FBBF24] border border-[#FBBF24]/20 font-mono font-bold text-base">
+              <div className="flex h-12 w-12 items-center justify-center bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20 font-mono font-bold text-base">
                 03
               </div>
               <h3 className="title-1 text-white">Silence Means Yes</h3>
@@ -608,7 +608,7 @@ export default function LandingPage() {
                 If deliverables require subjective design sign-off, a 72-hour countdown starts. If the client goes silent or delays review, milestone funds automatically disburse to the freelancer's PayPal account.
               </p>
             </div>
-            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-[#FBBF24] flex items-center gap-1.5 font-semibold">
+            <div className="pt-2 border-t border-white/5 text-[11px] font-mono text-[#DAF99C] flex items-center gap-1.5 font-semibold">
               <Clock className="h-3.5 w-3.5" />
               <span>Guaranteed Anti-Ghosting Clock</span>
             </div>
@@ -654,7 +654,7 @@ export default function LandingPage() {
 
           <div className="luxury-card p-7 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center bg-white/10 text-white border border-white/20">
+              <div className="flex h-10 w-10 items-center justify-center bg-[#DAF99C]/10 text-[#DAF99C] border border-[#DAF99C]/20">
                 <ShieldCheck className="h-5 w-5 text-[#DAF99C]" />
               </div>
               <div>
@@ -666,7 +666,7 @@ export default function LandingPage() {
               AI can <strong>never</strong> unilaterally reject work. If criteria contain subjective aesthetics, the deliverable routes to client review with a 72-hour countdown timer. If the client is silent, funds auto-release.
             </p>
             <div className="rounded-none border border-white/10 bg-[#121315] p-3.5 font-mono text-[11px] text-zinc-400 space-y-1.5">
-              <div className="text-[#FBBF24]">&#9203; In-Review: 72h countdown started for M2</div>
+              <div className="text-[#DAF99C]">&#9203; In-Review: 72h countdown started for M2</div>
               <div className="text-zinc-300">&bull; Client approves &rarr; Instant PayPal Payout</div>
               <div className="text-zinc-300">&bull; Client silent &rarr; Auto-releases on timeout</div>
             </div>
