@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import GanttBoard, { GanttMilestone } from "@/components/GanttBoard";
 import TakeoverModal from "@/components/TakeoverModal";
+import PayPalEscrowButton from "@/components/PayPalEscrowButton";
 import type { TakeoverBrief } from "@/lib/handoff";
 
 interface Criterion {
@@ -102,6 +103,7 @@ export default function ProjectCockpitPage({ params }: PageProps) {
 
   // Funding state
   const [isFunding, setIsFunding] = useState(false);
+  const [showPayPalPopup, setShowPayPalPopup] = useState(false);
 
   // Deliverable Submission state
   const [selectedMilestone, setSelectedMilestone] = useState<Milestone | null>(null);
@@ -669,31 +671,72 @@ export default function ProjectCockpitPage({ params }: PageProps) {
               </div>
 
               {contract.status === "DRAFT" ? (
-                <button
-                  type="button"
-                  disabled={isFunding}
-                  onClick={handleFundEscrow}
-                  className="lime-button w-full mt-3 inline-flex items-center justify-center gap-2 rounded-none px-4 py-2.5 text-xs font-semibold active:scale-[0.98] shadow-lg shadow-[#DAF99C]/20"
-                >
-                  <CreditCard className="h-4 w-4 text-[#0E1012]" />
-                  {isFunding ? "Authorizing PayPal..." : `Fund $${contract.totalBudget.toFixed(2)} via PayPal`}
-                </button>
+                <div className="w-full mt-3">
+                  <PayPalEscrowButton
+                    contractId={contract.id}
+                    contractTitle={contract.title}
+                    totalBudget={contract.totalBudget}
+                    currency={contract.currency}
+                    onSuccess={(updatedContract) => {
+                      setContract(updatedContract);
+                      if (updatedContract.milestones.length > 0) {
+                        setSelectedMilestone(updatedContract.milestones[0]);
+                      }
+                      setSuccessMessage(
+                        `Escrow Funded Successfully! $${updatedContract.totalBudget.toFixed(2)} held in PayPal Escrow.`
+                      );
+                    }}
+                    onError={(err) => setError(err)}
+                  />
+                </div>
               ) : (
-                <div className="w-full mt-2 space-y-1">
-                  <div className="w-full flex items-center justify-center gap-1.5 text-[11px] font-mono text-[#0E1012] bg-[#DAF99C] font-semibold rounded-none py-1 px-2">
+                <div className="w-full mt-2 space-y-2">
+                  <div className="w-full flex items-center justify-center gap-1.5 text-[11px] font-mono text-[#0E1012] bg-[#DAF99C] font-semibold rounded-none py-1.5 px-2">
                     <CheckCircle2 className="h-3.5 w-3.5" />
                     <span>Escrow Locked in PayPal</span>
                   </div>
-                  {activeRole === "ALL" && (
-                    <button
-                      type="button"
-                      disabled={isFunding}
-                      onClick={handleFundEscrow}
-                      className="w-full text-[10px] font-mono text-zinc-400 hover:text-[#DAF99C] transition-colors text-center pt-0.5 block"
-                      title="Re-run the live PayPal sandbox order creation & capture flow"
-                    >
-                      {isFunding ? "Authorizing PayPal Orders..." : "↻ Test PayPal Funding Flow"}
-                    </button>
+
+                  {/* Allow Client & Demo views to test the official PayPal Checkout Popup */}
+                  {(activeRole === "ALL" || activeRole === "CLIENT") && (
+                    <div className="pt-1 w-full">
+                      {showPayPalPopup ? (
+                        <div className="mt-2 border border-white/10 bg-[#161719] p-3 space-y-2 rounded-none w-full">
+                          <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400">
+                            <span>PayPal Sandbox Popup Tester</span>
+                            <button
+                              type="button"
+                              onClick={() => setShowPayPalPopup(false)}
+                              className="text-zinc-400 hover:text-white px-1"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                          <PayPalEscrowButton
+                            contractId={contract.id}
+                            contractTitle={contract.title}
+                            totalBudget={contract.totalBudget}
+                            currency={contract.currency}
+                            onSuccess={(updatedContract) => {
+                              setContract(updatedContract);
+                              setShowPayPalPopup(false);
+                              setSuccessMessage(
+                                `Escrow Funded Successfully! $${updatedContract.totalBudget.toFixed(2)} held in PayPal Escrow.`
+                              );
+                            }}
+                            onError={(err) => setError(err)}
+                          />
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setShowPayPalPopup(true)}
+                          className="w-full text-[11px] font-mono text-zinc-400 hover:text-[#DAF99C] transition-colors text-center pt-0.5 block"
+                          title="Open official PayPal Checkout Popup in Sandbox mode"
+                        >
+                          ↻ Test PayPal Checkout Popup
+                        </button>
+                      )}
+                    </div>
                   )}
                 </div>
               )}
