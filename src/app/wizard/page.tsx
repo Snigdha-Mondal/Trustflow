@@ -143,6 +143,30 @@ export default function WizardPage() {
     setMilestones(updated);
   }
 
+  function handleMilestoneDurationChange(index: number, newDays: number) {
+    const updated = [...milestones];
+    updated[index].durationDays = Math.max(1, newDays || 1);
+    setMilestones(updated);
+  }
+
+  function handleMilestoneTitleChange(index: number, newTitle: string) {
+    const updated = [...milestones];
+    updated[index].title = newTitle;
+    setMilestones(updated);
+  }
+
+  function handleMilestoneDescriptionChange(index: number, newDesc: string) {
+    const updated = [...milestones];
+    updated[index].description = newDesc;
+    setMilestones(updated);
+  }
+
+  function handleCriterionTextChange(mIdx: number, cIdx: number, newText: string) {
+    const updated = [...milestones];
+    updated[mIdx].criteria[cIdx].text = newText;
+    setMilestones(updated);
+  }
+
   function handleToggleCriterionAutomated(mIdx: number, cIdx: number) {
     const updated = [...milestones];
     updated[mIdx].criteria[cIdx].isAutomated = !updated[mIdx].criteria[cIdx].isAutomated;
@@ -153,7 +177,7 @@ export default function WizardPage() {
     const updated = [...milestones];
     updated[mIdx].criteria.push({
       id: `c_custom_${Date.now()}`,
-      text: "New verifiable milestone deliverable criterion",
+      text: "",
       isAutomated: true,
     });
     setMilestones(updated);
@@ -377,32 +401,53 @@ export default function WizardPage() {
             {milestones.map((m, mIdx) => (
               <div
                 key={m.order}
-                className="rounded-xl border border-zinc-800 bg-zinc-900/70 p-5 space-y-4 transition-quick hover:border-zinc-700"
+                className="rounded-none border border-white/10 bg-[#1C1D20] p-5 space-y-4 transition-all hover:border-white/20"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-800 text-xs font-bold text-zinc-300">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                  <div className="flex items-start gap-3 flex-1">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-none bg-black border border-white/10 text-xs font-mono font-bold text-[#DAF99C] flex-shrink-0 mt-0.5">
                       M{m.order}
                     </span>
-                    <div>
-                      <h3 className="text-base font-semibold text-white">{m.title}</h3>
-                      <p className="text-xs text-zinc-400">{m.description}</p>
+                    <div className="flex-1 space-y-1">
+                      <input
+                        type="text"
+                        value={m.title}
+                        onChange={(e) => handleMilestoneTitleChange(mIdx, e.target.value)}
+                        placeholder="Milestone title..."
+                        className="w-full bg-transparent border-b border-transparent hover:border-white/20 focus:border-[#DAF99C] text-sm font-semibold text-white py-0.5 focus:outline-none transition-colors"
+                      />
+                      <textarea
+                        rows={2}
+                        value={m.description}
+                        onChange={(e) => handleMilestoneDescriptionChange(mIdx, e.target.value)}
+                        placeholder="Milestone deliverable scope and description..."
+                        className="w-full bg-transparent border border-transparent hover:border-white/10 focus:border-white/20 rounded-none text-xs text-zinc-400 p-1 focus:outline-none transition-colors resize-none"
+                      />
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-                      <Clock className="h-3.5 w-3.5" />
-                      <span>{m.durationDays} days</span>
+                  <div className="flex items-center gap-3 flex-shrink-0 self-end sm:self-start">
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-300 bg-black/40 px-2.5 py-1.5 border border-white/10">
+                      <Clock className="h-3.5 w-3.5 text-[#DAF99C]" />
+                      <input
+                        type="number"
+                        min="1"
+                        max="90"
+                        value={m.durationDays}
+                        onChange={(e) => handleMilestoneDurationChange(mIdx, Number(e.target.value))}
+                        className="w-12 bg-transparent text-xs font-mono font-semibold text-white text-center focus:outline-none border-b border-transparent focus:border-[#DAF99C]"
+                        title="Milestone duration in days"
+                      />
+                      <span className="font-mono text-[11px] text-zinc-400">days</span>
                     </div>
 
-                    <div className="flex items-center gap-1">
-                      <span className="text-zinc-400 text-xs">$</span>
+                    <div className="flex items-center gap-1 bg-black/40 px-2.5 py-1.5 border border-white/10">
+                      <span className="text-[#DAF99C] text-xs font-mono font-bold">$</span>
                       <input
                         type="number"
                         value={m.amount}
                         onChange={(e) => handleMilestoneAmountChange(mIdx, Number(e.target.value))}
-                        className="w-20 rounded-md border border-zinc-800 bg-zinc-900 px-2 py-1 text-sm font-semibold text-emerald-400 text-right focus:border-blue-500 focus:outline-none"
+                        className="w-20 bg-transparent text-xs font-mono font-bold text-[#DAF99C] text-right focus:outline-none border-b border-transparent focus:border-[#DAF99C]"
                       />
                     </div>
                   </div>
@@ -411,11 +456,11 @@ export default function WizardPage() {
                 {/* Criteria Checklist */}
                 <div className="space-y-2 border-t border-white/10 pt-3">
                   <div className="flex items-center justify-between text-xs text-zinc-400 font-medium">
-                    <span>Verifiable Sign-Off Criteria</span>
+                    <span className="text-[11px] uppercase tracking-wider font-mono">Verifiable Sign-Off Criteria</span>
                     <button
                       type="button"
                       onClick={() => handleAddCriterion(mIdx)}
-                      className="inline-flex items-center gap-1 text-[#DAF99C] hover:text-[#CCF580] font-medium"
+                      className="inline-flex items-center gap-1 text-[#DAF99C] hover:underline font-mono text-[11px]"
                     >
                       <Plus className="h-3 w-3" />
                       Add Criterion
@@ -426,19 +471,26 @@ export default function WizardPage() {
                     {m.criteria.map((c, cIdx) => (
                       <div
                         key={c.id}
-                        className="flex items-center justify-between gap-2 rounded-none border border-white/10 bg-[#161719] p-2.5 text-xs"
+                        className="flex items-center justify-between gap-2 rounded-none border border-white/10 bg-[#161719] p-2 text-xs"
                       >
-                        <span className="text-zinc-200 flex-1">{c.text}</span>
+                        <input
+                          type="text"
+                          value={c.text}
+                          onChange={(e) => handleCriterionTextChange(mIdx, cIdx, e.target.value)}
+                          placeholder="Type verifiable requirement (e.g., Responsive navbar with mobile drawer)..."
+                          className="flex-1 bg-transparent border-b border-transparent hover:border-white/20 focus:border-[#DAF99C] text-zinc-200 text-xs py-1 px-1 focus:outline-none transition-colors"
+                        />
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-shrink-0">
                           <button
                             type="button"
                             onClick={() => handleToggleCriterionAutomated(mIdx, cIdx)}
-                            className={`rounded-none px-2.5 py-0.5 text-[10px] font-semibold transition-all ${
+                            className={`rounded-none px-2.5 py-1 text-[10px] font-mono font-semibold transition-all ${
                               c.isAutomated
                                 ? "bg-[#DAF99C] text-[#0E1012]"
                                 : "bg-[#FBBF24] text-[#0E1012]"
                             }`}
+                            title="Toggle between deterministic automated inspection and subjective 72h client sign-off"
                           >
                             {c.isAutomated ? "Automated (DOM/HTTP)" : "Subjective (72h Silence-Means-Yes)"}
                           </button>
@@ -446,7 +498,8 @@ export default function WizardPage() {
                           <button
                             type="button"
                             onClick={() => handleDeleteCriterion(mIdx, cIdx)}
-                            className="text-zinc-500 hover:text-red-400 transition-quick p-1"
+                            className="text-zinc-500 hover:text-red-400 transition-colors p-1"
+                            title="Delete criterion"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
                           </button>
