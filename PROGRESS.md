@@ -229,6 +229,27 @@
 6. **Removed obsolete sections:** Removed Hackathon Alignment, Design System specs, DeftBench agent loop internals, and the 3-minute demo script.
 7. **Clean Typography:** Removed all emojis across the entire document.
 
+---
+
+## Session 10: Official PayPal Checkout Popup Component (`@paypal/react-paypal-js`)
+**Date:** 2026-11-10
+**Goal:** Add official PayPal Sandbox Checkout popup buttons so clients can fund escrow projects using the native PayPal popup window.
+
+### Accomplishments:
+1. **Installed Official SDK:** Installed `@paypal/react-paypal-js`.
+2. **Created Component (`src/components/PayPalEscrowButton.tsx`):**
+   - Configured `PayPalScriptProvider` with `NEXT_PUBLIC_PAYPAL_CLIENT_ID` and `currency: USD`.
+   - In `createOrder`: Invokes `actions.order.create` with total project budget and `intent: "CAPTURE"` (with server API fallback).
+   - In `onApprove`: Executes `actions.order.capture()`, synchronizes with `/api/paypal/capture-order`, updates contract status to `FUNDED`, unlocks Milestone 1 to `ACTIVE`, and triggers celebratory confetti.
+   - Styled with official PayPal gold rectangle theme (`color: "gold"`, `shape: "rect"`, `layout: "vertical"`).
+3. **Integrated on Project Cockpit (`src/app/project/[id]/page.tsx`):**
+   - Directly renders on `DRAFT` contracts for 1-click upfront funding.
+   - Provides an expandable "↻ Test PayPal Checkout Popup" tool on funded contracts for testing anytime in sandbox mode.
+4. **Verification:**
+   - `npx tsc --noEmit` &rarr; 0 errors.
+   - 43/43 automated tests pass.
+
+
 
 
 
