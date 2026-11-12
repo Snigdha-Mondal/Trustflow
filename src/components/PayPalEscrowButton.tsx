@@ -50,7 +50,7 @@ export default function PayPalEscrowButton({
   const handleCreateOrder = async (_data: any, actions: any) => {
     setErrorMessage(null);
     try {
-      // 1. Try server-side order creation (cleanest and most secure)
+      // 1. Server-side order creation (cleanest, authenticated via PayPal REST API)
       const res = await fetch("/api/paypal/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -83,7 +83,7 @@ export default function PayPalEscrowButton({
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Order creation failed";
       console.error("[PayPalEscrowButton createOrder error]", msg);
-      if (!msg.includes("Window closed before response") && !msg.includes("popup closed") && !msg.includes("window closed")) {
+      if (!msg.includes("Window closed") && !msg.includes("popup closed") && !msg.includes("window closed")) {
         setErrorMessage(msg);
         if (onError) onError(msg);
       }
@@ -91,29 +91,24 @@ export default function PayPalEscrowButton({
     }
   };
 
-  // onApprove: captures the authorized payment and synchronizes Trustflow database
-  const handleApprove = async (data: any, actions: any) => {
+  // onApprove: server-side capture avoiding client-side popup-close race conditions
+  const handleApprove = async (data: any) => {
     setIsProcessing(true);
     setErrorMessage(null);
-    try {
-      let orderId = data?.orderID;
-      let captureId: string | undefined;
+    const orderId = data?.orderID;
 
-      // Complete capture via SDK actions
-      if (actions?.order) {
-        const captureDetails = await actions.order.capture();
-        orderId = captureDetails.id || orderId;
-        captureId = captureDetails.purchase_units?.[0]?.payments?.captures?.[0]?.id;
+    try {
+      if (!orderId) {
+        throw new Error("No PayPal Order ID returned from approval.");
       }
 
-      // Synchronize with Trustflow backend to set contract status to FUNDED and unlock Milestone 1
+      // Synchronize with Trustflow backend to execute capture on PayPal REST API
       const res = await fetch("/api/paypal/capture-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contractId,
           orderId,
-          captureId,
         }),
       });
 
@@ -132,7 +127,30 @@ export default function PayPalEscrowButton({
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Escrow capture failed";
       console.error("[PayPalEscrowButton onApprove error]", msg);
-      setErrorMessage(msg);
+
+      // Graceful fallback if window closed during transition
+      if (orderId && (msg.includes("Window closed") || msg.includes("popup closed"))) {
+        try {
+          const retryRes = await fetch("/api/paypal/capture-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ contractId, orderId }),
+          });
+          const retryData = await retryRes.json();
+          if (retryRes.ok && retryData.contract) {
+            setIsFunded(true);
+            confetti({ particleCount: 100, spread: 75, origin: { y: 0.6 } });
+            onSuccess(retryData.contract);
+            return;
+          }
+        } catch {
+          // ignore
+        }
+      }
+
+      setErrorMessage(
+        "PayPal checkout was closed or interrupted. You can click PayPal to try again, or use 1-Click Sandbox Fund below."
+      );
       if (onError) onError(msg);
     } finally {
       setIsProcessing(false);
@@ -252,18 +270,20 @@ export default function PayPalEscrowButton({
                 createOrder={handleCreateOrder}
                 onApprove={handleApprove}
                 onCancel={() => {
-                  setErrorMessage("Checkout cancelled: The PayPal popup was closed before completing payment.");
+                  setErrorMessage(
+                    "Checkout cancelled: The PayPal popup was closed before completing payment."
+                  );
                 }}
                 onError={(err: any) => {
                   const msg = String(err?.message || err || "");
                   console.error("[PayPalButtons SDK Error]", msg, err);
                   if (
-                    msg.includes("Window closed before response") ||
+                    msg.includes("Window closed") ||
                     msg.includes("popup closed") ||
                     msg.includes("window closed")
                   ) {
                     setErrorMessage(
-                      "The PayPal checkout popup was closed before completion. You can click PayPal again or use 1-Click Sandbox Fund below."
+                      "The PayPal checkout popup was closed. Click the yellow button to try again, or use 1-Click Sandbox Fund below."
                     );
                   } else {
                     setErrorMessage("PayPal checkout popup encountered an issue. Please try again.");
