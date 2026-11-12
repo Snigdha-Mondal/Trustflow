@@ -12,3 +12,4 @@ export async function GET() {
     mode: process.env.PAYPAL_MODE || "sandbox",
   });
 }
+

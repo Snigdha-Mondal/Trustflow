@@ -10,7 +10,6 @@ import {
   Lock,
   ArrowRight,
   Bot,
-  Layers,
   ChevronDown,
   Sparkles,
   CreditCard,
@@ -677,10 +676,6 @@ export default function LandingPage() {
       {/* Section: Bryntum Gantt Timeline Board Showcase (Anchor #timeline) */}
       <section id="timeline" className="py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5 max-w-5xl mx-auto space-y-8">
         <div className="text-center space-y-3 max-w-[680px] mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-none border border-[#DAF99C]/20 bg-[#DAF99C]/10 px-3.5 py-1 text-xs font-mono text-[#DAF99C] font-semibold">
-            <Layers className="h-3.5 w-3.5" />
-            Bryntum Sponsor Track &bull; Challenge Prompts #1 &amp; #6
-          </div>
           <h2 className="heading-2 text-white">
             Interactive Bryntum Gantt Timeline Board
           </h2>
