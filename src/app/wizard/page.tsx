@@ -16,6 +16,8 @@ import {
   Trash2,
   AlertCircle,
   ChevronLeft,
+  RotateCcw,
+  Sliders,
 } from "lucide-react";
 
 interface CriterionDraft {
@@ -28,8 +30,8 @@ interface MilestoneDraft {
   order: number;
   title: string;
   description: string;
-  amount: number;
-  durationDays: number;
+  amount: number | string;
+  durationDays: number | string;
   criteria: CriterionDraft[];
 }
 
@@ -38,16 +40,131 @@ const TEMPLATES = [
     label: "SaaS Marketing Website",
     brief: "Build a modern responsive Next.js marketing website with dynamic pricing tables, feature comparison grid, customer testimonials, and an interactive contact lead form with email validation.",
     budget: 900,
+    milestones: [
+      {
+        order: 1,
+        title: "Design System, Wireframes & Scaffold",
+        description: "Establish Tailwind tokens adhering to DESIGN.md, scaffold Next.js repository, and complete desktop/mobile wireframes.",
+        amount: 270,
+        durationDays: 3,
+        criteria: [
+          { id: "c1_1", text: "Design system tokens match specified typography and spacing scale", isAutomated: false },
+          { id: "c1_2", text: "Desktop & mobile responsive layouts completed", isAutomated: false },
+          { id: "c1_3", text: "Project repository scaffolded with Next.js and TypeScript", isAutomated: true },
+        ],
+      },
+      {
+        order: 2,
+        title: "Core Frontend & Interactive Components",
+        description: "Implement responsive hero, pricing calculator, and contact lead form with live API validation.",
+        amount: 360,
+        durationDays: 4,
+        criteria: [
+          { id: "c2_1", text: "Live URL returns HTTP 200 on /, /pricing, and /contact", isAutomated: true },
+          { id: "c2_2", text: "Page contains contact form with email validation input", isAutomated: true },
+          { id: "c2_3", text: "Responsive viewport meta tag verified with no horizontal overflow", isAutomated: true },
+          { id: "c2_4", text: "Client aesthetic and brand approval", isAutomated: false },
+        ],
+      },
+      {
+        order: 3,
+        title: "Production Deployment, Testing & Handover",
+        description: "Production domain launch, SSL setup, end-to-end smoke verification, and repository transfer.",
+        amount: 270,
+        durationDays: 3,
+        criteria: [
+          { id: "c3_1", text: "Production preview URL live with valid HTTPS certificate", isAutomated: true },
+          { id: "c3_2", text: "Zero critical console errors on page load", isAutomated: true },
+          { id: "c3_3", text: "Repository README includes complete local setup and deployment steps", isAutomated: true },
+        ],
+      },
+    ],
   },
   {
     label: "AI Automation Pipeline",
     brief: "Develop an autonomous webhook ingestion service in Node.js that parses PDF client briefs, executes Gemini AI summary tasks, and delivers webhooks with 99.9% uptime and payload validation.",
     budget: 1200,
+    milestones: [
+      {
+        order: 1,
+        title: "Architecture Spec & Webhook Ingestion API",
+        description: "Scaffold Node.js/TypeScript microservice, define JSON schemas, and configure incoming webhook endpoints.",
+        amount: 360,
+        durationDays: 3,
+        criteria: [
+          { id: "c1_1", text: "Webhook receiver live returning HTTP 200 on health check", isAutomated: true },
+          { id: "c1_2", text: "Payload schema validation rejects malformed JSON bodies with HTTP 400", isAutomated: true },
+          { id: "c1_3", text: "Architecture diagram and webhook event schema approved by client", isAutomated: false },
+        ],
+      },
+      {
+        order: 2,
+        title: "Gemini AI Parsing & Extraction Pipeline",
+        description: "Integrate Google GenAI SDK to parse incoming payloads and produce structured summaries.",
+        amount: 480,
+        durationDays: 5,
+        criteria: [
+          { id: "c2_1", text: "Gemini AI model parses PDF documents into structured JSON schema", isAutomated: true },
+          { id: "c2_2", text: "Automated retry mechanism handling API rate limits with exponential backoff", isAutomated: true },
+          { id: "c2_3", text: "Sample extraction benchmark accuracy >= 95% verified", isAutomated: false },
+        ],
+      },
+      {
+        order: 3,
+        title: "Production Deployment, Monitoring & Handover",
+        description: "Deploy to cloud container with uptime monitoring, secret rotation, and API documentation.",
+        amount: 360,
+        durationDays: 4,
+        criteria: [
+          { id: "c3_1", text: "Cloud worker deployed with HTTPS endpoint and health check", isAutomated: true },
+          { id: "c3_2", text: "End-to-end webhook delivery latency under 3000ms", isAutomated: true },
+          { id: "c3_3", text: "Documentation runbook with environment variable instructions", isAutomated: true },
+        ],
+      },
+    ],
   },
   {
     label: "Next.js + Supabase Full-Stack MVP",
     brief: "Create an MVP web application with Supabase authentication, user profile management, protected dashboard route, and Stripe/PayPal payment checkout integration.",
     budget: 1500,
+    milestones: [
+      {
+        order: 1,
+        title: "Database Schema, Auth & App Scaffold",
+        description: "Configure Supabase PostgreSQL, row-level security (RLS), Next.js 15 App Router scaffold, and auth flows.",
+        amount: 450,
+        durationDays: 4,
+        criteria: [
+          { id: "c1_1", text: "Supabase auth configured for email/password and social login", isAutomated: true },
+          { id: "c1_2", text: "Database migrations committed with Row Level Security enabled", isAutomated: true },
+          { id: "c1_3", text: "Wireframes and database entity diagram reviewed by client", isAutomated: false },
+        ],
+      },
+      {
+        order: 2,
+        title: "Protected Dashboard & Core Application Features",
+        description: "Build protected user dashboard, CRUD data tables, user profile settings, and responsive layout.",
+        amount: 600,
+        durationDays: 6,
+        criteria: [
+          { id: "c2_1", text: "Protected dashboard route redirects unauthenticated users to /login", isAutomated: true },
+          { id: "c2_2", text: "Interactive data management table with live create/read/update/delete operations", isAutomated: true },
+          { id: "c2_3", text: "Client UI review and user experience sign-off", isAutomated: false },
+        ],
+      },
+      {
+        order: 3,
+        title: "Payment Checkout, Production Launch & Handover",
+        description: "Integrate payment checkout, deploy to production hosting with custom domain and SSL, and transfer repository.",
+        amount: 450,
+        durationDays: 4,
+        criteria: [
+          { id: "c3_1", text: "Live PayPal checkout flow captures order and updates subscription status", isAutomated: true },
+          { id: "c3_2", text: "Production preview URL live with valid HTTPS and 0 console errors", isAutomated: true },
+          { id: "c3_3", text: "Clean repository transfer with environment secrets and local setup instructions", isAutomated: true },
+        ],
+      },
+    ],
   },
 ];
 
@@ -56,7 +173,7 @@ export default function WizardPage() {
 
   // Intake state
   const [brief, setBrief] = useState(TEMPLATES[0].brief);
-  const [totalBudget, setTotalBudget] = useState<number>(TEMPLATES[0].budget);
+  const [totalBudget, setTotalBudget] = useState<number | string>(TEMPLATES[0].budget);
   const [clientEmail, setClientEmail] = useState("founder.sarah@startup.io");
   const [freelancerEmail, setFreelancerEmail] = useState("alex.dev@engineer.net");
 
@@ -67,49 +184,16 @@ export default function WizardPage() {
 
   // Generated Plan State
   const [projectTitle, setProjectTitle] = useState("SaaS Marketing Website & Lead Funnel");
-  const [milestones, setMilestones] = useState<MilestoneDraft[]>([
-    {
-      order: 1,
-      title: "Design System, Wireframes & Scaffold",
-      description: "Establish Tailwind tokens adhering to DESIGN.md, scaffold Next.js repository, and complete desktop/mobile wireframes.",
-      amount: 270,
-      durationDays: 3,
-      criteria: [
-        { id: "c1_1", text: "Design system tokens match specified typography and spacing scale", isAutomated: false },
-        { id: "c1_2", text: "Desktop & mobile responsive layouts completed", isAutomated: false },
-        { id: "c1_3", text: "Project repository scaffolded with Next.js and TypeScript", isAutomated: true },
-      ],
-    },
-    {
-      order: 2,
-      title: "Core Frontend & Interactive Components",
-      description: "Implement responsive hero, pricing calculator, and contact lead form with live API validation.",
-      amount: 360,
-      durationDays: 4,
-      criteria: [
-        { id: "c2_1", text: "Live URL returns HTTP 200 on /, /pricing, and /contact", isAutomated: true },
-        { id: "c2_2", text: "Page contains contact form with email validation input", isAutomated: true },
-        { id: "c2_3", text: "Responsive viewport meta tag verified with no horizontal overflow", isAutomated: true },
-        { id: "c2_4", text: "Client aesthetic and brand approval", isAutomated: false },
-      ],
-    },
-    {
-      order: 3,
-      title: "Production Deployment, Testing & Handover",
-      description: "Production domain launch, SSL setup, end-to-end smoke verification, and repository transfer.",
-      amount: 270,
-      durationDays: 3,
-      criteria: [
-        { id: "c3_1", text: "Production preview URL live with valid HTTPS certificate", isAutomated: true },
-        { id: "c3_2", text: "Zero critical console errors on page load", isAutomated: true },
-        { id: "c3_3", text: "Repository README includes complete local setup and deployment steps", isAutomated: true },
-      ],
-    },
-  ]);
+  const [milestones, setMilestones] = useState<MilestoneDraft[]>(
+    JSON.parse(JSON.stringify(TEMPLATES[0].milestones))
+  );
 
   // Milestone Math Validation
-  const calculatedSum = milestones.reduce((sum, m) => sum + (Number(m.amount) || 0), 0);
-  const isBudgetBalanced = Math.abs(calculatedSum - totalBudget) < 0.01;
+  const budgetNum = Math.max(0, parseFloat(String(totalBudget)) || 0);
+  const calculatedSum = Math.round(
+    milestones.reduce((sum, m) => sum + (parseFloat(String(m.amount)) || 0), 0) * 100
+  ) / 100;
+  const isBudgetBalanced = budgetNum > 0 && Math.abs(calculatedSum - budgetNum) < 0.01;
 
   async function handleGeneratePlan() {
     if (!brief.trim()) return;
@@ -120,7 +204,7 @@ export default function WizardPage() {
       const res = await fetch("/api/milestones/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ brief, totalBudget, currency: "USD" }),
+        body: JSON.stringify({ brief, totalBudget: budgetNum, currency: "USD" }),
       });
 
       const data = await res.json();
@@ -137,61 +221,125 @@ export default function WizardPage() {
     }
   }
 
-  function handleMilestoneAmountChange(index: number, newAmount: number) {
-    const updated = [...milestones];
-    updated[index].amount = newAmount;
-    setMilestones(updated);
+  function handleMilestoneAmountChange(index: number, newAmount: number | string) {
+    setMilestones((prev) =>
+      prev.map((m, i) => (i === index ? { ...m, amount: newAmount } : m))
+    );
   }
 
-  function handleMilestoneDurationChange(index: number, newDays: number) {
-    const updated = [...milestones];
-    updated[index].durationDays = Math.max(1, newDays || 1);
-    setMilestones(updated);
+  function handleMilestoneDurationChange(index: number, newDays: number | string) {
+    setMilestones((prev) =>
+      prev.map((m, i) => (i === index ? { ...m, durationDays: newDays } : m))
+    );
   }
 
   function handleMilestoneTitleChange(index: number, newTitle: string) {
-    const updated = [...milestones];
-    updated[index].title = newTitle;
-    setMilestones(updated);
+    setMilestones((prev) =>
+      prev.map((m, i) => (i === index ? { ...m, title: newTitle } : m))
+    );
   }
 
   function handleMilestoneDescriptionChange(index: number, newDesc: string) {
-    const updated = [...milestones];
-    updated[index].description = newDesc;
-    setMilestones(updated);
+    setMilestones((prev) =>
+      prev.map((m, i) => (i === index ? { ...m, description: newDesc } : m))
+    );
   }
 
   function handleCriterionTextChange(mIdx: number, cIdx: number, newText: string) {
-    const updated = [...milestones];
-    updated[mIdx].criteria[cIdx].text = newText;
-    setMilestones(updated);
+    setMilestones((prev) =>
+      prev.map((m, i) => {
+        if (i !== mIdx) return m;
+        const newCriteria = m.criteria.map((c, j) =>
+          j === cIdx ? { ...c, text: newText } : c
+        );
+        return { ...m, criteria: newCriteria };
+      })
+    );
   }
 
   function handleToggleCriterionAutomated(mIdx: number, cIdx: number) {
-    const updated = [...milestones];
-    updated[mIdx].criteria[cIdx].isAutomated = !updated[mIdx].criteria[cIdx].isAutomated;
-    setMilestones(updated);
+    setMilestones((prev) =>
+      prev.map((m, i) => {
+        if (i !== mIdx) return m;
+        const newCriteria = m.criteria.map((c, j) =>
+          j === cIdx ? { ...c, isAutomated: !c.isAutomated } : c
+        );
+        return { ...m, criteria: newCriteria };
+      })
+    );
   }
 
   function handleAddCriterion(mIdx: number) {
-    const updated = [...milestones];
-    updated[mIdx].criteria.push({
-      id: `c_custom_${Date.now()}`,
-      text: "",
-      isAutomated: true,
-    });
-    setMilestones(updated);
+    setMilestones((prev) =>
+      prev.map((m, i) => {
+        if (i !== mIdx) return m;
+        return {
+          ...m,
+          criteria: [
+            ...m.criteria,
+            {
+              id: `c_custom_${Date.now()}`,
+              text: "",
+              isAutomated: true,
+            },
+          ],
+        };
+      })
+    );
   }
 
   function handleDeleteCriterion(mIdx: number, cIdx: number) {
-    const updated = [...milestones];
-    updated[mIdx].criteria.splice(cIdx, 1);
+    setMilestones((prev) =>
+      prev.map((m, i) => {
+        if (i !== mIdx) return m;
+        return {
+          ...m,
+          criteria: m.criteria.filter((_, j) => j !== cIdx),
+        };
+      })
+    );
+  }
+
+  // 1-Click Auto-Balance: Proportionally scales milestones to match total budget exactly
+  function handleAutoBalance() {
+    if (budgetNum <= 0 || milestones.length === 0) return;
+
+    const currentTotal = milestones.reduce(
+      (sum, m) => sum + (parseFloat(String(m.amount)) || 0),
+      0
+    );
+
+    let allocated = 0;
+    const updated = milestones.map((m, idx) => {
+      let newAmt: number;
+      if (idx === milestones.length - 1) {
+        newAmt = Math.round((budgetNum - allocated) * 100) / 100;
+      } else {
+        const weight =
+          currentTotal > 0
+            ? (parseFloat(String(m.amount)) || 0) / currentTotal
+            : 1 / milestones.length;
+        newAmt = Math.round(budgetNum * weight * 100) / 100;
+        allocated += newAmt;
+      }
+      return { ...m, amount: newAmt };
+    });
+
     setMilestones(updated);
+  }
+
+  // 1-Click Sync: Updates total budget to match whatever custom sum the milestones have
+  function handleSyncBudgetToTranches() {
+    if (calculatedSum > 0) {
+      setTotalBudget(calculatedSum);
+    }
   }
 
   async function handleCreateContract() {
     if (!isBudgetBalanced) {
-      setError(`Milestone amounts ($${calculatedSum.toFixed(2)}) must sum exactly to total budget ($${totalBudget.toFixed(2)}).`);
+      setError(
+        `Milestone amounts ($${calculatedSum.toFixed(2)}) must sum exactly to total budget ($${budgetNum.toFixed(2)}). Click 'Auto-Balance' to align them instantly.`
+      );
       return;
     }
 
@@ -199,17 +347,23 @@ export default function WizardPage() {
     setError(null);
 
     try {
+      const sanitizedMilestones = milestones.map((m) => ({
+        ...m,
+        amount: parseFloat(String(m.amount)) || 0,
+        durationDays: Math.max(1, parseInt(String(m.durationDays), 10) || 1),
+      }));
+
       const res = await fetch("/api/contracts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title: projectTitle,
           description: brief,
-          totalBudget,
+          totalBudget: budgetNum,
           currency: "USD",
           clientEmail,
           freelancerEmail,
-          milestones,
+          milestones: sanitizedMilestones,
         }),
       });
 
@@ -254,7 +408,7 @@ export default function WizardPage() {
         </div>
 
         {error && (
-          <div className="rounded-xl border border-red-500/40 bg-red-950/30 p-4 text-sm text-red-300 flex items-center gap-3">
+          <div className="rounded-none border border-red-500/40 bg-red-950/30 p-4 text-sm text-red-300 flex items-center gap-3">
             <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-400" />
             <span>{error}</span>
           </div>
@@ -264,7 +418,7 @@ export default function WizardPage() {
         <div className="luxury-card p-6 md:p-8 space-y-6">
           <div className="flex items-center justify-between border-b border-white/10 pb-4">
             <h2 className="title-1 text-white flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#DAF99C] text-[#0E1012] text-xs font-bold">1</span>
+              <span className="flex h-6 w-6 items-center justify-center rounded-none bg-[#DAF99C] text-[#0E1012] text-xs font-bold">1</span>
               Project Intake &amp; Parties
             </h2>
             <span className="text-xs text-zinc-400 font-mono">Step 1 of 2</span>
@@ -284,6 +438,7 @@ export default function WizardPage() {
                     setBrief(tmpl.brief);
                     setTotalBudget(tmpl.budget);
                     setProjectTitle(tmpl.label);
+                    setMilestones(JSON.parse(JSON.stringify(tmpl.milestones)));
                   }}
                   className="rounded-none border border-white/10 bg-[#25272B] px-3.5 py-1.5 text-xs text-zinc-300 hover:border-[#DAF99C]/50 hover:text-white transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98]"
                 >
@@ -314,11 +469,24 @@ export default function WizardPage() {
               <div className="relative">
                 <span className="absolute left-3 top-2.5 text-zinc-500 text-sm">$</span>
                 <input
-                  type="number"
-                  min="50"
-                  step="10"
+                  type="text"
+                  inputMode="decimal"
                   value={totalBudget}
-                  onChange={(e) => setTotalBudget(Number(e.target.value))}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === "" || /^\d*\.?\d*$/.test(val)) {
+                      setTotalBudget(val);
+                    }
+                  }}
+                  onBlur={() => {
+                    const num = parseFloat(String(totalBudget));
+                    if (isNaN(num) || num <= 0) {
+                      setTotalBudget(100);
+                    } else {
+                      setTotalBudget(Math.round(num * 100) / 100);
+                    }
+                  }}
+                  placeholder="900"
                   className="w-full rounded-none border border-white/10 bg-[#161719] pl-7 pr-3 py-2 text-sm text-white focus:border-[#DAF99C] focus:outline-none"
                 />
               </div>
@@ -346,7 +514,7 @@ export default function WizardPage() {
           </div>
 
           {/* AI Decomposition Action */}
-          <div className="pt-2">
+          <div className="pt-2 flex flex-wrap items-center gap-3">
             <button
               type="button"
               disabled={isGenerating}
@@ -356,15 +524,18 @@ export default function WizardPage() {
               <Sparkles className="h-4 w-4 text-[#0E1012]" />
               {isGenerating ? "Decomposing Brief with Gemini..." : "Deconstruct Brief with Agent 1"}
             </button>
+            <span className="text-xs text-zinc-400">
+              Agent 1 automatically partitions the brief into 3 objective tranches matching your budget.
+            </span>
           </div>
         </div>
 
         {/* Section 2: Milestone Tranches Review */}
         <div className="luxury-card p-6 md:p-8 space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/10 pb-4 gap-2">
+          <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/10 pb-4 gap-3">
             <div>
               <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#DAF99C] text-[#0E1012] text-xs font-bold">2</span>
+                <span className="flex h-6 w-6 items-center justify-center rounded-none bg-[#DAF99C] text-[#0E1012] text-xs font-bold">2</span>
                 Objective Milestone Tranches
               </h2>
               <p className="text-xs text-zinc-400 mt-1">
@@ -372,16 +543,47 @@ export default function WizardPage() {
               </p>
             </div>
 
-            {/* Live Budget Sum Indicator */}
-            <div className={`inline-flex items-center gap-2 rounded-none border px-3 py-1.5 text-xs font-mono font-semibold ${
-              isBudgetBalanced
-                ? "border-[#DAF99C]/40 bg-[#DAF99C]/10 text-[#DAF99C]"
-                : "border-[#FBBF24]/40 bg-[#FBBF24]/10 text-[#FBBF24]"
-            }`}>
-              {isBudgetBalanced ? <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" /> : <AlertCircle className="h-4 w-4 text-[#FBBF24]" />}
-              <span>
-                Total Tranches: ${calculatedSum.toFixed(2)} / ${totalBudget.toFixed(2)}
-              </span>
+            {/* Live Budget Sum Indicator & Quick Balance Tools */}
+            <div className="flex flex-col items-start md:items-end gap-2">
+              <div
+                className={`inline-flex items-center gap-2 rounded-none border px-3 py-1.5 text-xs font-mono font-semibold ${
+                  isBudgetBalanced
+                    ? "border-[#DAF99C]/40 bg-[#DAF99C]/10 text-[#DAF99C]"
+                    : "border-[#FBBF24]/40 bg-[#FBBF24]/10 text-[#FBBF24]"
+                }`}
+              >
+                {isBudgetBalanced ? (
+                  <CheckCircle2 className="h-4 w-4 text-[#DAF99C]" />
+                ) : (
+                  <AlertCircle className="h-4 w-4 text-[#FBBF24]" />
+                )}
+                <span>
+                  Total Tranches: ${calculatedSum.toFixed(2)} / ${budgetNum.toFixed(2)}
+                </span>
+              </div>
+
+              {!isBudgetBalanced && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleAutoBalance}
+                    className="inline-flex items-center gap-1 rounded-none border border-[#DAF99C] bg-[#DAF99C] px-2.5 py-1 text-[11px] font-mono font-semibold text-[#0E1012] hover:bg-[#c6e689] transition-colors"
+                    title="Scale milestone tranches proportionally to match the total budget"
+                  >
+                    <Sliders className="h-3 w-3" />
+                    Auto-Balance Tranches to ${budgetNum.toFixed(2)}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSyncBudgetToTranches}
+                    className="inline-flex items-center gap-1 rounded-none border border-white/20 bg-[#25272B] px-2.5 py-1 text-[11px] font-mono font-semibold text-zinc-200 hover:border-white/40 hover:text-white transition-colors"
+                    title="Update total project budget to match the sum of your custom tranches"
+                  >
+                    <RotateCcw className="h-3 w-3" />
+                    Set Budget to ${calculatedSum.toFixed(2)}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -392,7 +594,7 @@ export default function WizardPage() {
               type="text"
               value={projectTitle}
               onChange={(e) => setProjectTitle(e.target.value)}
-              className="w-full rounded-lg border border-zinc-800 bg-zinc-900/90 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none"
+              className="w-full rounded-none border border-white/10 bg-[#161719] px-3 py-2 text-sm text-white focus:border-[#DAF99C] focus:outline-none"
             />
           </div>
 
@@ -430,11 +632,23 @@ export default function WizardPage() {
                     <div className="flex items-center gap-1.5 text-xs text-zinc-300 bg-black/40 px-2.5 py-1.5 border border-white/10">
                       <Clock className="h-3.5 w-3.5 text-[#DAF99C]" />
                       <input
-                        type="number"
-                        min="1"
-                        max="90"
+                        type="text"
+                        inputMode="numeric"
                         value={m.durationDays}
-                        onChange={(e) => handleMilestoneDurationChange(mIdx, Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (val === "" || /^\d*$/.test(val)) {
+                            handleMilestoneDurationChange(mIdx, val);
+                          }
+                        }}
+                        onBlur={() => {
+                          const n = parseInt(String(m.durationDays), 10);
+                          if (isNaN(n) || n < 1) {
+                            handleMilestoneDurationChange(mIdx, 1);
+                          } else {
+                            handleMilestoneDurationChange(mIdx, n);
+                          }
+                        }}
                         className="w-12 bg-transparent text-xs font-mono font-semibold text-white text-center focus:outline-none border-b border-transparent focus:border-[#DAF99C]"
                         title="Milestone duration in days"
                       />
@@ -444,10 +658,25 @@ export default function WizardPage() {
                     <div className="flex items-center gap-1 bg-black/40 px-2.5 py-1.5 border border-white/10">
                       <span className="text-[#DAF99C] text-xs font-mono font-bold">$</span>
                       <input
-                        type="number"
+                        type="text"
+                        inputMode="decimal"
                         value={m.amount}
-                        onChange={(e) => handleMilestoneAmountChange(mIdx, Number(e.target.value))}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (val === "" || /^\d*\.?\d*$/.test(val)) {
+                            handleMilestoneAmountChange(mIdx, val);
+                          }
+                        }}
+                        onBlur={() => {
+                          const n = parseFloat(String(m.amount));
+                          if (isNaN(n) || n < 0) {
+                            handleMilestoneAmountChange(mIdx, 0);
+                          } else {
+                            handleMilestoneAmountChange(mIdx, Math.round(n * 100) / 100);
+                          }
+                        }}
                         className="w-20 bg-transparent text-xs font-mono font-bold text-[#DAF99C] text-right focus:outline-none border-b border-transparent focus:border-[#DAF99C]"
+                        title="Milestone payment amount in USD"
                       />
                     </div>
                   </div>
@@ -534,4 +763,3 @@ export default function WizardPage() {
     </div>
   );
 }
-
