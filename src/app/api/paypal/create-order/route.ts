@@ -19,11 +19,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Contract not found" }, { status: 404 });
     }
 
+    const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
+    const protocol = req.headers.get("x-forwarded-proto") || "https";
+    const appUrl = host ? `${protocol}://${host}` : process.env.NEXT_PUBLIC_APP_URL || "https://trustflow-yq0h.onrender.com";
+
     const order = await createPayPalOrder({
       amount: contract.totalBudget,
       currency: contract.currency,
       description: `Trustflow Escrow: ${contract.title}`,
       contractId: contract.id,
+      appUrl,
     });
 
     await prisma.contract.update({

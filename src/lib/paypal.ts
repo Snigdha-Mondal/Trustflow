@@ -84,8 +84,10 @@ export async function createPayPalOrder(params: {
   currency?: string;
   description: string;
   contractId: string;
+  appUrl?: string;
 }) {
-  const { amount, currency = "USD", description, contractId } = params;
+  const { amount, currency = "USD", description, contractId, appUrl } = params;
+  const baseUrl = appUrl || process.env.NEXT_PUBLIC_APP_URL || "https://trustflow-yq0h.onrender.com";
   const token = await getPayPalAccessToken();
 
   if (token.startsWith("mock_") || token.startsWith("sim_")) {
@@ -123,8 +125,8 @@ export async function createPayPalOrder(params: {
         brand_name: "Trustflow Escrow",
         landing_page: "NO_PREFERENCE",
         user_action: "PAY_NOW",
-        return_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/project/${contractId}?status=success`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/project/${contractId}?status=cancelled`,
+        return_url: `${baseUrl}/project/${contractId}?status=success`,
+        cancel_url: `${baseUrl}/project/${contractId}?status=cancelled`,
       },
     }),
   });
