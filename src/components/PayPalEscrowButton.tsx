@@ -26,9 +26,10 @@ export default function PayPalEscrowButton({
   const [isFunded, setIsFunded] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // US Sandbox App "Trustflow" Client ID
   const clientId =
     process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ||
-    "BAAXGd7tClylzSzM2fAKmpxP5cnhjsGEHlF9ktyUc5bNn6JjlNWp42TmokktVYVv6r0AsbZQFo_AzOalig";
+    "BAASOiuRqrR0cWEHEo8mQAoiIcwRs5QiovbmDvP3NYkDUdFUfSj0GMsJRTg6O2IRxti22anIJjnU033W88";
 
   // createOrder: invokes PayPal SDK order creation with intent: CAPTURE
   const handleCreateOrder = async (data: any, actions: any) => {
@@ -74,11 +75,13 @@ export default function PayPalEscrowButton({
     setErrorMessage(null);
     try {
       let orderId = data?.orderID;
+      let captureId: string | undefined;
 
       // Complete capture via SDK actions
       if (actions?.order) {
         const captureDetails = await actions.order.capture();
         orderId = captureDetails.id || orderId;
+        captureId = captureDetails.purchase_units?.[0]?.payments?.captures?.[0]?.id;
       }
 
       // Synchronize with Trustflow backend to set contract status to FUNDED and unlock Milestone 1
@@ -88,6 +91,7 @@ export default function PayPalEscrowButton({
         body: JSON.stringify({
           contractId,
           orderId,
+          captureId,
         }),
       });
 
@@ -130,9 +134,9 @@ export default function PayPalEscrowButton({
   return (
     <div className="w-full space-y-3">
       {errorMessage && (
-        <div className="rounded-none border border-red-500/30 bg-red-500/10 p-2.5 text-xs text-red-300 flex items-center gap-2">
-          <AlertCircle className="h-4 w-4 flex-shrink-0 text-red-400" />
-          <span className="truncate">{errorMessage}</span>
+        <div className="rounded-none border border-amber-500/30 bg-amber-500/10 p-2.5 text-xs text-amber-200 flex items-center gap-2">
+          <AlertCircle className="h-4 w-4 flex-shrink-0 text-amber-400" />
+          <span className="leading-relaxed">{errorMessage}</span>
         </div>
       )}
 
@@ -175,9 +179,17 @@ export default function PayPalEscrowButton({
                 disabled={isProcessing}
                 createOrder={handleCreateOrder}
                 onApprove={handleApprove}
-                onError={(err) => {
-                  console.error("[PayPalButtons SDK Error]", err);
-                  setErrorMessage("PayPal checkout popup encountered an issue. Please try again.");
+                onCancel={() => {
+                  setErrorMessage("Checkout cancelled: The PayPal window was closed before completing payment.");
+                }}
+                onError={(err: any) => {
+                  const msg = String(err?.message || err || "");
+                  console.error("[PayPalButtons SDK Error]", msg, err);
+                  if (msg.includes("Window closed before response") || msg.includes("popup closed") || msg.includes("window closed")) {
+                    setErrorMessage("The PayPal popup was closed before completing checkout. Please click below to try again.");
+                  } else {
+                    setErrorMessage("PayPal checkout popup encountered an issue. Please try again.");
+                  }
                 }}
               />
             </div>
@@ -187,4 +199,3 @@ export default function PayPalEscrowButton({
     </div>
   );
 }
-

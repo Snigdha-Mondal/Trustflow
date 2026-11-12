@@ -5,7 +5,7 @@ import { capturePayPalOrder } from "@/lib/paypal";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { contractId, orderId } = body;
+    const { contractId, orderId, captureId } = body;
 
     if (!contractId || !orderId) {
       return NextResponse.json(
@@ -27,7 +27,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Contract not found" }, { status: 404 });
     }
 
-    const captureResult = await capturePayPalOrder(orderId);
+    // Capture order if not already captured by client SDK
+    const captureResult = captureId
+      ? { id: orderId, captureId, status: "COMPLETED" }
+      : await capturePayPalOrder(orderId);
 
     // Calculate sequential Gantt schedule dates
     const now = new Date();
