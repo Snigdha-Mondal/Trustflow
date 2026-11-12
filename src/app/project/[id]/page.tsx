@@ -686,7 +686,11 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                         `Escrow Funded Successfully! $${updatedContract.totalBudget.toFixed(2)} held in PayPal Escrow.`
                       );
                     }}
-                    onError={(err) => setError(err)}
+                    onError={(err) => {
+                      if (!err?.toLowerCase().includes("closed") && !err?.toLowerCase().includes("cancel")) {
+                        setError(err);
+                      }
+                    }}
                   />
                 </div>
               ) : (
@@ -723,7 +727,11 @@ export default function ProjectCockpitPage({ params }: PageProps) {
                                 `Escrow Funded Successfully! $${updatedContract.totalBudget.toFixed(2)} held in PayPal Escrow.`
                               );
                             }}
-                            onError={(err) => setError(err)}
+                            onError={(err) => {
+                      if (!err?.toLowerCase().includes("closed") && !err?.toLowerCase().includes("cancel")) {
+                        setError(err);
+                      }
+                    }}
                           />
                         </div>
                       ) : (

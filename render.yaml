@@ -15,9 +15,9 @@ services:
       - key: PAYPAL_API_BASE
         value: https://api-m.sandbox.paypal.com
       - key: PAYPAL_CLIENT_ID
-        sync: false
+        value: BAASOiuRqrR0cWEHEo8mQAoiIcwRs5QiovbmDvP3NYkDUdFUfSj0GMsJRTg6O2IRxti22anIJjnU033W88
       - key: NEXT_PUBLIC_PAYPAL_CLIENT_ID
-        sync: false
+        value: BAASOiuRqrR0cWEHEo8mQAoiIcwRs5QiovbmDvP3NYkDUdFUfSj0GMsJRTg6O2IRxti22anIJjnU033W88
       - key: PAYPAL_CLIENT_SECRET
         sync: false
       - key: GEMINI_API_KEY

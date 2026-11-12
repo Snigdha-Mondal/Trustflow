@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import confetti from "canvas-confetti";
-import { ShieldCheck, AlertCircle, CheckCircle2, Lock, Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Lock, Loader2 } from "lucide-react";
 
 interface PayPalEscrowButtonProps {
   contractId: string;
@@ -13,6 +13,9 @@ interface PayPalEscrowButtonProps {
   onSuccess: (updatedContract: any) => void;
   onError?: (errorMsg: string) => void;
 }
+
+const DEFAULT_US_SANDBOX_CLIENT_ID =
+  "BAASOiuRqrR0cWEHEo8mQAoiIcwRs5QiovbmDvP3NYkDUdFUfSj0GMsJRTg6O2IRxti22anIJjnU033W88";
 
 export default function PayPalEscrowButton({
   contractId,
@@ -25,16 +28,41 @@ export default function PayPalEscrowButton({
   const [isProcessing, setIsProcessing] = useState(false);
   const [isFunded, setIsFunded] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [clientId, setClientId] = useState<string>(
+    process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || DEFAULT_US_SANDBOX_CLIENT_ID
+  );
 
-  // US Sandbox App "Trustflow" Client ID
-  const clientId =
-    process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ||
-    "BAASOiuRqrR0cWEHEo8mQAoiIcwRs5QiovbmDvP3NYkDUdFUfSj0GMsJRTg6O2IRxti22anIJjnU033W88";
+  // Sync client ID from backend configuration to guarantee matching server credentials
+  useEffect(() => {
+    fetch("/api/paypal/config")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.clientId) {
+          setClientId(data.clientId);
+        }
+      })
+      .catch((err) => {
+        console.warn("[PayPalEscrowButton] Could not fetch server config, using fallback client ID:", err);
+      });
+  }, []);
 
-  // createOrder: invokes PayPal SDK order creation with intent: CAPTURE
-  const handleCreateOrder = async (data: any, actions: any) => {
+  // createOrder: invokes backend /api/paypal/create-order using authenticated server credentials
+  const handleCreateOrder = async (_data: any, actions: any) => {
     setErrorMessage(null);
     try {
+      // 1. Try server-side order creation (cleanest and most secure)
+      const res = await fetch("/api/paypal/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contractId }),
+      });
+
+      const orderData = await res.json();
+      if (res.ok && orderData.order?.id) {
+        return orderData.order.id;
+      }
+
+      // 2. Client SDK fallback if backend route returned error
       if (actions?.order) {
         return await actions.order.create({
           intent: "CAPTURE",
@@ -51,15 +79,7 @@ export default function PayPalEscrowButton({
         });
       }
 
-      // Backend fallback order creation
-      const res = await fetch("/api/paypal/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contractId }),
-      });
-      const orderData = await res.json();
-      if (!res.ok) throw new Error(orderData.error || "Failed to create PayPal order");
-      return orderData.order.id;
+      throw new Error(orderData.error || "Failed to create PayPal escrow order");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Order creation failed";
       console.error("[PayPalEscrowButton createOrder error]", msg);
@@ -161,6 +181,7 @@ export default function PayPalEscrowButton({
           </div>
 
           <PayPalScriptProvider
+            key={clientId}
             options={{
               clientId: clientId,
               currency: currency,
@@ -180,13 +201,19 @@ export default function PayPalEscrowButton({
                 createOrder={handleCreateOrder}
                 onApprove={handleApprove}
                 onCancel={() => {
-                  setErrorMessage("Checkout cancelled: The PayPal window was closed before completing payment.");
+                  setErrorMessage("Checkout cancelled: The PayPal popup was closed before completing payment.");
                 }}
                 onError={(err: any) => {
                   const msg = String(err?.message || err || "");
                   console.error("[PayPalButtons SDK Error]", msg, err);
-                  if (msg.includes("Window closed before response") || msg.includes("popup closed") || msg.includes("window closed")) {
-                    setErrorMessage("The PayPal popup was closed before completing checkout. Please click below to try again.");
+                  if (
+                    msg.includes("Window closed before response") ||
+                    msg.includes("popup closed") ||
+                    msg.includes("window closed")
+                  ) {
+                    setErrorMessage(
+                      "The PayPal checkout popup was closed before completion. Please click the button to try again."
+                    );
                   } else {
                     setErrorMessage("PayPal checkout popup encountered an issue. Please try again.");
                   }
