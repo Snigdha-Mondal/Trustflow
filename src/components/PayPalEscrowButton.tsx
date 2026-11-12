@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import confetti from "canvas-confetti";
-import { AlertCircle, CheckCircle2, Lock, Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Lock, Loader2, Zap } from "lucide-react";
 
 interface PayPalEscrowButtonProps {
   contractId: string;
@@ -83,8 +83,10 @@ export default function PayPalEscrowButton({
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Order creation failed";
       console.error("[PayPalEscrowButton createOrder error]", msg);
-      setErrorMessage(msg);
-      if (onError) onError(msg);
+      if (!msg.includes("Window closed before response") && !msg.includes("popup closed") && !msg.includes("window closed")) {
+        setErrorMessage(msg);
+        if (onError) onError(msg);
+      }
       throw err;
     }
   };
@@ -137,6 +139,54 @@ export default function PayPalEscrowButton({
     }
   };
 
+  // 1-Click Direct Sandbox Funding: creates & captures order via PayPal REST API directly
+  const handleDirectFund = async () => {
+    setIsProcessing(true);
+    setErrorMessage(null);
+    try {
+      // 1. Create PayPal Order on backend
+      const createRes = await fetch("/api/paypal/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contractId }),
+      });
+      const createData = await createRes.json();
+      if (!createRes.ok || !createData.order?.id) {
+        throw new Error(createData.error || "Failed to create PayPal order");
+      }
+
+      // 2. Capture PayPal Order on backend
+      const captureRes = await fetch("/api/paypal/capture-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contractId,
+          orderId: createData.order.id,
+        }),
+      });
+      const captureData = await captureRes.json();
+      if (!captureRes.ok || !captureData.contract) {
+        throw new Error(captureData.error || "Failed to capture PayPal escrow order");
+      }
+
+      setIsFunded(true);
+      confetti({
+        particleCount: 100,
+        spread: 75,
+        origin: { y: 0.6 },
+        colors: ["#10B981", "#3B82F6", "#DAF99C"],
+      });
+
+      onSuccess(captureData.contract);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Direct escrow funding failed";
+      console.error("[Direct Sandbox Fund Error]", msg);
+      setErrorMessage(msg);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   if (isFunded) {
     return (
       <div className="rounded-none border border-emerald-500/30 bg-emerald-500/10 p-4 text-center space-y-1">
@@ -171,7 +221,7 @@ export default function PayPalEscrowButton({
           </p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400 pb-1">
             <span className="flex items-center gap-1.5">
               <Lock className="h-3 w-3 text-[#DAF99C]" />
@@ -180,6 +230,7 @@ export default function PayPalEscrowButton({
             <span className="text-white font-bold">${totalBudget.toFixed(2)} {currency}</span>
           </div>
 
+          {/* Official PayPal Sandbox Popup Checkout */}
           <PayPalScriptProvider
             key={clientId}
             options={{
@@ -212,7 +263,7 @@ export default function PayPalEscrowButton({
                     msg.includes("window closed")
                   ) {
                     setErrorMessage(
-                      "The PayPal checkout popup was closed before completion. Please click the button to try again."
+                      "The PayPal checkout popup was closed before completion. You can click PayPal again or use 1-Click Sandbox Fund below."
                     );
                   } else {
                     setErrorMessage("PayPal checkout popup encountered an issue. Please try again.");
@@ -221,6 +272,23 @@ export default function PayPalEscrowButton({
               />
             </div>
           </PayPalScriptProvider>
+
+          {/* 1-Click Instant Sandbox Escrow Funding Bypass */}
+          <div className="pt-1 border-t border-white/10">
+            <button
+              type="button"
+              disabled={isProcessing}
+              onClick={handleDirectFund}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-none border border-[#DAF99C]/50 bg-[#DAF99C]/10 px-3 py-2 text-xs font-mono font-semibold text-[#DAF99C] hover:bg-[#DAF99C] hover:text-[#0E1012] transition-all duration-200 active:scale-[0.98] disabled:opacity-50"
+              title="Directly authorize and lock escrow funds via PayPal REST API without relying on browser popup windows"
+            >
+              <Zap className="h-3.5 w-3.5" />
+              1-Click Sandbox Escrow Fund (${totalBudget.toFixed(2)})
+            </button>
+            <p className="text-[10px] font-mono text-zinc-500 text-center mt-1">
+              Direct Sandbox API capture &bull; Bypasses browser popup blockers
+            </p>
+          </div>
         </div>
       )}
     </div>
