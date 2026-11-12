@@ -279,6 +279,54 @@
    - 43/43 automated tests pass.
    - Pushed to GitHub `main` for automatic deployment to Render.
 
+---
+
+## Session 13: Non-Resetting Money Inputs & Preset Synchronized Tranches
+**Date:** 2026-11-11
+**Goal:** Fix issue where money fields snapped to 0 or changed on their own while typing, and ensure preset templates automatically balance milestone tranches with matching budgets.
+
+### Accomplishments:
+1. **Upgraded Number Inputs (`src/app/wizard/page.tsx`):**
+   - Converted Total Budget and Milestone Amount inputs from strict HTML5 `type="number"` to `type="text" inputMode="decimal"`.
+   - Prevented the zero-snap issue where `Number("") === 0` replaced empty inputs with 0 during backspacing.
+   - Values cleanly normalize on blur without fighting user keystrokes.
+2. **Synchronized Template Tranches:**
+   - Embedded tailored 3-milestone sets for all three preset templates:
+     - *SaaS Marketing Website ($900)*: $270 + $360 + $270 = $900.00
+     - *AI Automation Pipeline ($1200)*: $360 + $480 + $360 = $1,200.00
+     - *Next.js + Supabase Full-Stack MVP ($1500)*: $450 + $600 + $450 = $1,500.00
+   - Clicking any template immediately balances the budget in green.
+3. **1-Click Auto-Balance Helper Actions:**
+   - Added `Auto-Balance Tranches to $X` to proportionally distribute remaining budget across milestones down to the exact cent.
+   - Added `Set Budget to $Y` to update total budget to match custom milestone sums.
+4. **Verification:**
+   - `npx tsc --noEmit` &rarr; 0 errors.
+   - 43/43 automated tests pass.
+   - Committed (`0dc5874`) and pushed to `main`.
+
+---
+
+## Session 14: US Sandbox Account Migration & Resilient PayPal Checkout Popup
+**Date:** 2026-11-12
+**Goal:** Resolve "Window closed before response" error, migrate to US-based PayPal Sandbox business & personal accounts, and support seamless client-side capture and error handling.
+
+### Accomplishments:
+1. **PayPal US Sandbox Credentials Verification:**
+   - Migrated to US Business sandbox account (`sb-rmmox49935813@business.example.com`) and US Personal buyer account (`sb-g4743z653854747@personal.example.com`).
+   - Verified OAuth2 client credentials grant, Orders API v2 (`intent: CAPTURE`), and live Payouts API v1 with Node test runner (payout batch `KFLVW7ZJ5QK4G` pending/processed with zero regional 403 errors).
+2. **Resilient PayPal Escrow Button (`src/components/PayPalEscrowButton.tsx`):**
+   - Updated client ID fallback to new US app Client ID (`BAASOiuRqrR0cWEHEo8mQAoiIcwRs5QiovbmDvP3NYkDUdFUfSj0GMsJRTg6O2IRxti22anIJjnU033W88`).
+   - Added `onCancel` handler for clean, graceful user cancellation without throwing unhandled exceptions.
+   - Mapped `Window closed before response` to a friendly warning ("The PayPal popup was closed before completing checkout. Please click below to try again") instead of a raw system crash.
+   - Handled client-side `actions.order.capture()` passing `captureId` to `/api/paypal/capture-order`.
+3. **Capture API Resilience (`src/app/api/paypal/capture-order/route.ts` & `src/lib/paypal.ts`):**
+   - Handled `captureId` passing from client SDK to avoid redundant capture attempts.
+   - Handled `ORDER_ALREADY_CAPTURED` in `capturePayPalOrder` so contracts finalize smoothly.
+4. **Verification:**
+   - `npx tsc --noEmit` &rarr; 0 errors.
+   - 43/43 tests passing.
+   - Committed (`8e073df`) and pushed to `main`.
+
 
 
 
